@@ -5,6 +5,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
+    "lint": "eslint .",
     "dev": "nodemon src/index.ts",
     "start": "node dist/index.js"
   },
