@@ -5,7 +5,8 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "lint": "eslint .",
+    "lint": "eslint ./*.{js,jsx,ts,tsx}'",
+    "lint:fix": "eslint './*.{js,jsx,ts,tsx}' --fix",
     "dev": "nodemon src/index.ts",
     "start": "node dist/index.js"
   },
