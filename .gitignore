@@ -1,20 +1,3 @@
-# React Native
-node_modules/
-ios/Pods/
-android/.gradle/
-android/app/build/
-android/.idea/
-android/.gradle/
-android/app/src/main/assets/index.android.bundle
-android/app/src/main/res/drawable-mdpi/
-android/app/src/main/res/drawable-hdpi/
-android/app/src/main/res/drawable-xhdpi/
-android/app/src/main/res/drawable-xxhdpi/
-android/app/src/main/res/drawable-xxxhdpi/
+.idea
 
-# Express.js
-backend/node_modules/
-backend/dist/
-
-# Common
 .env
