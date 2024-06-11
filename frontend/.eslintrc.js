@@ -5,7 +5,7 @@ module.exports = {
     '@typescript-eslint',
   ],
   extends: [
-    '@react-native-community',
+    '@react-native',
     'plugin:@typescript-eslint/recommended',
   ],
 };
