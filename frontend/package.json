@@ -9,6 +9,7 @@
     "lint:fix": "eslint './*.{ts,tsx}'",
     "start": "react-native start",
     "test": "jest",
+    "coverage": "jest --coverage",
     "build": "tsc",
     "format": "prettier --write ."
   },
