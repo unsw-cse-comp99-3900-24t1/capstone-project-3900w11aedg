@@ -7,7 +7,7 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "backend/**/*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
-    "frontend/**/*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"]
+    "backend/**/*.{js,jsx,ts,tsx}": ["npm run lint --prefix backend", "npm run format --prefix backend"],
+    "frontend/**/*.{js,jsx,ts,tsx}": ["npm run lint --prefix frontend", "npm run format --prefix frontend"]
   }
 }
