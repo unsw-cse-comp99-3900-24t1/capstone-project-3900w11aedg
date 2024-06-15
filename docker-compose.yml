@@ -1,0 +1,21 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+    environment:
+      NODE_ENV: development
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./frontend:/app
+    environment:
+      NODE_ENV: development

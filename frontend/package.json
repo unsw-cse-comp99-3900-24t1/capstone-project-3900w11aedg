@@ -5,10 +5,11 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "lint": "eslint './*.{js,jsx,ts,tsx}'",
-    "lint:fix": "eslint './*.{js,jsx,ts,tsx}' --fix",
+    "lint": "eslint './*.{ts,tsx}'",
+    "lint:fix": "eslint './*.{ts,tsx}' --fix",
     "start": "react-native start",
     "test": "jest",
+    "build": "tsc",
     "format": "prettier --write ."
   },
   "dependencies": {

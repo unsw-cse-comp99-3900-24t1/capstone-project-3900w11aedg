@@ -5,8 +5,8 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "lint": "eslint './*.{js,jsx,ts,tsx}'",
-    "lint:fix": "eslint './*.{js,jsx,ts,tsx}' --fix",
+    "lint": "eslint 'src/*.{ts,tsx}' --ignore-pattern 'dist/*'",
+    "lint:fix": "eslint './src/*.{ts,tsx}' --fix --ignore-pattern 'dist/*'",
     "dev": "nodemon src/index.ts",
     "start": "node dist/index.js",
     "format": "prettier --write ."
