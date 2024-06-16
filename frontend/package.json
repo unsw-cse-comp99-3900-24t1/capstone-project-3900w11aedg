@@ -5,8 +5,8 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "lint": "eslint './*.{ts,tsx}'",
-    "lint:fix": "eslint './*.{ts,tsx}'",
+    "lint": "eslint './**/*.{ts,tsx}'",
+    "lint:fix": "eslint './**/*.{ts,tsx}'",
     "start": "react-native start",
     "test": "jest",
     "coverage": "jest --coverage",
