@@ -17,7 +17,7 @@ jest.mock('@react-navigation/native', () => ({
   NavigationContainer: ({children}: {children: ReactNode}) => <>{children}</>,
   DefaultTheme: {},
   DarkTheme: {},
-  useColorScheme: () => 'light', // or 'dark' if you want to test the dark theme
+  useColorScheme: () => 'light',
 }));
 
 jest.mock('@react-navigation/native-stack', () => {
@@ -26,15 +26,6 @@ jest.mock('@react-navigation/native-stack', () => {
       Navigator: ({children}: {children: ReactNode}) => <>{children}</>,
       Screen: ({children}: {children: ReactNode}) => <>{children}</>,
     }),
-  };
-});
-
-jest.mock('../src/screens/LoginScreen', () => {
-  return {
-    __esModule: true,
-    default: () => {
-      return <div>LoginScreen</div>;
-    },
   };
 });
 
