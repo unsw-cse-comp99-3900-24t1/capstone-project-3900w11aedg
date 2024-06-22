@@ -7,7 +7,20 @@
     "prepare": "husky install"
   },
   "lint-staged": {
-    "backend/**/*.{js,jsx,ts,tsx}": ["npm run test --prefix backend", "npm run lint --prefix backend", "npm run format --prefix backend"],
-    "frontend/**/*.{js,jsx,ts,tsx}": ["npm run test --prefix frontend", "npm run lint --prefix frontend", "npm run format --prefix frontend"]
+    "backend/**/*.{js,jsx,ts,tsx}": [
+      "npm run test --prefix backend",
+      "npm run lint --prefix backend",
+      "npm run format --prefix backend"
+    ],
+    "frontend/**/*.{js,jsx,ts,tsx}": [
+      "npm run test --prefix frontend",
+      "npm run lint --prefix frontend",
+      "npm run format --prefix frontend"
+    ],
+    "did/**/*.{js,jsx,ts,tsx}": [
+      "npm run test --prefix did",
+      "npm run lint --prefix did",
+      "npm run format --prefix did"
+    ]
   }
 }
