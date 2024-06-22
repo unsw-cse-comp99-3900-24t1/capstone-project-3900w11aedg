@@ -20,6 +20,23 @@ jest.mock('@react-navigation/native', () => ({
   useColorScheme: () => 'light',
 }));
 
+jest.mock('react-native-keychain', () => ({
+  setGenericPassword: jest.fn(),
+  getGenericPassword: jest.fn(),
+  resetGenericPassword: jest.fn(),
+}));
+
+jest.mock('react-native-biometrics', () => ({
+  __esModule: true,
+  default: jest.fn(() => ({
+    isSensorAvailable: jest.fn(),
+    simplePrompt: jest.fn(),
+  })),
+  BiometryTypes: {
+    Biometrics: 'Biometrics',
+  },
+}));
+
 jest.mock('@react-navigation/native-stack', () => {
   return {
     createNativeStackNavigator: jest.fn().mockReturnValue({
