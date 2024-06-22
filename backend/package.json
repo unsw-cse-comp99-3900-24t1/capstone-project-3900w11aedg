@@ -22,6 +22,7 @@
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "express": "^4.19.2",
+    "react-native-linear-gradient": "^2.8.3",
     "web-did-resolver": "^2.0.27"
   },
   "devDependencies": {
