@@ -24,7 +24,6 @@ app.get('/', (_req: Request, res: Response) => {
 app.post('/.well-known/:id/did.json', (req: Request, res: Response) => {
   // Save the did document to the database
   const didDocument = req.body;
-  console.log(didDocument);
   const { id } = req.params;
   if (!id) {
     res.status(400).send('Invalid DID');
