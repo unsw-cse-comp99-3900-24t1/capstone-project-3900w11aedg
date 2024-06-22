@@ -6,7 +6,7 @@ import { DIDDocument } from 'did-resolver';
 const app = express();
 const port = 5000;
 
-app.use(cors);
+// app.use(cors);
 app.use(express.json());
 
 const allowedOrigins = ['http://localhost:5000'];
