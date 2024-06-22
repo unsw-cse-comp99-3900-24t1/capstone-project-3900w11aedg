@@ -6,18 +6,19 @@ import {DarkColours, LightColours} from './config/colours';
 import {RootStackParamList} from './config/types';
 import LoginScreen from './screens/LoginScreen';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import HomeScreen from './screens/HomeScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function App(): JSX.Element {
-  let scheme = useColorScheme();
-  scheme = 'dark';
+  const scheme = useColorScheme();
 
   return (
     <SafeAreaProvider>
       <NavigationContainer theme={scheme === 'dark' ? DarkColours : LightColours}>
         <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}} />
+          <Stack.Screen name="Home" component={HomeScreen} options={{headerShown: false}} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
