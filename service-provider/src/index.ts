@@ -1,6 +1,8 @@
 import express, {Request, Response} from 'express';
 import cors from 'cors';
 import { UUID, randomUUID } from 'crypto';
+import { Resolver } from 'did-resolver';
+import { getResolver } from 'web-did-resolver';
 
 const QRCode = require('qrcode');
 
@@ -21,13 +23,14 @@ app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
-
 app.post('/credential/request', async (req: Request, res: Response) => {
   const { claims, serviceProviderDID } = req.body;
-  if (!serviceProviderDID || !claims) {
+
+  if (!(await checkValidDID(serviceProviderDID))) {
+    res.status(404).send("Service Provider DID not found!");
+    return;
+  }
+  if (!claims || Object.keys(claims).length === 0) {
     res.status(400).send('Invalid parameters');
     return;
   }
@@ -35,11 +38,15 @@ app.post('/credential/request', async (req: Request, res: Response) => {
   const requestId = randomUUID();
   const serviceProviderURL = `localhost:${port}/credential/present/${requestId}`;
 
-  const qrCode = await generateQRCode(requestId, claims, serviceProviderDID, serviceProviderURL);
-  res.status(200).send(qrCode);
+  try {
+    const qrCode = await generateQRCode(requestId, claims, serviceProviderDID, serviceProviderURL);
+    res.status(200).json({ qrCode });
+  } catch (err) {
+    res.status(500).send('Could not generate QR code');
+  }
 });
 
-async function generateQRCode(requestId: UUID, claims: Map<String, Array<String>>, serviceProviderDID: String, serviceProviderURL: String) {
+async function generateQRCode(requestId: UUID, claims: Record<string, string[]>, serviceProviderDID: String, serviceProviderURL: String) {
   const qrData = {
     requestId,
     serviceProviderDID,
@@ -49,3 +56,16 @@ async function generateQRCode(requestId: UUID, claims: Map<String, Array<String>
 
   return await QRCode.toDataURL(JSON.stringify(qrData));
 }
+
+async function checkValidDID(did: string) {
+  const resolver = new Resolver(getResolver());
+  const didDoc = await resolver.resolve(did);
+  return didDoc.didResolutionMetadata.error === 'notFound';
+}
+
+const server = app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
+
+export default app;
+export { server };
