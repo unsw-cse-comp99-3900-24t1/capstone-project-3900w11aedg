@@ -10,7 +10,7 @@ const port = 5000;
 app.use(express.json());
 app.use(bodyParser.json());
 
-const allowedOrigins = ['http://localhost:5000'];
+const allowedOrigins = ['http://localhost:5000, http://localhost:3000'];
 
 const options: cors.CorsOptions = {
   origin: allowedOrigins,

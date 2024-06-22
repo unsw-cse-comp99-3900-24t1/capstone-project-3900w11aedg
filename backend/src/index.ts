@@ -3,12 +3,13 @@ import cors from 'cors';
 import crypto from 'crypto';
 import axios from 'axios';
 import { DIDDocument } from 'did-resolver';
+import bodyParser from 'body-parser';
 
 const app = express();
 const port = 3000;
 
-app.use(cors);
 app.use(express.json());
+app.use(bodyParser.json());
 
 const allowedOrigins = ['http://localhost:3000'];
 
@@ -40,11 +41,7 @@ app.post('/generate/did', (req: Request, res: Response) => {
     ],
   };
   try {
-    const response = axios.post(
-      `http://localhost:5000/.well-known/${didHashHex}/did.json`,
-      didDocument
-    );
-    console.log(response);
+    axios.post(`http://localhost:5000/.well-known/${didHashHex}/did.json`, didDocument);
   } catch (error) {
     res.status(500).send('Error saving the did document');
   }
