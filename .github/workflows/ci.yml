@@ -32,6 +32,31 @@ jobs:
         working-directory: backend
         run: npm test
 
+  did:
+    name: DID Web Server
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install DID dependencies
+        working-directory: did
+        run: npm install
+
+      - name: Run ESLint for backend
+        working-directory: did
+        run: npm run lint
+
+      - name: Run Jest tests for backend
+        working-directory: did
+        run: npm test
+
   frontend:
     name: Frontend
     runs-on: ubuntu-latest

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest ./__tests__/",
+    "test": "jest",
     "build": "tsc",
     "lint": "eslint 'src/*.{ts,tsx}' --ignore-pattern 'dist/*'",
     "lint:fix": "eslint './src/*.{ts,tsx}' --fix --ignore-pattern 'dist/*'",
@@ -17,12 +17,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "axios": "^1.7.2",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
-    "crypto": "^1.0.1",
-    "express": "^4.19.2",
-    "web-did-resolver": "^2.0.27"
+    "express": "^4.19.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.4.0",
