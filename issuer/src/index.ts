@@ -65,9 +65,17 @@ const signCredential = async (credential: { proof: { jws: string; }; }, keyPair:
   return credential;
 };
 
-app.post('/issuer/sign-credential', async (_req: Request, res: Response) => {
+app.post('/issuer/sign-credential', async (req: Request, res: Response) => {
   try {
-    const keyPair = await generateKeyPair(); // Issuers should have one keypair later on, no generation
+    const { keyPair, credential } = req.body; 
+    if (!keyPair) {
+      res.status(404).send("keyPair not found");
+    }
+    if (!credential) {
+      res.status(404).send("credential not found");
+    }
+
+    // const keyPair = await generateKeyPair(); // Issuers should have one keypair later on, no generation
     const signedCredential = await signCredential(credential, keyPair);
     res.json(signedCredential);
   } catch (error) {
