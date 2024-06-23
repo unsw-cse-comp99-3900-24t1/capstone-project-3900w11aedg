@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../components/Header';
-import {View, Image} from 'react-native';
+import { View, Image } from 'react-native';
 import LoginButton from '../components/LoginButton';
 
 function LoginScreen(): JSX.Element {
