@@ -31,29 +31,30 @@ app.get('/', (_req: Request, res: Response) => {
 });
 
 app.post('/generate/did', (req: Request, res: Response) => {
-  const { did, publicKey } = req.body;
-  const didHash = crypto.createHash('sha256');
-  didHash.update(did);
-  const didHashHex = didHash.digest('hex');
+  const { publicKey } = req.body;
+  const hash = crypto.createHash('sha256');
+  hash.update(publicKey);
+  const keyHashHex = hash.digest('hex');
+  const did = `did:web:${keyHashHex}`;
   const didDocument: DIDDocument = {
     '@context': 'https://www.w3.org/ns/did/v1',
-    id: `did:web:${didHashHex}`,
+    id: `did:web:${keyHashHex}`,
     publicKey: [
       {
-        id: `did:web:${didHashHex}#key-1`,
+        id: `did:web:${keyHashHex}`,
         type: 'Ed25519VerificationKey2018',
-        controller: `did:example:${didHashHex}`,
+        controller: `did:example:${keyHashHex}`,
         publicKeyBase58: publicKey,
       },
     ],
   };
   try {
-    axios.post(`http://localhost:5000/${didHashHex}/.well-known/did.json`, didDocument);
+    axios.post(`http://localhost:5000/${keyHashHex}/.well-known/did.json`, didDocument);
   } catch (error) {
     res.status(500).send('Error saving the did document');
   }
 
-  res.status(200).send(didDocument);
+  res.status(200).send({ did });
 });
 
 app.listen(port, () => {
