@@ -7,6 +7,8 @@ import {
 } from "@mattrglobal/bbs-signatures";
 import bodyParser from 'body-parser';
 
+const QRCode = require('qrcode');
+
 const app = express();
 const port = 3210;
 
@@ -65,6 +67,8 @@ const signCredential = async (credential: { proof: { jws: string; }; }, keyPair:
   return credential;
 };
 
+// Given an unsigned credential and issuer keypair, sign the credential 
+// and return QR code of signed credential
 app.post('/issuer/sign-credential', async (req: Request, res: Response) => {
   try {
     const { keyPair, credential } = req.body; 
@@ -75,9 +79,10 @@ app.post('/issuer/sign-credential', async (req: Request, res: Response) => {
       res.status(404).send("credential not found");
     }
 
-    // const keyPair = await generateKeyPair(); // Issuers should have one keypair later on, no generation
     const signedCredential = await signCredential(credential, keyPair);
-    res.json(signedCredential);
+    const qrCode = await QRCode.toDataURL(JSON.stringify(signedCredential));
+
+    res.json({ qrCode });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error issuing credential');
