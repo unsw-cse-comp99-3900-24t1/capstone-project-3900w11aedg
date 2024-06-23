@@ -19,6 +19,16 @@
       "npm run test --prefix frontend",
       "npm run lint --prefix frontend",
       "npm run format --prefix frontend"
+    ],
+    "service-provider/**/*.{js,jsx,ts,tsx}": [
+      "npm run test --prefix service-provider",
+      "npm run lint --prefix service-provider",
+      "npm run format --prefix service-provider"
+    ],
+    "did/**/*.{js,jsx,ts,tsx}": [
+      "npm run test --prefix did",
+      "npm run lint --prefix did",
+      "npm run format --prefix did"
     ]
   },
   "dependencies": {
