@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 // import { LinearGradient } from 'react-native-linear-gradient';
 
-const IdentityCard = ({card}) => {
+const IdentityCard = ({ card }) => {
   return (
     <View style={styles.linearGradient}>
       <View style={styles.card}>

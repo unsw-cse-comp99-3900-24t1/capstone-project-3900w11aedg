@@ -1,9 +1,9 @@
 import React from 'react';
-import {Button, AppState} from 'react-native';
-import ReactNativeBiometrics, {BiometryTypes} from 'react-native-biometrics';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../config/types';
-import {useNavigation} from '@react-navigation/native';
+import { Button, AppState } from 'react-native';
+import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../config/types';
+import { useNavigation } from '@react-navigation/native';
 
 type Props = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
@@ -12,8 +12,8 @@ function LoginButton(): JSX.Element {
 
   // Prompts user to enter biometric data, navigating to homescreen with success case
   const handleBiometricAuth = async () => {
-    const rnBiometrics = new ReactNativeBiometrics({allowDeviceCredentials: true});
-    const {biometryType} = await rnBiometrics.isSensorAvailable();
+    const rnBiometrics = new ReactNativeBiometrics({ allowDeviceCredentials: true });
+    const { biometryType } = await rnBiometrics.isSensorAvailable();
     if (biometryType === BiometryTypes.Biometrics) {
       try {
         const res = await rnBiometrics.simplePrompt({

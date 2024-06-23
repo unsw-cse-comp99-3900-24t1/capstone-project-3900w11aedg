@@ -1,4 +1,4 @@
-import {Text, StyleSheet, ScrollView} from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import React from 'react';
 import IdentityCardList from '../components/IdentityCardList.tsx';
 

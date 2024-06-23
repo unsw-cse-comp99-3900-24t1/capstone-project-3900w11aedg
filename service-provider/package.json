@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest ./__tests__/",
     "build": "tsc",
     "lint": "eslint 'src/*.{ts,tsx}' --ignore-pattern 'dist/*'",
     "lint:fix": "eslint './src/*.{ts,tsx}' --fix --ignore-pattern 'dist/*'",
@@ -19,7 +19,11 @@
   "dependencies": {
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
-    "express": "^4.19.2"
+    "did-resolver": "^4.1.0",
+    "express": "^4.19.2",
+    "qrcode": "^1.5.3",
+    "supertest": "^7.0.0",
+    "web-did-resolver": "^2.0.27"
   },
   "devDependencies": {
     "@eslint/js": "^9.4.0",
@@ -27,6 +31,8 @@
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.2",
+    "@types/qrcode": "^1.5.5",
+    "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",

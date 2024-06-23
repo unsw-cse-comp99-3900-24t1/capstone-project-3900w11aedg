@@ -1,10 +1,9 @@
-import express, {Request, Response} from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { UUID, randomUUID } from 'crypto';
+import { randomUUID, UUID } from 'crypto';
 import { Resolver } from 'did-resolver';
 import { getResolver } from 'web-did-resolver';
-
-const QRCode = require('qrcode');
+import QRCode from 'qrcode';
 
 const app = express();
 const port = 3333;
@@ -27,7 +26,7 @@ app.post('/credential/request', async (req: Request, res: Response) => {
   const { claims, serviceProviderDID } = req.body;
 
   if (!(await checkValidDID(serviceProviderDID))) {
-    res.status(404).send("Service Provider DID not found!");
+    res.status(404).send('Service Provider DID not found!');
     return;
   }
   if (!claims || Object.keys(claims).length === 0) {
@@ -46,12 +45,17 @@ app.post('/credential/request', async (req: Request, res: Response) => {
   }
 });
 
-async function generateQRCode(requestId: UUID, claims: Record<string, string[]>, serviceProviderDID: String, serviceProviderURL: String) {
+async function generateQRCode(
+  requestId: UUID,
+  claims: Record<string, string[]>,
+  serviceProviderDID: string,
+  serviceProviderURL: string
+) {
   const qrData = {
     requestId,
     serviceProviderDID,
     serviceProviderURL,
-    claims
+    claims,
   };
 
   return await QRCode.toDataURL(JSON.stringify(qrData));

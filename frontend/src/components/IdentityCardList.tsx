@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 import IdentityCard from './IdentityCard';
 
 const IdentityCardList = () => {
@@ -8,14 +8,14 @@ const IdentityCardList = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = [
-        {id: 1, name: 'Drivers License', type: 'License'},
-        {id: 2, name: 'WCC', type: 'Certificate'},
-        {id: 3, name: 'Drivers License', type: 'License'},
-        {id: 4, name: 'WCC', type: 'Certificate'},
-        {id: 5, name: 'Drivers License', type: 'License'},
-        {id: 6, name: 'WCC', type: 'Certificate'},
-        {id: 7, name: 'Drivers License', type: 'License'},
-        {id: 8, name: 'WCC', type: 'Certificate'},
+        { id: 1, name: 'Drivers License', type: 'License' },
+        { id: 2, name: 'WCC', type: 'Certificate' },
+        { id: 3, name: 'Drivers License', type: 'License' },
+        { id: 4, name: 'WCC', type: 'Certificate' },
+        { id: 5, name: 'Drivers License', type: 'License' },
+        { id: 6, name: 'WCC', type: 'Certificate' },
+        { id: 7, name: 'Drivers License', type: 'License' },
+        { id: 8, name: 'WCC', type: 'Certificate' },
       ];
       setCards(data);
     };
