@@ -6,7 +6,7 @@ import mockAxios from 'jest-mock-axios';
 
 const mockCreatedDid = 'did:example:321';
 jest.mock('axios');
-
+jest.useFakeTimers();
 const mockDid = 'did:example:123';
 
 describe('HomeScreen', () => {
