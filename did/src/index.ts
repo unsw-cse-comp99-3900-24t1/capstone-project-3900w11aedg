@@ -3,9 +3,16 @@ import cors from 'cors';
 import fs from 'fs';
 import { DIDDocument } from 'did-resolver';
 import bodyParser from 'body-parser';
+import morgan from 'morgan';
 
 const app = express();
 const port = 5000;
+
+morgan.token('body', (req: Request) => JSON.stringify(req.body, null, 2));
+
+const format = ':method :url :status :res[content-length] - :response-time ms\n:body';
+
+app.use(morgan(format));
 
 app.use(express.json());
 app.use(bodyParser.json());
@@ -22,9 +29,7 @@ app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
 });
 
-app.post('/.well-known/:id/did.json', (req: Request, res: Response) => {
-  // Save the did document to the database
-  console.log(req);
+app.post('/:id/.well-known/did.json', (req: Request, res: Response) => {
   const didDocument = req.body;
   const { id } = req.params;
   if (!id) {
@@ -39,7 +44,7 @@ app.post('/.well-known/:id/did.json', (req: Request, res: Response) => {
   res.status(200).send({ message: 'DID Document saved successfully' });
 });
 
-app.get('/.well-known/:id/did.json', (req: Request, res: Response) => {
+app.get('/:id/.well-known/did.json', (req: Request, res: Response) => {
   const { id } = req.params;
   const didDocument = fs.readFileSync(__dirname + `/.well-known/${id}/did.json`, 'utf-8');
   if (!didDocument) {
@@ -47,7 +52,6 @@ app.get('/.well-known/:id/did.json', (req: Request, res: Response) => {
     return;
   }
   const parsed = JSON.parse(didDocument) as DIDDocument;
-  console.log(parsed);
   res.status(200).send(parsed);
 });
 

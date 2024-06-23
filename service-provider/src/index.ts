@@ -4,11 +4,18 @@ import { randomUUID, UUID } from 'crypto';
 import { Resolver } from 'did-resolver';
 import { getResolver } from 'web-did-resolver';
 import QRCode from 'qrcode';
+import morgan from 'morgan';
 
 const app = express();
 const port = 3333;
 
 app.use(express.json());
+
+morgan.token('body', (req: Request) => JSON.stringify(req.body, null, 2));
+
+const format = ':method :url :status :res[content-length] - :response-time ms\n:body';
+
+app.use(morgan(format));
 
 const allowedOrigins = ['http://localhost:3333'];
 
