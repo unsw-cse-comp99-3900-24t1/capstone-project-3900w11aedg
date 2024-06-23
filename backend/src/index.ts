@@ -4,12 +4,19 @@ import crypto from 'crypto';
 import axios from 'axios';
 import { DIDDocument } from 'did-resolver';
 import bodyParser from 'body-parser';
+import morgan from 'morgan';
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 app.use(bodyParser.json());
+
+morgan.token('body', (req: Request) => JSON.stringify(req.body, null, 2));
+
+const format = ':method :url :status :res[content-length] - :response-time ms\n:body';
+
+app.use(morgan(format));
 
 const allowedOrigins = ['http://localhost:3000'];
 
@@ -41,7 +48,7 @@ app.post('/generate/did', (req: Request, res: Response) => {
     ],
   };
   try {
-    axios.post(`http://localhost:5000/.well-known/${didHashHex}/did.json`, didDocument);
+    axios.post(`http://localhost:5000/${didHashHex}/.well-known/did.json`, didDocument);
   } catch (error) {
     res.status(500).send('Error saving the did document');
   }
