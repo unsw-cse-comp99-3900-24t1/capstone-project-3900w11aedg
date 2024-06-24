@@ -53,6 +53,10 @@ jobs:
         working-directory: service-provider
         run: npm run lint
 
+      - name: Build libraries (if needed)
+        working-directory: service-provider
+        run: npm run build --prefix ../libraries
+
       - name: Run Jest tests for service provider
         working-directory: service-provider
         run: npm test
@@ -108,7 +112,7 @@ jobs:
         run: npm test
 
   libraries:
-    name: libraries
+    name: Libraries
     runs-on: ubuntu-latest
 
     steps:
