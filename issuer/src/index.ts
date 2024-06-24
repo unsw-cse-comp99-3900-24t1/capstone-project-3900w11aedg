@@ -6,7 +6,14 @@ import {
   BlsKeyPair,
 } from "@mattrglobal/bbs-signatures";
 import bodyParser from 'body-parser';
-import { generateDID } from '../../libraries/src/generate-did'
+import { generateDID } from '../../libraries/src/generate-did';
+import { UnsignedCredential, VerifiableCredential } from '../../libraries/src/credential-class';
+import { documentLoader } from '@digitalbazaar/vc';
+import * as vc from '@digitalbazaar/vc';
+import { BbsBlsSignature2020, BbsBlsSignatureProof2020 } from '@mattrglobal/jsonld-signatures-bbs';
+import { Bls12381G2KeyPair } from '@mattrglobal/bls12381-key-pair';
+import * as jsonld from 'jsonld';
+import { encode } from 'base58-universal';
 
 const QRCode = require('qrcode');
 
@@ -31,7 +38,7 @@ app.post('/generate/did', (req: Request, res: Response) => {
 });
 
 // Hard coded credential
-const credential = {
+const ucredential: UnsignedCredential = {
   "@context": [
     "https://www.w3.org/ns/did/v1"
   ],
@@ -43,22 +50,27 @@ const credential = {
     "id": "did:web:my.domain"
   },
   "id": "urn:uuid:d36986f1-3cc0-4156-b5a4-6d3deab84270",
-  "issued": "2022-10-07T09:53:41.369913097Z",
-  "issuer": {
-    "id": "did:web:walt.id"
-  },
+  "issuer": "did:web:walt.id",
   "issuanceDate": "2022-10-07T09:53:41.369917079Z",
   "type": [
     "VerifiableCredential",
     "UniversityDegreeCredential"
   ],
-  "proof": {
-    "type": "BbsBlsSignature2020",
-    "created": "2022-10-07T09:53:41Z",
-    "proofPurpose": "assertionMethod",
-    "verificationMethod": "did:web:walt.id#key-1",
-    "jws": ""
-  }
+  // "proof": {
+  //   "type": "BbsBlsSignature2020",
+  //   "created": "2022-10-07T09:53:41Z",
+  //   "proofPurpose": "assertionMethod",
+  //   "verificationMethod": "did:web:walt.id#key-1",
+  //   "jws": ""
+  // }
+};
+
+const proof = {
+  "type": "BbsBlsSignature2020",
+  "created": "2022-10-07T09:53:41Z",
+  "proofPurpose": "assertionMethod",
+  "verificationMethod": "did:web:walt.id#key-1",
+  "jws": ""
 };
 
 // Issuers should have keys already in real use
@@ -67,15 +79,18 @@ const generateKeyPair = async () => {
 };
 
 // Given a credential and a public/private key pair, returns the signed credential
-const signCredential = async (credential: { proof: { jws: string; }; }, keyPair: BlsKeyPair) => {
-  const encodedCredential = new TextEncoder().encode(JSON.stringify(credential));
-  const signature = await blsSign({
-    keyPair: keyPair,
-    messages: [encodedCredential],
+const signCredential = async (credential: UnsignedCredential, keyPair: BlsKeyPair) => {  
+  const suite = new BbsBlsSignature2020({
+    key: new Bls12381G2KeyPair({ publicKeyBase58: encode(keyPair.publicKey) }),
+  });
+
+  const signedVC = await vc.issue({
+    credential,
+    suite,
+    documentLoader,
   });
   
-  credential.proof.jws = Buffer.from(signature).toString('base64');
-  return credential;
+  return signedVC;
 };
 
 // Given an unsigned credential and issuer keypair, sign the credential 
