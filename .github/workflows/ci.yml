@@ -53,9 +53,9 @@ jobs:
         working-directory: service-provider
         run: npm run lint
 
-      - name: Build libraries (if needed)
+      - name: Install libraries dependencies
         working-directory: service-provider
-        run: npm run build --prefix ../libraries
+        run: npm install --prefix ../libraries
 
       - name: Run Jest tests for service provider
         working-directory: service-provider
