@@ -6,6 +6,7 @@ import {
   BlsKeyPair,
 } from "@mattrglobal/bbs-signatures";
 import bodyParser from 'body-parser';
+import { generateDID } from '../../libraries/src/generate-did'
 
 const app = express();
 const port = 3210;
@@ -15,6 +16,16 @@ app.use(bodyParser.json());
 
 app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
+});
+
+app.post('/generate/did', (req: Request, res: Response) => {
+  const { did, publicKey } = req.body;
+  try {
+    const didDoc = generateDID(did, publicKey);
+    res.status(200).send(didDoc);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 // Hard coded credential

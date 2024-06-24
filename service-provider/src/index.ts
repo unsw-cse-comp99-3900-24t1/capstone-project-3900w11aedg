@@ -5,6 +5,7 @@ import { Resolver } from 'did-resolver';
 import { getResolver } from 'web-did-resolver';
 import QRCode from 'qrcode';
 import morgan from 'morgan';
+import { generateDID } from '../../libraries/src/generate-did';
 
 const app = express();
 const port = 3333;
@@ -27,6 +28,16 @@ app.use(cors(options));
 
 app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
+});
+
+app.post('/generate/did', (req: Request, res: Response) => {
+  const { did, publicKey } = req.body;
+  try {
+    const didDoc = generateDID(did, publicKey);
+    res.status(200).send(didDoc);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 app.post('/credential/request', async (req: Request, res: Response) => {
