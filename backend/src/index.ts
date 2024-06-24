@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import { generateDID } from '../../libraries/src/generate-did'
+import { generateDID } from '../../libraries/src/generate-did';
 
 const app = express();
 const port = 3000;
@@ -29,10 +29,10 @@ app.get('/', (_req: Request, res: Response) => {
 });
 
 app.post('/generate/did', (req: Request, res: Response) => {
-  const { did, publicKey } = req.body;
+  const { publicKey } = req.body;
   try {
-    const didDoc = generateDID(did, publicKey);
-    res.status(200).send(didDoc);
+    const didDoc = generateDID(publicKey);
+    res.status(200).send({ did: didDoc.id });
   } catch (error) {
     res.status(500).send(error);
   }

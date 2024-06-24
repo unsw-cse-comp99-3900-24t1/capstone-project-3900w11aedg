@@ -31,9 +31,9 @@ app.get('/', (_req: Request, res: Response) => {
 });
 
 app.post('/generate/did', (req: Request, res: Response) => {
-  const { did, publicKey } = req.body;
+  const { publicKey } = req.body;
   try {
-    const didDoc = generateDID(did, publicKey);
+    const didDoc = generateDID(publicKey);
     res.status(200).send(didDoc);
   } catch (error) {
     res.status(500).send(error);
