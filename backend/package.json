@@ -9,9 +9,10 @@
     "lint:fix": "eslint './src/*.{ts,tsx}' --fix --ignore-pattern 'dist/*'",
     "dev": "nodemon src/index.ts",
     "start": "node dist/backend/src/index.js",
-    "format": "prettier --write .",
+    "format": "prettier .",
     "coverage": "jest --coverage"
   },
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
