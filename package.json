@@ -29,6 +29,11 @@
       "npm run test --prefix did",
       "npm run lint --prefix did",
       "npm run format --prefix did"
+    ],
+    "libraries/**/*.{js,jsx,ts,tsx}": [
+      "npm run test --prefix libraries",
+      "npm run lint --prefix libraries",
+      "npm run format --prefix libraries"
     ]
   },
   "dependencies": {
