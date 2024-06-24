@@ -2,7 +2,7 @@ import { ScrollView, StyleSheet, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-// import { setGenericPassword } from 'react-native-keychain';
+import { setGenericPassword } from 'react-native-keychain';
 import '../../shim.js';
 import crypto from 'crypto';
 import IdentityCardList from '../components/IdentityCardList.tsx';
@@ -31,7 +31,7 @@ function HomeScreen() {
       });
       const newDid = response.data.did;
       await AsyncStorage.setItem('did', newDid);
-      // await setGenericPassword('privateKey', keyPair.privateKey);
+      await setGenericPassword('privateKey', keyPair.privateKey);
       setDID(newDid);
     }
   };

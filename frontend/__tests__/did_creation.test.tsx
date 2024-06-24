@@ -6,6 +6,9 @@ import mockAxios from 'jest-mock-axios';
 
 const mockCreatedDid = 'did:example:321';
 jest.mock('axios');
+jest.mock('react-native-keychain', () => ({
+  setGenericPassword: jest.fn(() => Promise.resolve('mockPass')),
+}));
 jest.setTimeout(30000);
 const mockDid = 'did:example:123';
 
