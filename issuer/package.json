@@ -12,7 +12,7 @@
     "format": "prettier .",
     "coverage": "jest --coverage"
   },
-  type: "module",
+  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
