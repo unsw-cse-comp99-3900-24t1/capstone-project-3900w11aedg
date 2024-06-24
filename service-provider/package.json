@@ -12,7 +12,6 @@
     "format": "prettier .",
     "coverage": "jest --coverage"
   },
-  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
