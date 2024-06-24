@@ -82,7 +82,52 @@ export enum ProofType {
   'DataIntegrityProof',
 }
 
+export enum CredentialFormats {
+  'ldp_vc',
+  // 'jwt_vc_json',
+}
+
 export enum CryptoSuite {
   // 'ecdsa-sd-2023',
   'bbs-2023',
+}
+
+export enum SigningAlgorithms {
+  // 'Ed25519Signature2018',
+  'BbsBlsSignature2020',
+}
+
+export enum CryptographicBindingMethods {
+  // 'jwk'
+  // 'cose_key
+  'did:web',
+}
+
+export type IssuerMetadata = {
+  credential_issuer: string;
+  credential_endpoint: string;
+  credential_configurations_supported: string[];
+};
+
+export class CredentialConfigurations {
+  format: CredentialFormats;
+  cryptographic_binding_methods_supported: CryptographicBindingMethods[];
+  credential_signing_alg_values_supported: SigningAlgorithms[];
+  proof_types_supported: {
+    ldp_vc: SigningAlgorithms[];
+  };
+
+  constructor(
+    format: CredentialFormats,
+    cryptographic_binding_methods_supported: CryptographicBindingMethods[],
+    credential_signing_alg_values_supported: SigningAlgorithms[],
+    proof_types_supported: {
+      ldp_vc: SigningAlgorithms[];
+    }
+  ) {
+    this.format = format;
+    this.cryptographic_binding_methods_supported = cryptographic_binding_methods_supported;
+    this.credential_signing_alg_values_supported = credential_signing_alg_values_supported;
+    this.proof_types_supported = proof_types_supported;
+  }
 }
