@@ -8,7 +8,7 @@
     "lint": "eslint 'src/*.{ts,tsx}' --ignore-pattern 'dist/*'",
     "lint:fix": "eslint './src/*.{ts,tsx}' --fix --ignore-pattern 'dist/*'",
     "dev": "nodemon src/index.ts",
-    "start": "node dist/index.js",
+    "start": "node dist/issuer/src/index.js",
     "format": "prettier --write .",
     "coverage": "jest --coverage"
   },
