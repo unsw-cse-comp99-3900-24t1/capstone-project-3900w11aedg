@@ -31,13 +31,11 @@ app.get('/', (_req: Request, res: Response) => {
 app.post('/generate/did', (req: Request, res: Response) => {
   const { publicKey } = req.body;
   try {
-    const didDoc = generateDID(did, publicKey);
-    res.status(200).send(didDoc);
+    const didDoc = generateDID(publicKey);
+    res.status(200).send({ did: didDoc.id });
   } catch (error) {
     res.status(500).send(error);
   }
-
-  res.status(200).send({ did });
 });
 
 app.listen(port, () => {
