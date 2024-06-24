@@ -1,9 +1,10 @@
-import { Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import '../../shim.js';
 import crypto from 'crypto';
+import IdentityCardList from '../components/IdentityCardList.tsx';
 
 function HomeScreen() {
   const [did, setDID] = useState<string | null>(null);
@@ -38,11 +39,20 @@ function HomeScreen() {
   }, []);
 
   return (
-    <View>
-      <Text>HomeScreen</Text>
+    <ScrollView>
       <Text>Your DID is {did}</Text>
-    </View>
+      <Text style={styles.mainTitle}>Credentials</Text>
+      <IdentityCardList />
+    </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  mainTitle: {
+    fontSize: 28,
+    padding: 30,
+    fontWeight: 'bold',
+  },
+});
 
 export default HomeScreen;

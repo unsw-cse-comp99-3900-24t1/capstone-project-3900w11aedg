@@ -1,10 +1,8 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import crypto from 'crypto';
-import axios from 'axios';
-import { DIDDocument } from 'did-resolver';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
+import { generateDID } from '../../libraries/src/generate-did';
 
 const app = express();
 const port = 3000;
@@ -32,26 +30,11 @@ app.get('/', (_req: Request, res: Response) => {
 
 app.post('/generate/did', (req: Request, res: Response) => {
   const { publicKey } = req.body;
-  const hash = crypto.createHash('sha256');
-  hash.update(publicKey);
-  const keyHashHex = hash.digest('hex');
-  const did = `did:web:${keyHashHex}`;
-  const didDocument: DIDDocument = {
-    '@context': 'https://www.w3.org/ns/did/v1',
-    id: `did:web:${keyHashHex}`,
-    publicKey: [
-      {
-        id: `did:web:${keyHashHex}`,
-        type: 'Ed25519VerificationKey2018',
-        controller: `did:example:${keyHashHex}`,
-        publicKeyBase58: publicKey,
-      },
-    ],
-  };
   try {
-    axios.post(`http://localhost:5000/${keyHashHex}/.well-known/did.json`, didDocument);
+    const didDoc = generateDID(did, publicKey);
+    res.status(200).send(didDoc);
   } catch (error) {
-    res.status(500).send('Error saving the did document');
+    res.status(500).send(error);
   }
 
   res.status(200).send({ did });

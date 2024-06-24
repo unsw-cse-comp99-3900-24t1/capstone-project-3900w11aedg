@@ -53,6 +53,10 @@ jobs:
         working-directory: service-provider
         run: npm run lint
 
+      - name: Install libraries dependencies
+        working-directory: service-provider
+        run: npm install --prefix ../libraries
+
       - name: Run Jest tests for service provider
         working-directory: service-provider
         run: npm test
@@ -105,4 +109,29 @@ jobs:
 
       - name: Run Jest tests for frontend
         working-directory: frontend
+        run: npm test
+
+  libraries:
+    name: Libraries
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install libraries dependencies
+        working-directory: libraries
+        run: npm install
+
+      - name: Run ESLint for libraries
+        working-directory: libraries
+        run: npm run lint
+
+      - name: Run Jest tests for libraries
+        working-directory: libraries
         run: npm test
