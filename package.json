@@ -29,16 +29,16 @@
       "npm run test --prefix did",
       "npm run lint --prefix did",
       "npm run format --prefix did"
+    ],
+    "libraries/**/*.{js,jsx,ts,tsx}": [
+      "npm run test --prefix libraries",
+      "npm run lint --prefix libraries",
+      "npm run format --prefix libraries"
     ]
   },
   "dependencies": {
     "qrcode": "^1.5.3",
     "supertest": "^7.0.0",
-    "web-did-resolver": "^2.0.27",
-    "did/**/*.{js,jsx,ts,tsx}": [
-      "npm run test --prefix did",
-      "npm run lint --prefix did",
-      "npm run format --prefix did"
-    ]
+    "web-did-resolver": "^2.0.27"
   }
 }
