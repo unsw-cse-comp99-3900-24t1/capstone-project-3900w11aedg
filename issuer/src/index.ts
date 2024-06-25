@@ -1,14 +1,21 @@
 import express, { Request, Response } from 'express';
-import { BlsKeyPair, blsSign, generateBls12381G2KeyPair } from '@mattrglobal/bbs-signatures';
+import { BlsKeyPair, blsSign } from '@mattrglobal/bbs-signatures';
 import bodyParser from 'body-parser';
 import { generateDID } from '../../libraries/src/generate-did';
 import QRCode from 'qrcode';
+import morgan from 'morgan';
 
 const app = express();
 const port = 3210;
 
 app.use(express.json());
 app.use(bodyParser.json());
+
+morgan.token('body', (req: Request) => JSON.stringify(req.body, null, 2));
+
+const format = ':method :url :status :res[content-length] - :response-time ms\n:body';
+
+app.use(morgan(format));
 
 app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
@@ -24,38 +31,38 @@ app.post('/generate/did', (req: Request, res: Response) => {
   }
 });
 
-// Hard coded credential
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const credential = {
-  '@context': ['https://www.w3.org/ns/did/v1'],
-  credentialSubject: {
-    degree: {
-      name: 'Bachelor of Science and Arts',
-      type: 'BachelorDegree',
-    },
-    id: 'did:web:my.domain',
-  },
-  id: 'urn:uuid:d36986f1-3cc0-4156-b5a4-6d3deab84270',
-  issued: '2022-10-07T09:53:41.369913097Z',
-  issuer: {
-    id: 'did:web:walt.id',
-  },
-  issuanceDate: '2022-10-07T09:53:41.369917079Z',
-  type: ['VerifiableCredential', 'UniversityDegreeCredential'],
-  proof: {
-    type: 'BbsBlsSignature2020',
-    created: '2022-10-07T09:53:41Z',
-    proofPurpose: 'assertionMethod',
-    verificationMethod: 'did:web:walt.id#key-1',
-    jws: '',
-  },
-};
-
-// Issuers should have keys already in real use
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const generateKeyPair = async () => {
-  return await generateBls12381G2KeyPair();
-};
+// // Hard coded credential
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// const credential = {
+//   '@context': ['https://www.w3.org/ns/did/v1'],
+//   credentialSubject: {
+//     degree: {
+//       name: 'Bachelor of Science and Arts',
+//       type: 'BachelorDegree',
+//     },
+//     id: 'did:web:my.domain',
+//   },
+//   id: 'urn:uuid:d36986f1-3cc0-4156-b5a4-6d3deab84270',
+//   issued: '2022-10-07T09:53:41.369913097Z',
+//   issuer: {
+//     id: 'did:web:walt.id',
+//   },
+//   issuanceDate: '2022-10-07T09:53:41.369917079Z',
+//   type: ['VerifiableCredential', 'UniversityDegreeCredential'],
+//   proof: {
+//     type: 'BbsBlsSignature2020',
+//     created: '2022-10-07T09:53:41Z',
+//     proofPurpose: 'assertionMethod',
+//     verificationMethod: 'did:web:walt.id#key-1',
+//     jws: '',
+//   },
+// };
+//
+// // Issuers should have keys already in real use
+// // eslint-disable-next-line @typescript-eslint/no-unused-vars
+// const generateKeyPair = async () => {
+//   return await generateBls12381G2KeyPair();
+// };
 
 // Given a credential and a public/private key pair, returns the signed credential
 const signCredential = async (credential: { proof: { jws: string } }, keyPair: BlsKeyPair) => {
