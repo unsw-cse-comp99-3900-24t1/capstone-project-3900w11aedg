@@ -9,6 +9,18 @@ jest.mock('axios');
 jest.mock('react-native-keychain', () => ({
   setGenericPassword: jest.fn(() => Promise.resolve('mockPass')),
 }));
+
+jest.mock('@react-navigation/native', () => ({
+  NavigationContainer: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  DefaultTheme: {},
+  DarkTheme: {},
+  useColorScheme: () => 'light',
+}));
+jest.mock('react-native-rsa-native', () => ({
+  RSA: {
+    generateKeys: jest.fn(() => Promise.resolve({ public: 'mockPublic', private: 'mockPrivate' })),
+  },
+}));
 jest.setTimeout(30000);
 const mockDid = 'did:example:123';
 

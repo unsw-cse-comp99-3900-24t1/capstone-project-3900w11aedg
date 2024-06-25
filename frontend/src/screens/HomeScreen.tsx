@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { setGenericPassword } from 'react-native-keychain';
-import '../../shim.js';
-import crypto from 'crypto';
+import { RSA } from 'react-native-rsa-native';
 import IdentityCardList from '../components/IdentityCardList.tsx';
 
 function HomeScreen() {
@@ -15,29 +14,22 @@ function HomeScreen() {
     if (storedDid) {
       setDID(storedDid);
     } else {
-      const keyPair = crypto.generateKeyPairSync('rsa', {
-        modulusLength: 2048,
-        publicKeyEncoding: {
-          type: 'spki',
-          format: 'pem',
-        },
-        privateKeyEncoding: {
-          type: 'pkcs8',
-          format: 'pem',
-        },
-      });
-      const response = await axios.post('http://localhost:3000/generate/did', {
-        publicKey: keyPair.publicKey,
+      const keyPair = await RSA.generateKeys(4096);
+      const response = await axios.post('http://10.0.2.2:3000/generate/did', {
+        publicKey: keyPair.public,
       });
       const newDid = response.data.did;
       await AsyncStorage.setItem('did', newDid);
-      await setGenericPassword('privateKey', keyPair.privateKey);
+      await setGenericPassword('privateKey', keyPair.private);
       setDID(newDid);
     }
   };
 
   useEffect(() => {
-    fetchDid().catch((error) => console.log(error));
+    fetchDid().catch((error) => {
+      console.log(error);
+      console.log(error.message);
+    });
   }, []);
 
   return (
