@@ -1,14 +1,15 @@
 
 import express, {Request, Response} from 'express';
-import {
-  generateBls12381G2KeyPair,
-  blsSign,
-  BlsKeyPair,
-} from "@mattrglobal/bbs-signatures";
 import bodyParser from 'body-parser';
 import { generateDID } from '../../libraries/src/generate-did';
+import { UnsignedCredential } from '../../libraries/src/credential-class';
+//import { Bls12381G2KeyPair } from '@mattrglobal/bls12381-key-pair';
+import * as vc from '@digitalbazaar/vc';
+import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
+import { createSignCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
+import * as bls12381Multikey from '@digitalbazaar/bls12-381-multikey';
 
-const QRCode = require('qrcode');
+//const QRCode = require('qrcode');
 
 const app = express();
 const port = 3210;
@@ -31,9 +32,9 @@ app.post('/generate/did', (req: Request, res: Response) => {
 });
 
 // Hard coded credential
-const ucredential = {
+const credential = {
   "@context": [
-    "https://www.w3.org/ns/did/v1"
+    "https://www.w3.org/2018/credentials/v1",
   ],
   "credentialSubject": {
     "degree": {
@@ -49,45 +50,68 @@ const ucredential = {
     "VerifiableCredential",
     "UniversityDegreeCredential"
   ],
-  "proof": {
-    "type": "BbsBlsSignature2020",
-    "created": "2022-10-07T09:53:41Z",
-    "proofPurpose": "assertionMethod",
-    "verificationMethod": "did:web:walt.id#key-1",
-    "jws": ""
-  }
+  // "proof": {
+  //   "type": "BbsBlsSignature2020",
+  //   "created": "2022-10-07T09:53:41Z",
+  //   "proofPurpose": "assertionMethod",
+  //   "verificationMethod": "did:web:walt.id#key-1",
+  //   "jws": ""
+  // }
 };
 
-const proof = {
-  "type": "BbsBlsSignature2020",
-  "created": "2022-10-07T09:53:41Z",
-  "proofPurpose": "assertionMethod",
-  "verificationMethod": "did:web:walt.id#key-1",
-  "jws": ""
-};
+// const proof = {
+//   "type": "BbsBlsSignature2020",
+//   "created": "2022-10-07T09:53:41Z",
+//   "proofPurpose": "assertionMethod",
+//   "verificationMethod": "did:web:walt.id#key-1",
+//   "jws": ""
+// };
 
 // Issuers should have keys already in real use
 const generateKeyPair = async () => {
-  return await generateBls12381G2KeyPair();
+  //return await generateBls12381G2KeyPair();
+  // const keyPair = await Bls12381G2KeyPair.generate({
+  //   id: 'did:example:123#key-1',
+  //   controller: 'did:example:123',
+  // });
+  const keyPair = await bls12381Multikey.generateBbsKeyPair({
+    algorithm: 'BBS-BLS12-381-SHA-256',
+  });
+
+  return keyPair;
 };
 
 // Given a credential and a public/private key pair, returns the signed credential
-const signCredential = async (credential: { proof: { jws: string; }; }, keyPair: BlsKeyPair) => {  
-  const encodedCredential = new TextEncoder().encode(JSON.stringify(credential));
-  const signature = await blsSign({
-    keyPair: keyPair,
-    messages: [encodedCredential],
+const signCredential = async (credential: UnsignedCredential, keyPair: any) => {  
+  // const suite = {
+  //   ...keyPair,
+  //   verificationMethod: "did:web:walt.id#key-1", // link to issuer's public key
+  // };
+
+  const suite = new DataIntegrityProof({
+    signer: keyPair.signer(),
+    cryptosuite: createSignCryptosuite({})
   });
-  
-  credential.proof.jws = Buffer.from(signature).toString('base64');
-  return credential;
+
+  suite.verificationMethod = "did:web:walt.id#key-1";
+
+  const signedVC = await vc.issue({
+    credential: credential,
+    suite: suite,
+  });
+
+  console.log(signedVC);
+
+  return signedVC;
 };
 
 // Given an unsigned credential and issuer keypair, sign the credential 
 // and return QR code of signed credential
-app.post('/issuer/sign-credential', async (req: Request, res: Response) => {
+app.post('/issuer/sign-credential', async (_req: Request, res: Response) => {
   try {
-    const { keyPair, credential } = req.body; 
+    //const { keyPair, credential } = req.body; 
+    const keyPair = await generateKeyPair();
+
     if (!keyPair) {
       res.status(404).send("keyPair not found");
     }
@@ -96,9 +120,9 @@ app.post('/issuer/sign-credential', async (req: Request, res: Response) => {
     }
 
     const signedCredential = await signCredential(credential, keyPair);
-    const qrCode = await QRCode.toDataURL(JSON.stringify(signedCredential));
+    //const qrCode = await QRCode.toDataURL(JSON.stringify(signedCredential));
 
-    res.json({ qrCode });
+    res.json(signedCredential);
   } catch (error) {
     console.error(error);
     res.status(500).send('Error issuing credential');
