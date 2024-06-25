@@ -7,13 +7,6 @@ import {
 } from "@mattrglobal/bbs-signatures";
 import bodyParser from 'body-parser';
 import { generateDID } from '../../libraries/src/generate-did';
-import { UnsignedCredential, VerifiableCredential } from '../../libraries/src/credential-class';
-import { documentLoader } from '@digitalbazaar/vc';
-import * as vc from '@digitalbazaar/vc';
-import { BbsBlsSignature2020, BbsBlsSignatureProof2020 } from '@mattrglobal/jsonld-signatures-bbs';
-import { Bls12381G2KeyPair } from '@mattrglobal/bls12381-key-pair';
-import * as jsonld from 'jsonld';
-import { encode } from 'base58-universal';
 
 const QRCode = require('qrcode');
 
@@ -38,7 +31,7 @@ app.post('/generate/did', (req: Request, res: Response) => {
 });
 
 // Hard coded credential
-const ucredential: UnsignedCredential = {
+const ucredential = {
   "@context": [
     "https://www.w3.org/ns/did/v1"
   ],
@@ -56,13 +49,13 @@ const ucredential: UnsignedCredential = {
     "VerifiableCredential",
     "UniversityDegreeCredential"
   ],
-  // "proof": {
-  //   "type": "BbsBlsSignature2020",
-  //   "created": "2022-10-07T09:53:41Z",
-  //   "proofPurpose": "assertionMethod",
-  //   "verificationMethod": "did:web:walt.id#key-1",
-  //   "jws": ""
-  // }
+  "proof": {
+    "type": "BbsBlsSignature2020",
+    "created": "2022-10-07T09:53:41Z",
+    "proofPurpose": "assertionMethod",
+    "verificationMethod": "did:web:walt.id#key-1",
+    "jws": ""
+  }
 };
 
 const proof = {
@@ -79,18 +72,15 @@ const generateKeyPair = async () => {
 };
 
 // Given a credential and a public/private key pair, returns the signed credential
-const signCredential = async (credential: UnsignedCredential, keyPair: BlsKeyPair) => {  
-  const suite = new BbsBlsSignature2020({
-    key: new Bls12381G2KeyPair({ publicKeyBase58: encode(keyPair.publicKey) }),
-  });
-
-  const signedVC = await vc.issue({
-    credential,
-    suite,
-    documentLoader,
+const signCredential = async (credential: { proof: { jws: string; }; }, keyPair: BlsKeyPair) => {  
+  const encodedCredential = new TextEncoder().encode(JSON.stringify(credential));
+  const signature = await blsSign({
+    keyPair: keyPair,
+    messages: [encodedCredential],
   });
   
-  return signedVC;
+  credential.proof.jws = Buffer.from(signature).toString('base64');
+  return credential;
 };
 
 // Given an unsigned credential and issuer keypair, sign the credential 

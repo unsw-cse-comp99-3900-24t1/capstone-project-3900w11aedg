@@ -21,18 +21,15 @@
     "@mattrglobal/bbs-signatures": "^1.4.0",
     "@mattrglobal/jsonld-signatures-bbs": "^1.2.0",
     "axios": "^1.7.2",
-    "base58-universal": "^2.0.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "express": "^4.19.2",
-    "jsonld": "^8.3.2",
     "morgan": "^1.10.0",
     "qrcode": "^1.5.3",
     "web-did-resolver": "^2.0.27"
   },
   "devDependencies": {
-    "@digitalbazaar/vc": "^6.3.0",
     "@eslint/js": "^9.4.0",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
