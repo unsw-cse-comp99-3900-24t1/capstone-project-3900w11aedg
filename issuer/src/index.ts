@@ -59,13 +59,22 @@ const credential = {
   // }
 };
 
-// const proof = {
-//   "type": "BbsBlsSignature2020",
-//   "created": "2022-10-07T09:53:41Z",
-//   "proofPurpose": "assertionMethod",
-//   "verificationMethod": "did:web:walt.id#key-1",
-//   "jws": ""
-// };
+const credential2 = {
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://www.w3.org/2018/credentials/examples/v1"
+  ],
+  // omit `id` to enable unlinkable disclosure
+  "type": ["VerifiableCredential", "AlumniCredential"],
+  "issuer": "https://example.edu/issuers/565049",
+  // use less precise date that is shared by a sufficiently large group
+  // of VCs to enable unlinkable disclosure
+  "issuanceDate": "2010-01-01T01:00:00Z",
+  "credentialSubject": {
+    // omit `id` to enable unlinkable disclosure
+    "alumniOf": "Example University"
+  }
+};
 
 // Issuers should have keys already in real use
 const generateKeyPair = async () => {
@@ -119,7 +128,7 @@ app.post('/issuer/sign-credential', async (_req: Request, res: Response) => {
       res.status(404).send("credential not found");
     }
 
-    const signedCredential = await signCredential(credential, keyPair);
+    const signedCredential = await signCredential(credential2, keyPair);
     //const qrCode = await QRCode.toDataURL(JSON.stringify(signedCredential));
 
     res.json(signedCredential);
