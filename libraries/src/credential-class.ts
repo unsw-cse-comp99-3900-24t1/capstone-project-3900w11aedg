@@ -4,7 +4,7 @@ export class UnsignedCredential {
     issuer: string;
     issuanceDate: string;
     credentialSubject: CredentialSubject;
-    id: string;
+    id?: string;
   
     constructor(
       context: string[],
