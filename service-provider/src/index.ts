@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { randomUUID } from 'crypto';
 import QRCode from 'qrcode';
 import morgan from 'morgan';
 import { generateDID } from '../../libraries/src/generate-did';
@@ -60,16 +59,15 @@ app.post('/generate/qr-code', async (req: Request, res: Response) => {
     domain += `:${port}`;
   }
 
-  const challenge = randomUUID();
-  const presentationRequest = constructRequest(challenge, domain, claims, serviceProviderDID);
+  const presentationRequest = constructRequest(domain, claims, serviceProviderDID);
 
   const path = __dirname + `/requests`;
   if (!fs.existsSync(path)) {
     fs.mkdirSync(path, { recursive: true });
   }
-  fs.writeFileSync(__dirname + `/requests/${challenge}.json`, JSON.stringify(presentationRequest, null, 2));
+  fs.writeFileSync(__dirname + `/requests/request-data.json`, JSON.stringify(presentationRequest, null, 2));
 
-  const requestURI = `http://${domain}/request-claims/${challenge}.json`;
+  const requestURI = `http://${domain}/request-claims/request-data`;
 
   try {
     const qrCodeUrl = await QRCode.toDataURL(requestURI);
@@ -81,7 +79,7 @@ app.post('/generate/qr-code', async (req: Request, res: Response) => {
 
 app.get('/request-claims/:filename', async (req, res) => {
   const { filename } = req.params;
-  const request = fs.readFileSync(__dirname + `/requests/${filename}`, 'utf-8');
+  const request = fs.readFileSync(__dirname + `/requests/${filename}` + '.json', 'utf-8');
   if (!request) {
     res.status(404).send('Request not found');
     return;
