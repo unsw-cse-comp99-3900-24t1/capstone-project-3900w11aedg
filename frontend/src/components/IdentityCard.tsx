@@ -1,5 +1,5 @@
 import React from 'react';
-import {Image, View, Text, StyleSheet, Pressable} from 'react-native';
+import { Image, View, Text, StyleSheet, Pressable } from 'react-native';
 import FlipCard from 'react-native-flip-card';
 
 interface IProps {
@@ -16,7 +16,7 @@ interface IProps {
   onPress: () => void;
 }
 
-const IdentityCard: React.FC<IProps> = ({card, onPress}) => {
+const IdentityCard: React.FC<IProps> = ({ card, onPress }) => {
   return (
     <FlipCard>
       <View style={styles.frontCardContainer}>

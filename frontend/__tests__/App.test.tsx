@@ -14,7 +14,7 @@ import renderer from 'react-test-renderer';
 
 // Mocking the necessary modules
 jest.mock('react-native-flip-card', () => ({
-  NavigationContainer: ({children}: {children: ReactNode}) => <>{children}</>,
+  NavigationContainer: ({ children }: { children: ReactNode }) => <>{children}</>,
   DefaultTheme: {},
   DarkTheme: {},
   useColorScheme: () => 'light',

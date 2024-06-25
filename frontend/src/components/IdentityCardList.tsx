@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Modal, Text, Pressable} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, Modal, Text, Pressable } from 'react-native';
 import IdentityCard from './IdentityCard';
 
 interface Card {
@@ -24,9 +24,19 @@ const IdentityCardList: React.FC = () => {
           credIssuedBy: 'NSW Government',
           credNumber: '348203',
           credType: 'C LRN',
-          credName: 'Edward Gamer',
+          credName: 'Lewis Hamilton',
         },
-        {id: 2, name: 'WCC', type: 'Certificate'},
+        {
+          id: 2,
+          creationDate: '23 Nov 2024',
+          expiryDate: '23 Nov 2025',
+          name: 'WCC',
+          type: 'Certificate',
+          credIssuedBy: 'NSW Government',
+          credNumber: '46543346',
+          credType: 'Employee',
+          credName: 'Duke Dennis',
+        },
       ];
       setCards(data);
     };
