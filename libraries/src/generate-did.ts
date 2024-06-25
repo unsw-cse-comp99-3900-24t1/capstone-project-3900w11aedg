@@ -1,8 +1,8 @@
 import crypto from 'crypto';
 import axios from 'axios';
-import {DIDDocument} from 'did-resolver';
+import { DIDDocument } from 'did-resolver';
 
-export function generateDID(publicKey: string) {
+export async function generateDID(publicKey: string): Promise<DIDDocument> {
   const didHash = crypto.createHash('sha256');
   didHash.update(publicKey);
   const didHashHex = didHash.digest('hex');
@@ -21,7 +21,7 @@ export function generateDID(publicKey: string) {
   };
 
   try {
-    axios.post(`http://localhost:5000/${didHashHex}/.well-known/did.json`, didDocument);
+    await axios.post(`http://localhost:5000/${didHashHex}/.well-known/did.json`, didDocument);
   } catch (error) {
     throw new Error('Error saving the did document');
   }

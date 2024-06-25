@@ -30,6 +30,11 @@
       "npm run lint --prefix did",
       "npm run format --prefix did"
     ],
+    "issuer/**/*.{js,jsx,ts,tsx}": [
+      "npm run test --prefix issuer",
+      "npm run lint --prefix issuer",
+      "npm run format --prefix issuer"
+    ],
     "libraries/**/*.{js,jsx,ts,tsx}": [
       "npm run test --prefix libraries",
       "npm run lint --prefix libraries",
