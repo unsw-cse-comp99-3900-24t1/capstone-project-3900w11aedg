@@ -1,11 +1,11 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
-import { randomUUID, UUID } from 'crypto';
-import { Resolver } from 'did-resolver';
-import { getResolver } from 'web-did-resolver';
 import QRCode from 'qrcode';
 import morgan from 'morgan';
 import { generateDID } from '../../libraries/src/generate-did';
+import fs from 'fs';
+import { isValidDID , isValidDomain, isValidClaim } from './helpers/validation-helper';
+import { constructRequest } from './helpers/claim-request-helper';
 
 const app = express();
 const port = 3333;
@@ -40,50 +40,52 @@ app.post('/generate/did', async (req: Request, res: Response) => {
   }
 });
 
-app.post('/credential/request', async (req: Request, res: Response) => {
+app.post('/generate/qr-code', async (req: Request, res: Response) => {
   const { claims, serviceProviderDID } = req.body;
+  let { domain } = req.body;
 
-  if (!(await checkValidDID(serviceProviderDID))) {
-    res.status(404).send('Service Provider DID not found!');
+  if (!serviceProviderDID || !(await isValidDID(serviceProviderDID))) {
+    res.status(400).send('Invalid Service Provider DID');
     return;
   }
-  if (!claims || Object.keys(claims).length === 0) {
-    res.status(400).send('Invalid parameters');
+  if (!claims || !isValidClaim(claims) || Object.keys(claims).length === 0) {
+    res.status(400).send('Invalid claims');
     return;
   }
+  if (!domain || !isValidDomain(domain)) {
+    res.status(400).send('Invalid domain');
+    return;
+  } else if (domain === 'localhost') {
+    domain += `:${port}`;
+  }
 
-  const requestId = randomUUID();
-  const serviceProviderURL = `localhost:${port}/credential/present/${requestId}`;
+  const presentationRequest = constructRequest(domain, claims, serviceProviderDID);
+
+  const path = __dirname + `/requests`;
+  if (!fs.existsSync(path)) {
+    fs.mkdirSync(path, { recursive: true });
+  }
+  fs.writeFileSync(__dirname + `/requests/request-data.json`, JSON.stringify(presentationRequest, null, 2));
+
+  const requestURI = `http://${domain}/request-claims/request-data`;
 
   try {
-    const qrCode = await generateQRCode(requestId, claims, serviceProviderDID, serviceProviderURL);
-    res.status(200).json({ qrCode });
+    const qrCodeUrl = await QRCode.toDataURL(requestURI);
+    res.status(200).json({ qrCodeUrl });
   } catch (err) {
     res.status(500).send('Could not generate QR code');
   }
 });
 
-async function generateQRCode(
-  requestId: UUID,
-  claims: Record<string, string[]>,
-  serviceProviderDID: string,
-  serviceProviderURL: string
-) {
-  const qrData = {
-    requestId,
-    serviceProviderDID,
-    serviceProviderURL,
-    claims,
-  };
-
-  return await QRCode.toDataURL(JSON.stringify(qrData));
-}
-
-async function checkValidDID(did: string) {
-  const resolver = new Resolver(getResolver());
-  const didDoc = await resolver.resolve(did);
-  return didDoc.didResolutionMetadata.error === 'notFound';
-}
+app.get('/request-claims/:filename', async (req, res) => {
+  const { filename } = req.params;
+  const request = fs.readFileSync(__dirname + `/requests/${filename}` + '.json', 'utf-8');
+  if (!request) {
+    res.status(404).send('Request not found');
+    return;
+  }
+  res.status(200).send(JSON.parse(request));
+});
 
 const server = app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
