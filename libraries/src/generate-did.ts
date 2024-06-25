@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import axios from 'axios';
 import { DIDDocument } from 'did-resolver';
 
-export async function generateDID(publicKey: string) {
+export async function generateDID(publicKey: string): Promise<DIDDocument> {
   const didHash = crypto.createHash('sha256');
   didHash.update(publicKey);
   const didHashHex = didHash.digest('hex');

@@ -21,11 +21,11 @@ app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
 });
 
-app.post('/generate/did', (req: Request, res: Response) => {
+app.post('/generate/did', async (req: Request, res: Response) => {
   const { publicKey } = req.body;
   try {
-    const didDoc = generateDID(publicKey);
-    res.status(200).send(didDoc);
+    const didDoc = await generateDID(publicKey);
+    res.status(200).send({ did: didDoc.id });
   } catch (error) {
     res.status(500).send(error);
   }
