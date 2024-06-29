@@ -10,6 +10,8 @@ declare module "@digitalbazaar/vc" {
     }
 
     export function issue(options: IssueOptions): Promise<any>;
+
+    export const defaultDocumentLoader;
 }
 
 declare module "@digitalbazaar/data-integrity" {

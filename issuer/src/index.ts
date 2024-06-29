@@ -8,8 +8,9 @@ import * as vc from '@digitalbazaar/vc';
 import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
 import { createSignCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
 import * as bls12381Multikey from '@digitalbazaar/bls12-381-multikey';
+import documentLoader from './document-loader';
 
-import QRCode from 'qrcode';
+//import QRCode from 'qrcode';
 import morgan from 'morgan';
 
 const app = express();
@@ -69,17 +70,16 @@ const credential = {
 const credential2 = {
   "@context": [
     "https://www.w3.org/2018/credentials/v1",
-    "https://www.w3.org/2018/credentials/examples/v1"
   ],
   // omit `id` to enable unlinkable disclosure
   "type": ["VerifiableCredential", "AlumniCredential"],
-  "issuer": "https://example.edu/issuers/565049",
+  "issuer": "https://www.unsw.edu.au/",
   // use less precise date that is shared by a sufficiently large group
   // of VCs to enable unlinkable disclosure
-  "issuanceDate": new Date("2010-01-01T01:00:00Z"),
+  "issuanceDate": "2020-01-01T01:00:00Z",
   "credentialSubject": {
     // omit `id` to enable unlinkable disclosure
-    "alumniOf": "Example University"
+    "alumniOf": "University of New South Wales"
   }
 };
 
@@ -114,6 +114,7 @@ const signCredential = async (credential: UnsignedCredential, keyPair: any) => {
   const signedVC = await vc.issue({
     credential: credential,
     suite: suite,
+    documentLoader: documentLoader
   });
 
   console.log(signedVC);

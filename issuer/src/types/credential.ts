@@ -2,7 +2,7 @@ export class UnsignedCredential {
   '@context': string[];
   type: string[];
   issuer: string;
-  issuanceDate: Date;
+  issuanceDate: string;
   credentialSubject: CredentialSubject;
   id?: string;
 
@@ -10,7 +10,7 @@ export class UnsignedCredential {
     context: string[],
     type: string[],
     issuer: string,
-    issuanceDate: Date,
+    issuanceDate: string,
     credentialSubject: CredentialSubject,
     id: string
   ) {
