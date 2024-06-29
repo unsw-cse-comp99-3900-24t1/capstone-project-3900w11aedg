@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import cors from 'cors';
+//import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import { generateDID } from '../../libraries/src/generate-did';
@@ -16,22 +16,23 @@ const format = ':method :url :status :res[content-length] - :response-time ms\n:
 
 app.use(morgan(format));
 
-const allowedOrigins = ['http://localhost:3000'];
-
-const options: cors.CorsOptions = {
-  origin: allowedOrigins,
-};
-
-app.use(cors(options));
+// const allowedOrigins = ['http://localhost:3000', 'http://localhost:5000'];
+//
+// const options: cors.CorsOptions = {
+//   origin: allowedOrigins,
+// };
+//
+// app.use(cors(options));
 
 app.get('/', (_req: Request, res: Response) => {
+
   res.send('Hello, world!');
 });
 
-app.post('/generate/did', (req: Request, res: Response) => {
+app.post('/generate/did', async (req: Request, res: Response) => {
   const { publicKey } = req.body;
   try {
-    const didDoc = generateDID(publicKey);
+    const didDoc = await generateDID(publicKey);
     res.status(200).send({ did: didDoc.id });
   } catch (error) {
     res.status(500).send(error);
