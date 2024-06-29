@@ -4,19 +4,22 @@ export class UnsignedCredential {
   issuer: string;
   issuanceDate: Date;
   credentialSubject: CredentialSubject;
+  id?: string;
 
   constructor(
     context: string[],
     type: string[],
     issuer: string,
     issuanceDate: Date,
-    credentialSubject: CredentialSubject
+    credentialSubject: CredentialSubject,
+    id: string
   ) {
     this['@context'] = context;
     this.type = type;
     this.issuer = issuer;
     this.issuanceDate = issuanceDate;
     this.credentialSubject = credentialSubject;
+    this.id = id;
   }
 }
 
@@ -73,7 +76,7 @@ export class VerifiableCredential {
 }
 
 export type CredentialSubject = {
-  [key: string]: string;
+  [key: string]: string | { [key: string]: string };
   // DID of identity owner - omit ID for unlinkability
   id?: string;
 };

@@ -1,5 +1,5 @@
 declare module "@digitalbazaar/vc" {
-    import { UnsignedCredential } from "../libraries/src/credential-class";
+    import { UnsignedCredential } from "./types/credential";
 
     interface IssueOptions {
         credential: UnsignedCredential;

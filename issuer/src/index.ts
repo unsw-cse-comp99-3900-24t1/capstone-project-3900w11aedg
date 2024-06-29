@@ -2,7 +2,7 @@
 import express, {Request, Response} from 'express';
 import bodyParser from 'body-parser';
 import { generateDID } from '../../libraries/src/generate-did';
-import { UnsignedCredential } from '../../libraries/src/credential-class';
+import { UnsignedCredential } from './types/credential';
 //import { Bls12381G2KeyPair } from '@mattrglobal/bls12381-key-pair';
 import * as vc from '@digitalbazaar/vc';
 import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
@@ -76,7 +76,7 @@ const credential2 = {
   "issuer": "https://example.edu/issuers/565049",
   // use less precise date that is shared by a sufficiently large group
   // of VCs to enable unlinkable disclosure
-  "issuanceDate": "2010-01-01T01:00:00Z",
+  "issuanceDate": new Date("2010-01-01T01:00:00Z"),
   "credentialSubject": {
     // omit `id` to enable unlinkable disclosure
     "alumniOf": "Example University"
