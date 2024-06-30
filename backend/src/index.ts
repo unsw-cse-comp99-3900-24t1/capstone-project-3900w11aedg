@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express';
-//import cors from 'cors';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import { generateDID } from '../../libraries/src/generate-did';
+import generateDID from '../../lib/src/generate-did.ts';
 
 const app = express();
 const port = 3000;
@@ -16,16 +16,15 @@ const format = ':method :url :status :res[content-length] - :response-time ms\n:
 
 app.use(morgan(format));
 
-// const allowedOrigins = ['http://localhost:3000', 'http://localhost:5000'];
-//
-// const options: cors.CorsOptions = {
-//   origin: allowedOrigins,
-// };
-//
-// app.use(cors(options));
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:5000'];
+
+const options: cors.CorsOptions = {
+  origin: allowedOrigins,
+};
+
+app.use(cors(options));
 
 app.get('/', (_req: Request, res: Response) => {
-
   res.send('Hello, world!');
 });
 
