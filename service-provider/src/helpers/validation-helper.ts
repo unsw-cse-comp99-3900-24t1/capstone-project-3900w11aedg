@@ -9,6 +9,7 @@ export async function isValidDID(did: string) {
     return didDoc.didResolutionMetadata.error === 'notFound';
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isValidClaim(claims: any) {
     const jsonSchema = new Draft07(claimsSchema);
     return jsonSchema.isValid(claims);

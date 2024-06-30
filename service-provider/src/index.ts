@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import bodyParser from 'body-parser';
 import cors from 'cors';
 import QRCode from 'qrcode';
 import morgan from 'morgan';
@@ -11,6 +12,7 @@ const app = express();
 const port = 3333;
 
 app.use(express.json());
+app.use(bodyParser.json());
 
 morgan.token('body', (req: Request) => JSON.stringify(req.body, null, 2));
 
