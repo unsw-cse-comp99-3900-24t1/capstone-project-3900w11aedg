@@ -3,10 +3,10 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import QRCode from 'qrcode';
 import morgan from 'morgan';
-import { generateDID } from '../../lib/src/generate-did';
+import generateDID from '../../lib/src/generate-did.ts';
 import fs from 'fs';
-import { isValidDID , isValidDomain, isValidClaim } from './helpers/validation-helper';
-import { constructRequest } from './helpers/claim-request-helper';
+import { isValidClaim, isValidDID, isValidDomain } from './helpers/validation-helper.ts';
+import { constructRequest } from './helpers/claim-request-helper.ts';
 
 const app = express();
 const port = 3333;
@@ -67,7 +67,10 @@ app.post('/generate/qr-code', async (req: Request, res: Response) => {
   if (!fs.existsSync(path)) {
     fs.mkdirSync(path, { recursive: true });
   }
-  fs.writeFileSync(__dirname + `/requests/request-data.json`, JSON.stringify(presentationRequest, null, 2));
+  fs.writeFileSync(
+    __dirname + `/requests/request-data.json`,
+    JSON.stringify(presentationRequest, null, 2)
+  );
 
   const requestURI = `http://${domain}/request-claims/request-data`;
 
