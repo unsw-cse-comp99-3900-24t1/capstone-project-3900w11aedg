@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import QRCode from 'qrcode';
 import morgan from 'morgan';
-import { generateDID } from '../../libraries/src/generate-did';
+import { generateDID } from '../../lib/src/generate-did';
 import fs from 'fs';
 import { isValidDID , isValidDomain, isValidClaim } from './helpers/validation-helper';
 import { constructRequest } from './helpers/claim-request-helper';
