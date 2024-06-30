@@ -55,7 +55,7 @@ jobs:
 
       - name: Install libraries dependencies
         working-directory: service-provider
-        run: npm install --prefix ../libraries
+        run: npm install --prefix ../lib
 
       - name: Run Jest tests for service provider
         working-directory: service-provider
@@ -134,7 +134,7 @@ jobs:
 
       - name: Install libraries dependencies
         working-directory: service-provider
-        run: npm install --prefix ../libraries
+        run: npm install --prefix ../lib
 
       - name: Run Jest tests for issuer
         working-directory: issuer
