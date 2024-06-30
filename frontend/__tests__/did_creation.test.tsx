@@ -1,8 +1,9 @@
-import React from 'react-native';
+import React, { ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import HomeScreen from '../src/screens/HomeScreen';
 import { render, waitFor } from '@testing-library/react-native';
 import mockAxios from 'jest-mock-axios';
+import { beforeEach, describe, expect } from '@jest/globals';
 
 const mockCreatedDid = 'did:example:321';
 jest.mock('axios');
@@ -11,7 +12,7 @@ jest.mock('react-native-keychain', () => ({
 }));
 
 jest.mock('@react-navigation/native', () => ({
-  NavigationContainer: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+  NavigationContainer: ({ children }: { children: ReactNode }) => <>{children}</>,
   DefaultTheme: {},
   DarkTheme: {},
   useColorScheme: () => 'light',
