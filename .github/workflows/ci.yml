@@ -154,13 +154,13 @@ jobs:
           node-version: '18'
 
       - name: Install libraries dependencies
-        working-directory: libraries
+        working-directory: lib
         run: npm install
 
       - name: Run ESLint for libraries
-        working-directory: libraries
+        working-directory: lib
         run: npm run lint
 
       - name: Run Jest tests for libraries
-        working-directory: libraries
+        working-directory: lib
         run: npm test

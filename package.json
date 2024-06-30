@@ -36,10 +36,10 @@
       "npm run lint --prefix issuer",
       "npm run format --prefix issuer"
     ],
-    "libraries/**/*.{js,jsx,ts,tsx}": [
-      "npm run test --prefix libraries",
-      "npm run lint --prefix libraries",
-      "npm run format --prefix libraries"
+    "lib/**/*.{js,jsx,ts,tsx}": [
+      "npm run test --prefix lib",
+      "npm run lint --prefix lib",
+      "npm run format --prefix lib"
     ]
   },
   "dependencies": {
