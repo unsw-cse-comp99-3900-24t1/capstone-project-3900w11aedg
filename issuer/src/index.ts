@@ -2,15 +2,19 @@ import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import generateDID from '../../lib/src/generate-did.ts';
 import * as vc from '@digitalbazaar/vc';
+import * as bbs from '@digitalbazaar/bls12-381-multikey';
 import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
 import { createSignCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
 import documentLoader from './document-loader.ts';
+import dotenv from 'dotenv';
 
 import QRCode from 'qrcode';
 import morgan from 'morgan';
 
 const app = express();
 const port = 3210;
+
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 app.use(bodyParser.json());
@@ -20,6 +24,8 @@ morgan.token('body', (req: Request) => JSON.stringify(req.body, null, 2));
 const format = ':method :url :status :res[content-length] - :response-time ms\n:body';
 
 app.use(morgan(format));
+
+dotenv.config();
 
 app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
@@ -75,19 +81,18 @@ app.post('/generate/did', async (req: Request, res: Response) => {
 // };
 
 // Issuers should have keys already in real use
-// eslint-disable-line @typescript-eslint/no-unused-vars
-// const generateKeyPair = async () => {
-//   // eslint-disable-line @typescript-eslint/no-unused-vars
-//   const keyPair = await bbs.generateBbsKeyPair({
-//     algorithm: 'BBS-BLS12-381-SHA-256',
-//   });
-//
-//   return keyPair;
-// };
+const generateKeyPair = async () => {
+  return await bbs.generateBbsKeyPair({
+    algorithm: 'BBS-BLS12-381-SHA-256',
+  });
+};
 
 // Given a credential and a public/private key pair, returns the signed credential
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const signCredential = async (credential: any, keyPair: { signer: () => string }) => {
+const signCredential = async (credential: any, keyPair: { signer: () => string } | undefined) => {
+  if (!keyPair) {
+    throw new Error('Key pair not found');
+  }
   const suite = new DataIntegrityProof({
     signer: keyPair.signer(),
     cryptosuite: createSignCryptosuite({}),
@@ -101,24 +106,24 @@ const signCredential = async (credential: any, keyPair: { signer: () => string }
     documentLoader: documentLoader,
   });
 
-  return signedVC;
+  return JSON.stringify(signedVC);
 };
 
 // Given an unsigned credential and issuer keypair, sign the credential
 // and return QR code of signed credential
 app.post('/issuer/sign-credential', async (req: Request, res: Response) => {
   try {
-    const { keyPair, credential } = req.body;
-
-    if (!keyPair) {
-      res.status(404).send('keyPair not found');
-    }
+    const { credential } = req.body;
     if (!credential) {
       res.status(404).send('credential not found');
     }
+    const keyPair: string = process.env['KEY_PAIR'] || (await generateKeyPair());
+    process.env['KEY_PAIR'] = keyPair;
 
-    const signedCredential = await signCredential(credential, keyPair);
-    const qrCode = await QRCode.toDataURL(JSON.stringify(signedCredential));
+    const serialisedKeyPair = JSON.parse(keyPair);
+
+    const signedCredential = await signCredential(credential, serialisedKeyPair);
+    const qrCode = await QRCode.toDataURL(signedCredential);
 
     res.json(qrCode);
   } catch (error) {

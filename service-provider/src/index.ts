@@ -13,6 +13,7 @@ const port = 3333;
 
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
 
 morgan.token('body', (req: Request) => JSON.stringify(req.body, null, 2));
 

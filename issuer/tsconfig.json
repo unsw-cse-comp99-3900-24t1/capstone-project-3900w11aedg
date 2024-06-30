@@ -43,6 +43,9 @@
       ],
       "@digitalbazaar/data-integrity": [
         "./src/types/@digitalbazaar/data-integrity"
+      ],
+      "@digitalbazaar/bls12-381-multikey": [
+        "./src/types/@digitalbazaar/bls12-381-multikey"
       ]
     },
     /* Specify a set of entries that re-map imports to additional lookup locations. */
