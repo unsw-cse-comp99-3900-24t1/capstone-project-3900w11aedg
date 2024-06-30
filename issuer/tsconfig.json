@@ -43,12 +43,6 @@
       ],
       "@digitalbazaar/data-integrity": [
         "./src/types/@digitalbazaar/data-integrity"
-      ],
-      "axios": [
-        "../lib/node_modules/axios"
-      ],
-      "did-resolver": [
-        "../lib/node_modules/did-resolver"
       ]
     },
     /* Specify a set of entries that re-map imports to additional lookup locations. */

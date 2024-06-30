@@ -126,6 +126,9 @@ app.post('/issuer/sign-credential', async (req: Request, res: Response) => {
     res.status(500).send('Error issuing credential');
   }
 });
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+export default app;
+export { server };
