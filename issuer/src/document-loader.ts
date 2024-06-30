@@ -1,6 +1,7 @@
 import * as vc from '@digitalbazaar/vc';
 import data_integrity_v2 from './contexts/data-integrity-v2.json';
 import credentials_examples from './contexts/examples.json';
+import odrl from './contexts/odrl.json';
 
 const { defaultDocumentLoader } = vc;
 
@@ -16,6 +17,12 @@ const documentLoader = async (url: string) => {
         contextUrl: null,
         documentUrl: url,
         document: credentials_examples
+    };
+  } else if (url === "https://www.w3.org/ns/odrl.jsonld") {
+    return {
+        contextUrl: null,
+        documentUrl: url,
+        document: odrl
     };
   }
   return defaultDocumentLoader(url);
