@@ -78,7 +78,7 @@ app.post('/generate/did', async (req: Request, res: Response) => {
 // };
 
 // Issuers should have keys already in real use
-const generateKeyPair = async () => { // eslint-disable-line no-unused-vars
+const generateKeyPair = async () => { // eslint-disable-line @typescript-eslint/no-unused-vars
   const keyPair = await bls12381Multikey.generateBbsKeyPair({
     algorithm: 'BBS-BLS12-381-SHA-256',
   });
@@ -87,7 +87,7 @@ const generateKeyPair = async () => { // eslint-disable-line no-unused-vars
 };
 
 // Given a credential and a public/private key pair, returns the signed credential
-const signCredential = async (credential: UnsignedCredential, keyPair: any) => {  
+const signCredential = async (credential: UnsignedCredential, keyPair: { signer: () => string; }) => {  
   const suite = new DataIntegrityProof({
     signer: keyPair.signer(),
     cryptosuite: createSignCryptosuite({})
