@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import generateDID from '../../lib/src/generate-did.ts';
+import generateDID from '../../lib/src/generate-did.js';
 
 const app = express();
 const port = 3000;

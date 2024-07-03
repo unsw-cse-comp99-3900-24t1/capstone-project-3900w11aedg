@@ -3,10 +3,10 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import QRCode from 'qrcode';
 import morgan from 'morgan';
-import generateDID from '../../lib/src/generate-did.ts';
+import generateDID from '../../lib/src/generate-did.js';
 import fs from 'fs';
-import { isValidClaim, isValidDID, isValidDomain } from './helpers/validation-helper.ts';
-import { constructRequest } from './helpers/claim-request-helper.ts';
+import { isValidClaim, isValidDID, isValidDomain } from './helpers/validation-helper.js';
+import { constructRequest } from './helpers/claim-request-helper.js';
 
 const app = express();
 const port = 3333;

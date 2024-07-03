@@ -1,11 +1,11 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import generateDID from '../../lib/src/generate-did.ts';
+import generateDID from '../../lib/src/generate-did.js';
 import * as vc from '@digitalbazaar/vc';
 import * as bbs from '@digitalbazaar/bls12-381-multikey';
 import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
 import { createSignCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
-import documentLoader from './document-loader.ts';
+import documentLoader from './document-loader.js';
 import dotenv from 'dotenv';
 
 import QRCode from 'qrcode';

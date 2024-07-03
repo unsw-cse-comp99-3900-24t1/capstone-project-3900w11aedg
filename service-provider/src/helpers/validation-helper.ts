@@ -1,6 +1,6 @@
 import { Resolver } from 'did-resolver';
 import { getResolver } from 'web-did-resolver';
-import claimsSchema from '../schema.ts';
+import claimsSchema from '../schema.js';
 import * as js from 'json-schema-library';
 
 export async function isValidDID(did: string) {
