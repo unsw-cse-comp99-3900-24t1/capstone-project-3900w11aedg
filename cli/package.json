@@ -1,0 +1,38 @@
+{
+  "name": "cli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest ./__tests__",
+    "build": "tsc",
+    "start-service-provider-dev": "ts-node ./src/service-provider/index.ts",
+    "start-service-provider": "node ./dist/service-provider/index.js",
+    "start-issuer-dev": "ts-node ./src/issuer/index.ts",
+    "start-issuer": "node ./dist/issuer/index.js"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@digitalbazaar/bls12-381-multikey": "^1.3.0",
+    "@types/node": "^20.14.9",
+    "axios": "^1.7.2",
+    "commander": "^12.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@typescript-eslint/eslint-plugin": "^7.15.0",
+    "@typescript-eslint/parser": "^7.15.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.2",
+    "ts-jest": "^29.1.5",
+    "typescript-eslint": "^7.15.0"
+  }
+}
