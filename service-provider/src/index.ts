@@ -7,8 +7,16 @@ import generateDID from '../../lib/src/generate-did.js';
 import fs from 'fs';
 import { isValidClaim, isValidDID, isValidDomain } from './helpers/validation-helper.js';
 import { constructRequest } from './helpers/claim-request-helper.js';
+import generateKeyPair from '../../lib/src/key.js';
+import { saveData } from '../../lib/src/data.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename);
+const keyPairURL = path.join(__dirname, 'keyPair.key');
+const didURL = path.join(__dirname, 'did.txt');
 const port = 3333;
 
 app.use(express.json());
@@ -21,26 +29,23 @@ const format = ':method :url :status :res[content-length] - :response-time ms\n:
 
 app.use(morgan(format));
 
-const allowedOrigins = ['http://localhost:3333'];
-
-const options: cors.CorsOptions = {
-  origin: allowedOrigins,
+const internalUse = {
+  origin: `http://localhost:${port}`,
+  allowedHeaders: 'Content-Type',
 };
 
-app.use(cors(options));
+app.use(cors());
 
 app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
 });
 
-app.post('/generate/did', async (req: Request, res: Response) => {
-  const { publicKey } = req.body;
-  try {
-    const didDoc = await generateDID(publicKey);
-    res.status(200).send({ did: didDoc.id });
-  } catch (error) {
-    res.status(500).send(error);
-  }
+app.post('/generate/did', cors(internalUse), async (_req: Request, res: Response) => {
+  const keyPair = await generateKeyPair({ id: 'https://www.unsw.edu.au/' });
+  const publicKey = keyPair.publicKey.toString();
+  const did = await generateDID(publicKey);
+  saveData(didURL, keyPairURL, keyPair, did.id);
+  res.status(200).send("DID generated successfully and saved to 'did.txt'");
 });
 
 app.post('/generate/qr-code', async (req: Request, res: Response) => {

@@ -9,8 +9,11 @@ import path from 'path';
 import cors from 'cors';
 import fs from 'fs';
 import { saveQRCode, signCredential, urlToQRCode } from '../../lib/src/issuer/signing.js';
+import { fileURLToPath } from 'url';
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename);
 const keyPairURL = path.join(__dirname, 'keyPair.key');
 const didURL = path.join(__dirname, 'did.txt');
 const port = 3210;

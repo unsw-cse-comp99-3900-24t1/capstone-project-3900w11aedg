@@ -11,7 +11,7 @@
     // "disableReferencedProjectLoad": true,             /* Reduce the number of projects loaded automatically by TypeScript. */
 
     /* Language and Environment */
-    "target": "ESNext",
+    "target": "esnext",
     /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     // "lib": [],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
     // "jsx": "preserve",                                /* Specify what JSX code is generated. */
@@ -54,8 +54,10 @@
     /* JavaScript Support */
     "allowJs": true,
     /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
-    // "checkJs": true,                                  /* Enable error reporting in type-checked JavaScript files. */
-    // "maxNodeModuleJsDepth": 1,                        /* Specify the maximum folder depth used for checking JavaScript files from 'node_modules'. Only applicable with 'allowJs'. */
+    // "checkJs": true,
+    /* Enable error reporting in type-checked JavaScript files. */
+    "maxNodeModuleJsDepth": 2,
+    /* Specify the maximum folder depth used for checking JavaScript files from 'node_modules'. Only applicable with 'allowJs'. */
 
     /* Emit */
     // "declaration": true,                              /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
