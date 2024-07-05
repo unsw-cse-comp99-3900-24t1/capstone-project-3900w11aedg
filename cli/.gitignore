@@ -1,3 +1,6 @@
 node_modules/
 dist/
 coverage/
+
+src/issuer/did.txt
+src/issuer/keyPair.key

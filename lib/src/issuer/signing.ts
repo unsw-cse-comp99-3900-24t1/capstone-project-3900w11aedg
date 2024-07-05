@@ -2,12 +2,13 @@ import * as vc from '@digitalbazaar/vc';
 import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
 import { createSignCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
 import documentLoader from './document-loader.js';
+
 import QRCode from 'qrcode';
 import fs from 'fs';
 import qr from 'qr-image';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const signCredential = async (credential: any, keyPair: any) => {
+export const signCredential = async (credential: any, keyPair: any, did: string) => {
   const suite = new DataIntegrityProof({
     signer: keyPair.signer(),
     date: new Date().toDateString(),
@@ -16,15 +17,13 @@ export const signCredential = async (credential: any, keyPair: any) => {
     }),
   });
 
-  // suite.verificationMethod = 'did:web:walt.id#key-1';
+  suite.verificationMethod = did;
 
-  const signedVC = await vc.issue({
-    credential: credential,
-    suite: suite,
-    documentLoader: documentLoader,
+  return await vc.issue({
+    credential: JSON.parse(credential),
+    suite,
+    documentLoader,
   });
-
-  return JSON.stringify(signedVC);
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

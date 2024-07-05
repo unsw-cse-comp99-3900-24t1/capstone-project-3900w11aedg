@@ -140,5 +140,10 @@
   "exclude": [
     "node_modules",
     "dist"
-  ]
+  ],
+  "ts-node": {
+    "esm": true,
+    "compiler": "typescript",
+    "files": true
+  }
 }
