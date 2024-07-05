@@ -94,6 +94,7 @@ const signCredential = async (credential: any, keyPair: { signer: () => string }
   }
   const suite = new DataIntegrityProof({
     signer: keyPair.signer(),
+    date: new Date().toDateString(),
     cryptosuite: createSignCryptosuite({}),
   });
 
