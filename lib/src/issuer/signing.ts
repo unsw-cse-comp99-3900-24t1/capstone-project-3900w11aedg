@@ -27,8 +27,8 @@ export const signCredential = async (credential: any, keyPair: any, did: string)
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const credentialToQRCode = async (credential: any) => {
-  return QRCode.toDataURL(credential);
+export const urlToQRCode = async (url: any) => {
+  return QRCode.toDataURL(url);
 };
 
 export const saveQRCode = async (qrDataUrl: string, outputFilePath: string) => {

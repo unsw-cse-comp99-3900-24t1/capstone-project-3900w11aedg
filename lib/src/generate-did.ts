@@ -1,10 +1,12 @@
 import crypto from 'crypto';
 import axios from 'axios';
 import { DIDDocument } from 'did-resolver';
+import { v4 } from 'uuid';
 
 async function generateDID(publicKey: string): Promise<DIDDocument> {
+  const UUID = v4();
   const didHash = crypto.createHash('sha256');
-  didHash.update(publicKey);
+  didHash.update(UUID);
   const didHashHex = didHash.digest('hex');
 
   const didDocument: DIDDocument = {

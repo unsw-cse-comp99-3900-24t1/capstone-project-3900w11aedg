@@ -164,3 +164,28 @@ jobs:
       - name: Run Jest tests for libraries
         working-directory: lib
         run: npm test
+
+    cli:
+      name: cli
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+
+        - name: Set up Node.js
+          uses: actions/setup-node@v2
+          with:
+            node-version: '18'
+
+        - name: Install cli dependencies
+          working-directory: cli
+          run: npm install
+
+        - name: Run ESLint for cli
+          working-directory: cli
+          run: npm run lint
+
+        - name: Run Jest tests for cli
+          working-directory: cli
+          run: npm test
