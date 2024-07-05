@@ -2,7 +2,6 @@ import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import generateDID from '../../lib/src/generate-did.js';
 import * as vc from '@digitalbazaar/vc';
-import * as bbs from '@digitalbazaar/bls12-381-multikey';
 import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
 import { createSignCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
 import documentLoader from './document-loader.js';
@@ -81,11 +80,11 @@ app.post('/generate/did', async (req: Request, res: Response) => {
 // };
 
 // Issuers should have keys already in real use
-const generateKeyPair = async () => {
-  return await bbs.generateBbsKeyPair({
-    algorithm: 'BBS-BLS12-381-SHA-256',
-  });
-};
+// const generateKeyPair = async () => {
+//   return await bbs.generateBbsKeyPair({
+//     algorithm: 'BBS-BLS12-381-SHA-256',
+//   });
+// };
 
 // Given a credential and a public/private key pair, returns the signed credential
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -113,12 +112,14 @@ const signCredential = async (credential: any, keyPair: { signer: () => string }
 // and return QR code of signed credential
 app.post('/issuer/sign-credential', async (req: Request, res: Response) => {
   try {
-    const { credential } = req.body;
+    const { credential, keyPair } = req.body;
     if (!credential) {
       res.status(404).send('credential not found');
     }
-    const keyPair: string = process.env['KEY_PAIR'] || (await generateKeyPair());
-    process.env['KEY_PAIR'] = keyPair;
+
+    if (!keyPair) {
+      res.status(404).send('Key pair not found');
+    }
 
     const serialisedKeyPair = JSON.parse(keyPair);
 
