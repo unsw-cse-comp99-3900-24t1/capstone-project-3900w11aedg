@@ -88,17 +88,16 @@ app.post('/generate/did', async (req: Request, res: Response) => {
 
 // Given a credential and a public/private key pair, returns the signed credential
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const signCredential = async (credential: any, keyPair: { signer: () => string } | undefined) => {
-  if (!keyPair) {
-    throw new Error('Key pair not found');
-  }
+const signCredential = async (credential: any, keyPair: any) => {
   const suite = new DataIntegrityProof({
     signer: keyPair.signer(),
     date: new Date().toDateString(),
-    cryptosuite: createSignCryptosuite({}),
+    cryptosuite: createSignCryptosuite({
+      mandatoryPointers: ['/issuanceDate', '/issuer'],
+    }),
   });
 
-  suite.verificationMethod = 'did:web:walt.id#key-1';
+  // suite.verificationMethod = 'did:web:walt.id#key-1';
 
   const signedVC = await vc.issue({
     credential: credential,
