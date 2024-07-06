@@ -41,8 +41,13 @@ app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
 });
 
-app.post('/generate/did', cors(internalUse), async (_req: Request, res: Response) => {
-  const keyPair = await generateKeyPair({ id: 'https://www.unsw.edu.au/' });
+app.post('/generate/did', cors(internalUse), async (req: Request, res: Response) => {
+  const { id } = req.body;
+  if (!id) {
+    res.status(404).send('No id found');
+    return;
+  }
+  const keyPair = await generateKeyPair({ id });
   const publicKey = keyPair.publicKey.toString();
   const did = await generateDID(publicKey);
   saveData(didURL, keyPairURL, keyPair, did.id);
@@ -93,8 +98,20 @@ app.post('/credential/offer', async (req: Request, res: Response) => {
     const token = req.header('Authorization');
     const { proof } = req.body;
 
+    if (!proof) {
+      res.status(400).send('Proof is required');
+      return;
+    }
+
+    if (!token) {
+      res.status(400).send('Token is required');
+      return;
+    }
+
     console.log('Token:', token);
     console.log('Proof:', proof);
+
+    // Change credential to be signed
     const credential = fs.readFileSync(
       __dirname + '/credentials/' + 'unsigned-credential.json',
       'utf8'

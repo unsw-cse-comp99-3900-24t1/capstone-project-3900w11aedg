@@ -43,8 +43,13 @@ app.post('/credential/request', cors(internalUse), async (_req: Request, res: Re
   res.status(200).send('Request received');
 });
 
-app.post('/generate/did', cors(internalUse), async (_req: Request, res: Response) => {
-  const keyPair = await generateKeyPair({ id: 'https://www.unsw.edu.au/' });
+app.post('/generate/did', cors(internalUse), async (req: Request, res: Response) => {
+  const { id } = req.body;
+  if (!id) {
+    res.status(404).send('No id found');
+    return;
+  }
+  const keyPair = await generateKeyPair({ id });
   const publicKey = keyPair.publicKey.toString();
   const did = await generateDID(publicKey);
   saveData(didURL, keyPairURL, keyPair, did.id);

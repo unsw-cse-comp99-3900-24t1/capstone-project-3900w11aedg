@@ -1,10 +1,7 @@
-import { fileURLToPath } from 'url';
 import path from 'path';
-import fs from 'fs';
+import fs from 'node:fs';
 import { from } from '@digitalbazaar/bls12-381-multikey';
-
-const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
-const __dirname = path.dirname(__filename);
+import { isValidDID } from './validation-helper.js';
 
 export const saveData = (
   didURL: string = path.join(__dirname, 'did.txt'),
@@ -21,15 +18,21 @@ export const loadData = async (
   didURL: string = path.join(__dirname, 'did.txt'),
   keyPairURL: string = path.join(__dirname, 'keyPair.key')
 ) => {
-  if (!fs.existsSync(didURL) || !fs.existsSync(keyPairURL)) {
-    throw new Error('Path for did or keyPair does not exist.');
-  }
+  console.log('hi');
+  // if (!fs.existsSync(didURL) || !fs.existsSync(keyPairURL)) {
+  //   throw new Error('Path for did or keyPair does not exist.');
+  // }
 
   const keyPair = JSON.parse(fs.readFileSync(keyPairURL, 'utf8'));
   keyPair.publicKey = new Uint8Array(Object.values(keyPair.publicKey));
   keyPair.secretKey = new Uint8Array(Object.values(keyPair.secretKey));
+  const did = fs.readFileSync(didURL, 'utf8');
+  console.log('HELLO');
+  if (!(await isValidDID(did))) {
+    throw new Error('Invalid DID');
+  }
   return {
-    did: fs.readFileSync(didURL, 'utf8'),
+    did: did,
     keyPair: await from(keyPair),
   };
 };
