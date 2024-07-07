@@ -22,7 +22,10 @@ program
   .description('Signs a credential')
   .action(async (credential: string) => {
     const { did, keyPair } = await loadData(didURL, keyPairURL);
-    const credentialJSON = fs.readFileSync(__dirname + '/credentials/' + credential, 'utf8');
+    const credentialJSON = fs.readFileSync(
+      rootDir + '/credentials/' + credential + '.json',
+      'utf8'
+    );
     const signedCredential = await signCredential(credentialJSON, keyPair, did);
     console.log(`Signed credential: ${JSON.stringify(signedCredential, null, 2)}`);
   });

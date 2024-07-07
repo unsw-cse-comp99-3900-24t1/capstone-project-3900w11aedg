@@ -16,7 +16,7 @@ async function generateDID(publicKey: string): Promise<DIDDocument> {
       {
         id: `did:web:${didHashHex}#key-1`,
         type: 'Ed25519VerificationKey2018',
-        controller: `did:example:${didHashHex}`,
+        controller: `did:web:${didHashHex}`,
         publicKeyBase58: publicKey,
       },
     ],
