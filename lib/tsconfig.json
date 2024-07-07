@@ -134,6 +134,11 @@
     "skipLibCheck": true
     /* Skip type checking all .d.ts files. */
   },
+  "ts-node": {
+    "esm": true,
+    "compiler": "typescript",
+    "files": true
+  },
   "include": [
     "src/**/*"
   ],
