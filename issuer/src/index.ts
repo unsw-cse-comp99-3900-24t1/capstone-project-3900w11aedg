@@ -1,15 +1,14 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import generateDID from '../../lib/src/generate-did.js';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-import generateKeyPair from '../../lib/src/key.js';
-import { loadData, saveData } from '../../lib/src/data.js';
+import { loadData } from '../../lib/src/data.js';
 import path from 'path';
 import cors from 'cors';
 import fs from 'fs';
-import { saveQRCode, signCredential, urlToQRCode } from '../../lib/src/issuer/signing.js';
+import { signCredential } from '../../lib/src/issuer/signing.js';
 import { fileURLToPath } from 'url';
+import { saveQRCode, urlToQRCode } from '../../lib/src/qr.js';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
@@ -39,19 +38,6 @@ app.use(cors());
 
 app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
-});
-
-app.post('/generate/did', cors(internalUse), async (req: Request, res: Response) => {
-  const { id } = req.body;
-  if (!id) {
-    res.status(404).send('No id found');
-    return;
-  }
-  const keyPair = await generateKeyPair({ id });
-  const publicKey = keyPair.publicKey.toString();
-  const did = await generateDID(publicKey);
-  saveData(didURL, keyPairURL, keyPair, did.id);
-  res.status(200).send("DID generated successfully and saved to 'did.txt'");
 });
 
 // Metadata URL as QR Code

@@ -2,11 +2,9 @@ import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
-import generateDID from '../../lib/src/generate-did.js';
 import fs from 'node:fs';
 import { requestClaims } from '../../lib/src/service-provider/claim-request-helper.js';
-import { loadData, saveData } from '../../lib/src/data.js';
-import generateKeyPair from '../../lib/src/key.js';
+import { loadData } from '../../lib/src/data.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -27,28 +25,15 @@ const format = ':method :url :status :res[content-length] - :response-time ms\n:
 
 app.use(morgan(format));
 
-const internalUse = {
-  origin: `http://localhost:${port}`,
-  allowedHeaders: 'Content-Type',
-};
+// const internalUse = {
+//   origin: `http://localhost:${port}`,
+//   allowedHeaders: 'Content-Type',
+// };
 
 app.use(cors());
 
 app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
-});
-
-app.post('/generate/did', cors(internalUse), async (req: Request, res: Response) => {
-  const { id } = req.body;
-  if (!id) {
-    res.status(404).send('No id found');
-    return;
-  }
-  const keyPair = await generateKeyPair({ id });
-  const publicKey = keyPair.publicKey.toString();
-  const did = await generateDID(publicKey);
-  saveData(didURL, keyPairURL, keyPair, did.id);
-  res.status(200).send("DID generated successfully and saved to 'did.txt'");
 });
 
 app.post('/generate/qr-code', async (req: Request, res: Response) => {
