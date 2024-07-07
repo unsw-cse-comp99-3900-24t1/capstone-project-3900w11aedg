@@ -7,6 +7,10 @@ import { requestClaims } from '../../lib/src/service-provider/claim-request-help
 import { loadData } from '../../lib/src/data.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import documentLoader from './issuer/document-loader.js';
+import { MOCK_CHALLENGE } from '../../lib/src/service-provider/claim-request-helper.js';
+
+const vc = require('@digitalbazaar/vc');
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -73,6 +77,17 @@ app.get('/request-claims/:filename', async (req, res) => {
   try {
     const request = fs.readFileSync(__dirname + `/requests/${filename}` + '.json', 'utf-8');
     res.status(200).send(JSON.parse(request));
+  } catch (err) {
+    res.status(500).send({ err });
+  }
+});
+
+app.post('/claims/verify', async (req: Request, res: Response) => {
+  const { vp_token: token , presentation_submission: presentation } = req.body;
+  
+  try {
+    const result = await vc.verify({presentation: token, challenge: MOCK_CHALLENGE, suite, documentLoader});
+    res.status(200).send({ result });
   } catch (err) {
     res.status(500).send({ err });
   }
