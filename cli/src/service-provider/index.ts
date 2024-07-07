@@ -5,7 +5,7 @@ import generateKeyPair from '../../../lib/src/key.js';
 import generateDID from '../../../lib/src/generate-did.js';
 import { saveData } from '../../../lib/src/data.js';
 import path from 'path';
-import config from '../issuer/cli.config.json' assert { type: 'json' };
+import config from './cli.config.json' assert { type: 'json' };
 
 const rootDir = path.resolve(config.rootDir);
 
