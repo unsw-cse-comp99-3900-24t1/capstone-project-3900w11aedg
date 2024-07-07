@@ -3,18 +3,17 @@
 import { Command } from 'commander';
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
 import { loadData, saveData } from '../../../lib/src/data.js';
 import generateKeyPair from '../../../lib/src/key.js';
 import generateDID from '../../../lib/src/generate-did.js';
 import { signCredential } from '../../../lib/src/issuer/signing.js';
+import config from './cli.config.json' assert { type: 'json' };
 
-const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
-const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(config.rootDir);
 
 const program = new Command();
-const keyPairURL = path.join(__dirname, 'keyPair.key');
-const didURL = path.join(__dirname, 'did.txt');
+const didURL = path.join(rootDir, 'did.txt');
+const keyPairURL = path.join(rootDir, 'keyPair.key');
 
 program.name('issuer').description('UNSW Credential Issuance Tool').version('1.0.0');
 

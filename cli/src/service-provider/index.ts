@@ -4,16 +4,14 @@ import { Command } from 'commander';
 import generateKeyPair from '../../../lib/src/key.js';
 import generateDID from '../../../lib/src/generate-did.js';
 import { saveData } from '../../../lib/src/data.js';
-import { fileURLToPath } from 'url';
 import path from 'path';
+import config from '../issuer/cli.config.json' assert { type: 'json' };
+
+const rootDir = path.resolve(config.rootDir);
 
 const program = new Command();
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const keyPairURL = path.join(__dirname, 'keyPair.key');
-const didURL = path.join(__dirname, 'did.txt');
+const didURL = path.join(rootDir, 'did.txt');
+const keyPairURL = path.join(rootDir, 'keyPair.key');
 
 program.name('service-provider').description('NSW Ivy Nightclub CLI').version('1.0.0');
 
