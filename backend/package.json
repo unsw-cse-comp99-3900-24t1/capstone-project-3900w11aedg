@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "jest ./__tests__/",
+    "test": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest ./__tests__ --verbose --runInBand --detectOpenHandles --forceExit",
     "build": "tsc",
     "lint": "eslint src/**/*.{ts,tsx} --ignore-pattern dist/*",
     "lint:fix": "eslint src/**/*.{ts,tsx} --fix --ignore-pattern dist/*",
@@ -12,6 +12,20 @@
     "start": "node dist/backend/src/index.js",
     "format": "prettier .",
     "coverage": "jest --coverage"
+  },
+  "jest": {
+    "preset": "ts-jest/presets/default-esm",
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
+    },
+    "transform": {
+      "^.+\\.tsx?$": [
+        "ts-jest",
+        {
+          "useESM": true
+        }
+      ]
+    }
   },
   "keywords": [],
   "author": "",

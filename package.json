@@ -40,6 +40,11 @@
       "npm run test --prefix lib",
       "npm run lint --prefix lib",
       "npm run format --prefix lib"
+    ],
+    "cli/**/*.{js,jsx,ts,tsx}": [
+      "npm run test --prefix cli",
+      "npm run lint --prefix cli",
+      "npm run format --prefix cli"
     ]
   },
   "dependencies": {
