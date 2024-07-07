@@ -8,6 +8,7 @@ import generateKeyPair from '../../../lib/src/key.js';
 import generateDID from '../../../lib/src/generate-did.js';
 import { signCredential } from '../../../lib/src/issuer/signing.js';
 import config from './cli.config.json' assert { type: 'json' };
+import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
 
 const rootDir = path.resolve(config.rootDir);
 
@@ -28,6 +29,19 @@ program
     );
     const signedCredential = await signCredential(credentialJSON, keyPair, did);
     console.log(`Signed credential: ${JSON.stringify(signedCredential, null, 2)}`);
+  });
+
+program
+  .command('qr-code <url>')
+  .description('Create a QR Code')
+  .action(async (url: string) => {
+    try {
+      const qr = await urlToQRCode(url);
+      await saveQRCode(qr, rootDir + '/qr-code.png');
+      console.log();
+    } catch (err) {
+      console.error('Error creating QR code', err);
+    }
   });
 
 program

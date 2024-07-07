@@ -4,6 +4,7 @@ import { Command } from 'commander';
 import generateKeyPair from '../../../lib/src/key.js';
 import generateDID from '../../../lib/src/generate-did.js';
 import { saveData } from '../../../lib/src/data.js';
+import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
 import path from 'path';
 import config from './cli.config.json' assert { type: 'json' };
 
@@ -20,6 +21,19 @@ program
   .description('Verify a user')
   .action((did: string) => {
     console.log(`Verifying ${did}!`);
+  });
+
+program
+  .command('qr-code <url>')
+  .description('Create a QR Code')
+  .action(async (url: string) => {
+    try {
+      const qr = await urlToQRCode(url);
+      await saveQRCode(qr, rootDir + '/qr-code.png');
+      console.log();
+    } catch (err) {
+      console.error('Error creating QR code', err);
+    }
   });
 
 program

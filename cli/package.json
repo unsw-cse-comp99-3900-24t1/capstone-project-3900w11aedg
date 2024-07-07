@@ -9,9 +9,9 @@
     "lint:fix": "eslint ./src/**/*.{ts,tsx} --fix --ignore-pattern dist/*",
     "format": "prettier .",
     "coverage": "jest --coverage",
-    "start-service-provider-dev": "ts-node ./src/service-provider/index.ts",
+    "start-service-provider-dev": "node --loader ts-node/esm src/service-provider/index.ts",
     "start-service-provider": "node ./dist/service-provider/index.js",
-    "start-issuer-dev": "ts-node ./src/issuer/index.ts",
+    "start-issuer-dev": "node --loader ts-node/esm src/issuer/index.ts",
     "start-issuer": "node ./dist/issuer/index.js"
   },
   "type": "module",
