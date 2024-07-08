@@ -1,55 +1,35 @@
 import { DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { Theme } from '@react-navigation/native';
 
-type ColourTheme = {
-  dark: boolean;
-  colors: {
-    primary: string;
-    background: string;
-    card: string;
-    text: string;
-    border: string;
-    notification: string;
+// Add dark and light mode specific parameters here
+interface ColourTheme extends Theme {
+  colors: Theme['colors'] & {
+    // navbar: string;
   };
-};
-
-// Not worried about proper light mode colours for sprint 1
-// Colours can be changed accordingly in future
-const sharedColours = {
-  gold: '#C99F58',
-  buttonGrey: '#A7A7A7',
-  popupGrey: '#606665',
-  navbarGrey: '#495351',
-  gradient1: '#0A1B34',
-  gradient2: '#0C372A',
-  gradient3: '#369C7E',
-  black: '#000000',
-  white: '#FFFFFF',
-};
+}
 
 const DarkColours: ColourTheme = {
   ...DarkTheme,
   colors: {
-    primary: sharedColours.gold,
-    background: '#081715',
+    primary: '',
+    background: 'dark-green',
     card: '',
-    text: '#F2F2F2',
+    text: 'white',
     border: '',
     notification: '',
-    ...sharedColours,
   },
 };
 
 const LightColours: ColourTheme = {
   ...DefaultTheme,
   colors: {
-    primary: sharedColours.gold,
-    background: '000000',
+    primary: '',
+    background: 'neutral',
     card: '',
-    text: sharedColours.black,
+    text: 'text-grey',
     border: '',
     notification: '',
-    ...sharedColours,
   },
 };
 
-export { DarkColours, LightColours };
+export { ColourTheme, DarkColours, LightColours };

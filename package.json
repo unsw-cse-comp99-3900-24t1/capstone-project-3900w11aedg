@@ -45,6 +45,8 @@
   "dependencies": {
     "qrcode": "^1.5.3",
     "supertest": "^7.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3",
     "web-did-resolver": "^2.0.27"
   }
 }
