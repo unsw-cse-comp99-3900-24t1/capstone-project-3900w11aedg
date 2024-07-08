@@ -28,6 +28,11 @@ program
       'utf8'
     );
     const signedCredential = await signCredential(credentialJSON, keyPair, did);
+    const path = rootDir + `/signed-credentials`;
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path, { recursive: true });
+    }
+    fs.writeFileSync(path + `/signed-${credential}.json`, JSON.stringify(signedCredential, null, 2));
     console.log(`Signed credential: ${JSON.stringify(signedCredential, null, 2)}`);
   });
 
