@@ -7,10 +7,10 @@ import { requestClaims } from '../../lib/src/service-provider/claim-request-help
 import { loadData } from '../../lib/src/data.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import documentLoader from './issuer/document-loader.js';
-import { MOCK_CHALLENGE } from '../../lib/src/service-provider/claim-request-helper.js';
-
-const vc = require('@digitalbazaar/vc');
+import documentLoader from '../../lib/src/issuer/document-loader.js';
+import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
+import { createVerifyCryptosuite, createDiscloseCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
+import * as vc from '@digitalbazaar/vc';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -83,13 +83,41 @@ app.get('/request-claims/:filename', async (req, res) => {
 });
 
 app.post('/claims/verify', async (req: Request, res: Response) => {
-  const { vp_token: token , presentation_submission: presentation } = req.body;
+  let { vp_token: token } = req.body;
+  // presentation_submission: presentation
+
+  const suite1 = new DataIntegrityProof({
+    signer: null,
+    date: null,
+    cryptosuite: createDiscloseCryptosuite({
+      proofId: null,
+      selectivePointers: [
+        '/credentialSubject'
+      ]
+    })
+  });
   
-  try {
-    const result = await vc.verify({presentation: token, challenge: MOCK_CHALLENGE, suite, documentLoader});
-    res.status(200).send({ result });
-  } catch (err) {
-    res.status(500).send({ err });
+  const derivedVC = await vc.derive({
+    verifiableCredential: token, suite: suite1, documentLoader
+  });
+  token = derivedVC;
+
+  const suite = new DataIntegrityProof({
+    signer: null,
+    date: new Date().toDateString(),
+    cryptosuite: createVerifyCryptosuite(),
+  });
+  suite.verificationMethod = token.proof.verificationMethod;
+
+  const result = await vc.verifyCredential({credential: token, suite, documentLoader});
+  
+  console.log(result)
+
+  if (result.verified) {
+    res.status(200).send({ valid: true });
+  } else {
+    console.log(result.results[0].error);
+    res.status(500).send({ valid: false });
   }
 });
 
