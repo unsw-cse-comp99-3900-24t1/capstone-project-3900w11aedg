@@ -1,0 +1,46 @@
+{
+  "name": "cli",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_OPTIONS=\"$NODE_OPTIONS --experimental-vm-modules\" jest ./__tests__ --verbose --runInBand --detectOpenHandles --forceExit",
+    "build": "tsc",
+    "lint": "eslint src/**/*.{ts,tsx} --ignore-pattern dist/*",
+    "lint:fix": "eslint ./src/**/*.{ts,tsx} --fix --ignore-pattern dist/*",
+    "format": "prettier .",
+    "coverage": "jest --coverage",
+    "start-service-provider-dev": "node --loader ts-node/esm src/service-provider/index.ts",
+    "start-service-provider": "node ./dist/service-provider/index.js",
+    "start-issuer-dev": "node --loader ts-node/esm src/issuer/index.ts",
+    "start-issuer": "node ./dist/issuer/index.js"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@digitalbazaar/bls12-381-multikey": "^1.3.0",
+    "@eslint/js": "^9.6.0",
+    "@types/node": "^20.14.9",
+    "axios": "^1.7.2",
+    "commander": "^12.1.0",
+    "globals": "^15.8.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.15.0",
+    "@typescript-eslint/parser": "^7.15.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "jest": "^29.7.0",
+    "prettier": "^3.3.2",
+    "ts-jest": "^29.1.5",
+    "typescript-eslint": "^7.15.0"
+  }
+}

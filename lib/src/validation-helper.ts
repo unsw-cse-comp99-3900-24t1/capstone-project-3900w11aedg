@@ -1,6 +1,6 @@
 import { Resolver } from 'did-resolver';
 import { getResolver } from 'web-did-resolver';
-import claimsSchema from '../schema.js';
+import claimsSchema from './schema.js';
 import * as js from 'json-schema-library';
 
 export async function isValidDID(did: string) {
@@ -9,9 +9,8 @@ export async function isValidDID(did: string) {
   return didDoc.didResolutionMetadata.error === 'notFound';
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isValidClaim(claims: any) {
-  console.log(js.Draft07);
+export function isValidClaim(claims: object) {
+  if (Object.keys(claims).length === 0) return false;
   const jsonSchema = new js.Draft07(claimsSchema);
   return jsonSchema.isValid(claims);
 }

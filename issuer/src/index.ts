@@ -1,16 +1,20 @@
 import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
-import generateDID from '../../lib/src/generate-did.js';
-import * as vc from '@digitalbazaar/vc';
-import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
-import { createSignCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
-import documentLoader from './document-loader.js';
 import dotenv from 'dotenv';
-
-import QRCode from 'qrcode';
 import morgan from 'morgan';
+import { loadData } from '../../lib/src/data.js';
+import path from 'path';
+import cors from 'cors';
+import fs from 'fs';
+import { signCredential } from '../../lib/src/issuer/signing.js';
+import { fileURLToPath } from 'url';
+import { saveQRCode, urlToQRCode } from '../../lib/src/qr.js';
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename);
+const keyPairURL = path.join(__dirname, 'keyPair.key');
+const didURL = path.join(__dirname, 'did.txt');
 const port = 3210;
 
 app.use(express.urlencoded({ extended: true }));
@@ -24,114 +28,89 @@ const format = ':method :url :status :res[content-length] - :response-time ms\n:
 
 app.use(morgan(format));
 
+const internalUse = {
+  origin: `http://localhost:${port}`,
+  allowedHeaders: 'Content-Type',
+};
+
 dotenv.config();
+app.use(cors());
 
 app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
 });
 
-app.post('/generate/did', async (req: Request, res: Response) => {
-  const { publicKey } = req.body;
+// Metadata URL as QR Code
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.post('/generate/qr-code', cors(internalUse), async (_req: Request, res: Response) => {
+  const qrCode = await urlToQRCode(`http://localhost:${port}/.well-known/openid-credential-issuer`);
+  await saveQRCode(qrCode, path.join(__dirname, 'metadata.png'));
+  res.status(200).send({ qrCode });
+});
+
+/**
+ * TODO
+ */
+app.get('/.well-known/openid-credential-issuer', async (_req: Request, res: Response) => {
+  console.log('TODO');
+  res.status(200).send({});
+});
+
+/**
+ * TODO
+ */
+app.post('/authorise', async (req: Request, res: Response) => {
+  const { credentialIdentifiers } = req.body;
+  console.log('Credential Identifiers:', credentialIdentifiers);
+  console.log('TODO');
+  const authCode = 'AUTH_CODE';
+  res.status(200).send({ authCode });
+});
+
+/**
+ * TODO
+ */
+app.post('/token', async (_req: Request, res: Response) => {
+  const token = 'TOKEN';
+  console.log('TODO');
+  res.status(200).send({ token });
+});
+
+/**
+ * TODO
+ */
+app.post('/credential/offer', async (req: Request, res: Response) => {
   try {
-    const didDoc = await generateDID(publicKey);
-    res.status(200).send({ did: didDoc.id });
+    const token = req.header('Authorization');
+    const { proof } = req.body;
+
+    if (!proof) {
+      res.status(400).send('Proof is required');
+      return;
+    }
+
+    if (!token) {
+      res.status(400).send('Token is required');
+      return;
+    }
+
+    console.log('Token:', token);
+    console.log('Proof:', proof);
+
+    // Change credential to be signed
+    const credential = fs.readFileSync(
+      __dirname + '/credentials/' + 'unsigned-credential.json',
+      'utf8'
+    );
+    const { did, keyPair } = await loadData(didURL, keyPairURL);
+    const credentialJSON = fs.readFileSync(__dirname + '/credentials/' + credential, 'utf8');
+    const signedCredential = await signCredential(credentialJSON, keyPair, did);
+    res.status(200).send(signedCredential);
   } catch (error) {
-    res.status(500).send(error);
+    res.status(400).send(error);
   }
 });
 
-// Hard coded credential
-// const credential: UnsignedCredential = {
-//   "@context": [
-//     "https://www.w3.org/2018/credentials/v1",
-//     "https://www.w3.org/2018/credentials/examples/v1",
-//   ],
-//   "credentialSubject": {
-//     "degree": {
-//       "name": "Bachelor of Science and Arts",
-//       "type": "BachelorDegree"
-//     },
-//     "id": "did:web:my.domain"
-//   },
-//   "id": "urn:uuid:d36986f1-3cc0-4156-b5a4-6d3deab84270",
-//   "issuer": "did:web:walt.id",
-//   "issuanceDate": "2022-10-07T09:53:41.369917079Z",
-//   "type": [
-//     "VerifiableCredential",
-//     "UniversityDegreeCredential"
-//   ]
-// };
-
-// const credential2: UnsignedCredential = {
-//   "@context": [
-//     "https://www.w3.org/2018/credentials/v1",
-//     "https://www.w3.org/2018/credentials/examples/v1",
-//   ],
-//   // omit `id` to enable unlinkable disclosure
-//   "type": ["VerifiableCredential", "AlumniCredential"],
-//   "issuer": "https://www.unsw.edu.au/",
-//   // use less precise date that is shared by a sufficiently large group
-//   // of VCs to enable unlinkable disclosure
-//   "issuanceDate": "2020-01-01T01:00:00Z",
-//   "credentialSubject": {
-//     // omit `id` to enable unlinkable disclosure
-//     "alumniOf": "University of New South Wales"
-//   }
-// };
-
-// Issuers should have keys already in real use
-// const generateKeyPair = async () => {
-//   return await bbs.generateBbsKeyPair({
-//     algorithm: 'BBS-BLS12-381-SHA-256',
-//   });
-// };
-
-// Given a credential and a public/private key pair, returns the signed credential
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const signCredential = async (credential: any, keyPair: any) => {
-  const suite = new DataIntegrityProof({
-    signer: keyPair.signer(),
-    date: new Date().toDateString(),
-    cryptosuite: createSignCryptosuite({
-      mandatoryPointers: ['/issuanceDate', '/issuer'],
-    }),
-  });
-
-  // suite.verificationMethod = 'did:web:walt.id#key-1';
-
-  const signedVC = await vc.issue({
-    credential: credential,
-    suite: suite,
-    documentLoader: documentLoader,
-  });
-
-  return JSON.stringify(signedVC);
-};
-
-// Given an unsigned credential and issuer keypair, sign the credential
-// and return QR code of signed credential
-app.post('/issuer/sign-credential', async (req: Request, res: Response) => {
-  try {
-    const { credential, keyPair } = req.body;
-    if (!credential) {
-      res.status(404).send('credential not found');
-    }
-
-    if (!keyPair) {
-      res.status(404).send('Key pair not found');
-    }
-
-    const serialisedKeyPair = JSON.parse(keyPair);
-
-    const signedCredential = await signCredential(credential, serialisedKeyPair);
-    const qrCode = await QRCode.toDataURL(signedCredential);
-
-    res.json(qrCode);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Error issuing credential');
-  }
-});
 const server = app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
