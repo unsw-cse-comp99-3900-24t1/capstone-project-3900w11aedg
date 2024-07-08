@@ -3,6 +3,7 @@ import data_integrity_v2 from './contexts/data-integrity-v2.json' assert { type:
 import credentials_examples from './contexts/examples.json' assert { type: 'json' };
 import did from './contexts/did.json' assert { type: 'json' };
 import odrl from './contexts/odrl.json' assert { type: 'json' };
+import didDoc from '../../../did/src/.well-known/dbfac01cafc6fee9f9956b1ddbe5513a403a0961955a019764a9cba9e4279da2/did.json' assert { type: 'json' };
 
 const { defaultDocumentLoader } = vc;
 
@@ -31,6 +32,12 @@ const documentLoader = async (url: string) => {
       documentUrl: url,
       document: did,
     };
+  } else if (url == 'did:web:dbfac01cafc6fee9f9956b1ddbe5513a403a0961955a019764a9cba9e4279da2') {
+    return {
+      contextUrl: "null",
+      documentUrl: url,
+      document: didDoc,
+    }
   }
   return defaultDocumentLoader(url);
 };
