@@ -1,34 +1,26 @@
-import crypto from 'crypto';
 import axios from 'axios';
-import { DIDDocument } from 'did-resolver';
-import { v4 } from 'uuid';
+import { DIDDocument, VerificationMethod } from 'did-resolver';
 
-async function generateDID(publicKey: string): Promise<DIDDocument> {
-  const UUID = v4();
-  const didHash = crypto.createHash('sha256');
-  didHash.update(UUID);
-  const didHashHex = didHash.digest('hex');
-
+async function generateDIDDocument(
+  publicKey: VerificationMethod,
+  did: string
+): Promise<DIDDocument> {
   const didDocument: DIDDocument = {
-    '@context': 'https://www.w3.org/ns/did/v1',
-    id: `did:web:${didHashHex}`,
-    publicKey: [
-      {
-        id: `did:web:${didHashHex}#key-1`,
-        type: 'Ed25519VerificationKey2018',
-        controller: `did:web:${didHashHex}`,
-        publicKeyBase58: publicKey,
-      },
-    ],
+    '@context': ['https://www.w3.org/ns/did/v1', 'https://w3id.org/security/multikey/v1'],
+    id: did,
+    publicKey: [publicKey],
+    assertionMethod: [publicKey],
   };
 
+  const address = did.split(':')[3];
+
   try {
-    await axios.post(`http://localhost:5000/${didHashHex}/.well-known/did.json`, didDocument);
+    await axios.post(`http://localhost:5000/.well-known/${address}/did.json`, didDocument);
   } catch (error) {
-    throw new Error('Error saving the did document');
+    throw new Error('Error saving the did document' + error);
   }
 
   return didDocument;
 }
 
-export default generateDID;
+export default generateDIDDocument;

@@ -3,14 +3,17 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import fs from 'node:fs';
+import * as vc from '@digitalbazaar/vc';
 import { requestClaims } from '../../lib/src/service-provider/claim-request-helper.js';
 import { loadData } from '../../lib/src/data.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import documentLoader from '../../lib/src/issuer/document-loader.js';
 import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
-import { createVerifyCryptosuite, createDiscloseCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
-import * as vc from '@digitalbazaar/vc';
+import {
+  createDiscloseCryptosuite,
+  createVerifyCryptosuite,
+} from '@digitalbazaar/bbs-2023-cryptosuite';
+import documentLoader from '../../lib/src/document-loader.js';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -32,7 +35,7 @@ app.use(morgan(format));
 // const internalUse = {
 //   origin: `http://localhost:${port}`,
 //   allowedHeaders: 'Content-Type',
-// };
+// };/
 
 app.use(cors());
 
@@ -84,21 +87,20 @@ app.get('/request-claims/:filename', async (req, res) => {
 
 app.post('/claims/verify', async (req: Request, res: Response) => {
   let { vp_token: token } = req.body;
-  // presentation_submission: presentation
 
   const suite1 = new DataIntegrityProof({
     signer: null,
     date: null,
     cryptosuite: createDiscloseCryptosuite({
       proofId: null,
-      selectivePointers: [
-        '/credentialSubject'
-      ]
-    })
+      selectivePointers: ['/credentialSubject'],
+    }),
   });
-  
+
   const derivedVC = await vc.derive({
-    verifiableCredential: token, suite: suite1, documentLoader
+    verifiableCredential: token,
+    suite: suite1,
+    documentLoader,
   });
   token = derivedVC;
 
@@ -109,16 +111,25 @@ app.post('/claims/verify', async (req: Request, res: Response) => {
   });
   suite.verificationMethod = token.proof.verificationMethod;
 
-  const result = await vc.verifyCredential({credential: token, suite, documentLoader});
-  
-  console.log(result)
+  // const presentation = vc.createPresentation({
+  //   verifiableCredential: [token],
+  // });
+  ///
+  // console.log('Presentation: ', presentation);
 
-  if (result.verified) {
-    res.status(200).send({ valid: true });
-  } else {
-    console.log(result.results[0].error);
-    res.status(500).send({ valid: false });
-  }
+  const result = await vc.verifyCredential({ credential: token, suite, documentLoader });
+  console.log(result.results[0]);
+  //
+  res.status(200).send({ valid: true });
+
+  // console.log(resu
+  //////////
+  // if (result.verified) {
+  //   res.status(200).send({ valid: true });
+  // } else {
+  //   console.log(result.results[0].error);
+  //   res.status(500).send({ valid: false });
+  // }/
 });
 
 const server = app.listen(port, () => {
