@@ -4,12 +4,7 @@ import credentials_examples from './contexts/examples.json' assert { type: 'json
 import did from './contexts/did.json' assert { type: 'json' };
 import odrl from './contexts/odrl.json' assert { type: 'json' };
 import multikey from './contexts/multikey.json' assert { type: 'json' };
-import { getResolver } from './did-resolver.js';
-import { Resolver } from 'did-resolver';
-
-const webDidResolver = getResolver();
-const didResolver = new Resolver(webDidResolver);
-//import didDoc from '../../../did/src/.well-known/dbfac01cafc6fee9f9956b1ddbe5513a403a0961955a019764a9cba9e4279da2/did.json' assert { type: 'json' };
+import {driver} from './did-driver/index.js';
 
 const { defaultDocumentLoader } = vc;
 
@@ -45,20 +40,12 @@ const documentLoader = async (url: string) => {
       document: multikey,
     };
   } else if (url.startsWith('did:web:')) {
-    const resolved = await didResolver.resolve(url);
-    const document = resolved.didDocument;
-    if (!document) {
-      throw new Error('No DIDDoc found');
-    }
+    const document = await driver().get({url});
 
-    const publicKey = document.publicKey;
-    if (!publicKey) {
-      throw new Error('No publicKey found');
-    }
     return {
       contextUrl: null,
       documentUrl: url,
-      document: url.includes('#') ? document : publicKey[0],
+      document: document,
     };
   }
   return defaultDocumentLoader(url);

@@ -4,7 +4,7 @@ import { createSignCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
 import documentLoader from '../document-loader.js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const signCredential = async (credential: any, keyPair: any, did: string) => {
+export const signCredential = async (credential: any, keyPair: any) => {
   const suite = new DataIntegrityProof({
     signer: keyPair.signer(),
     date: new Date().toDateString(),
@@ -13,10 +13,8 @@ export const signCredential = async (credential: any, keyPair: any, did: string)
     }),
   });
 
-  suite.verificationMethod = did;
-
   return await vc.issue({
-    credential: JSON.parse(credential),
+    credential,
     suite,
     documentLoader,
   });

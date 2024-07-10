@@ -31,6 +31,7 @@
   "dependencies": {
     "@digitalbazaar/bbs-2023-cryptosuite": "^1.2.0",
     "@digitalbazaar/data-integrity": "^2.1.0",
+    "@digitalbazaar/did-method-web": "^1.0.1",
     "@digitalbazaar/vc": "^6.3.0",
     "axios": "^1.7.2",
     "cborg": "^4.2.2",

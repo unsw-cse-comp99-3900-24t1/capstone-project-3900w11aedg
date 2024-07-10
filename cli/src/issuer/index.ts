@@ -23,11 +23,14 @@ program
   .description('Signs a credential')
   .action(async (credential: string) => {
     const { did, keyPair } = await loadData(didURL, keyPairURL);
-    const credentialJSON = fs.readFileSync(
+    console.log(keyPair);
+    const credentialRead = fs.readFileSync(
       rootDir + '/credentials/' + credential + '.json',
       'utf8'
     );
-    const signedCredential = await signCredential(credentialJSON, keyPair, did);
+    const credentialJSON = JSON.parse(credentialRead);
+    credentialJSON.issuer = did;
+    const signedCredential = await signCredential(credentialJSON, keyPair);
     const path = rootDir + `/signed-credentials`;
     if (!fs.existsSync(path)) {
       fs.mkdirSync(path, { recursive: true });
@@ -57,10 +60,8 @@ program
   .description('Creates a new key pair')
   .action(async () => {
     try {
-      const { keyPair, did } = await generateKeyPair();
-      const publicKey = await keyPair.export({ publicKey: true });
-      console.log(publicKey);
-      await generateDID(publicKey, did);
+      const { keyPair, did, didDocument } = await generateKeyPair();
+      await generateDID(didDocument, did);
       saveData(didURL, keyPairURL, keyPair, did);
       console.log(`Key pair created.`);
       console.log(`Your DID: ${did}`);

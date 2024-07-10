@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
 import {
   createDiscloseCryptosuite,
-  createVerifyCryptosuite,
+  createVerifyCryptosuite
 } from '@digitalbazaar/bbs-2023-cryptosuite';
 import documentLoader from '../../lib/src/document-loader.js';
 
@@ -88,7 +88,7 @@ app.get('/request-claims/:filename', async (req, res) => {
 app.post('/claims/verify', async (req: Request, res: Response) => {
   let { vp_token: token } = req.body;
 
-  const suite1 = new DataIntegrityProof({
+  const suiteDerive = new DataIntegrityProof({
     signer: null,
     date: null,
     cryptosuite: createDiscloseCryptosuite({
@@ -99,7 +99,7 @@ app.post('/claims/verify', async (req: Request, res: Response) => {
 
   const derivedVC = await vc.derive({
     verifiableCredential: token,
-    suite: suite1,
+    suite: suiteDerive,
     documentLoader,
   });
   token = derivedVC;
@@ -111,25 +111,14 @@ app.post('/claims/verify', async (req: Request, res: Response) => {
   });
   suite.verificationMethod = token.proof.verificationMethod;
 
-  // const presentation = vc.createPresentation({
-  //   verifiableCredential: [token],
-  // });
-  ///
-  // console.log('Presentation: ', presentation);
-
   const result = await vc.verifyCredential({ credential: token, suite, documentLoader });
-  console.log(result.results[0]);
-  //
-  res.status(200).send({ valid: true });
 
-  // console.log(resu
-  //////////
-  // if (result.verified) {
-  //   res.status(200).send({ valid: true });
-  // } else {
-  //   console.log(result.results[0].error);
-  //   res.status(500).send({ valid: false });
-  // }/
+  if (result.verified) {
+    res.status(200).send({ valid: true });
+  } else {
+    console.log(result.results[0].error);
+    res.status(500).send({ valid: false });
+  }
 });
 
 const server = app.listen(port, () => {
