@@ -1,8 +1,10 @@
 import axios from 'axios';
 
 async function generateDIDDocument(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   didDocument: any,
   did: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
   const address = did.split(':')[4];
 
