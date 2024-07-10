@@ -18,21 +18,19 @@ export const loadData = async (
   didURL: string = path.join(__dirname, 'did.txt'),
   keyPairURL: string = path.join(__dirname, 'keyPair.key')
 ) => {
-  console.log('hi');
-  // if (!fs.existsSync(didURL) || !fs.existsSync(keyPairURL)) {
-  //   throw new Error('Path for did or keyPair does not exist.');
-  // }
+  if (!fs.existsSync(didURL) || !fs.existsSync(keyPairURL)) {
+    throw new Error('Path for did or keyPair does not exist.');
+  }
 
   const keyPair = JSON.parse(fs.readFileSync(keyPairURL, 'utf8'));
   keyPair.publicKey = new Uint8Array(Object.values(keyPair.publicKey));
   keyPair.secretKey = new Uint8Array(Object.values(keyPair.secretKey));
   const did = fs.readFileSync(didURL, 'utf8');
-  console.log('HELLO');
   if (!(await isValidDID(did))) {
-    throw new Error('Invalid DID');
+    throw new Error('Invalid or outdated DID');
   }
   return {
-    did: did,
+    did,
     keyPair: await from(keyPair),
   };
 };

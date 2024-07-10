@@ -3,10 +3,17 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import fs from 'node:fs';
+import * as vc from '@digitalbazaar/vc';
 import { requestClaims } from '../../lib/src/service-provider/claim-request-helper.js';
 import { loadData } from '../../lib/src/data.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
+import {
+  createDiscloseCryptosuite,
+  createVerifyCryptosuite
+} from '@digitalbazaar/bbs-2023-cryptosuite';
+import documentLoader from '../../lib/src/document-loader.js';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -28,7 +35,7 @@ app.use(morgan(format));
 // const internalUse = {
 //   origin: `http://localhost:${port}`,
 //   allowedHeaders: 'Content-Type',
-// };
+// };/
 
 app.use(cors());
 
@@ -75,6 +82,42 @@ app.get('/request-claims/:filename', async (req, res) => {
     res.status(200).send(JSON.parse(request));
   } catch (err) {
     res.status(500).send({ err });
+  }
+});
+
+app.post('/claims/verify', async (req: Request, res: Response) => {
+  let { vp_token: token } = req.body;
+
+  const suiteDerive = new DataIntegrityProof({
+    signer: null,
+    date: null,
+    cryptosuite: createDiscloseCryptosuite({
+      proofId: null,
+      selectivePointers: ['/credentialSubject'],
+    }),
+  });
+
+  const derivedVC = await vc.derive({
+    verifiableCredential: token,
+    suite: suiteDerive,
+    documentLoader,
+  });
+  token = derivedVC;
+
+  const suite = new DataIntegrityProof({
+    signer: null,
+    date: new Date().toDateString(),
+    cryptosuite: createVerifyCryptosuite(),
+  });
+  suite.verificationMethod = token.proof.verificationMethod;
+
+  const result = await vc.verifyCredential({ credential: token, suite, documentLoader });
+
+  if (result.verified) {
+    res.status(200).send({ valid: true });
+  } else {
+    console.log(result.results[0].error);
+    res.status(500).send({ valid: false });
   }
 });
 
