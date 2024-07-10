@@ -1,18 +1,10 @@
 import axios from 'axios';
-import { DIDDocument, VerificationMethod } from 'did-resolver';
 
 async function generateDIDDocument(
-  publicKey: VerificationMethod,
+  didDocument: any,
   did: string
-): Promise<DIDDocument> {
-  const didDocument: DIDDocument = {
-    '@context': ['https://www.w3.org/ns/did/v1', 'https://w3id.org/security/multikey/v1'],
-    id: did,
-    publicKey: [publicKey],
-    assertionMethod: [publicKey],
-  };
-
-  const address = did.split(':')[3];
+): Promise<any> {
+  const address = did.split(':')[4];
 
   try {
     await axios.post(`http://localhost:5000/.well-known/${address}/did.json`, didDocument);

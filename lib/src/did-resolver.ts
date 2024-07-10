@@ -16,6 +16,7 @@ export function getResolver(): Record<string, DIDResolver> {
     console.log('Parsed: ', parsed);
     const id = parsed.id.split(':');
     const path = id.map(decodeURIComponent);
+    console.log(path);
     const url = 'http://' + path[0] + '/.well-known/' + path[1] + '/did.json';
 
     console.log(url);
