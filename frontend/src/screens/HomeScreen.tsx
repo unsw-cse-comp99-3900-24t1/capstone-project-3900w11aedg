@@ -1,17 +1,14 @@
 import { View, ScrollView, Text } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useTheme } from '@react-navigation/native';
-import { ColourTheme } from '../config/colours';
 import axios from 'axios';
 import { setGenericPassword } from 'react-native-keychain';
 import { RSA } from 'react-native-rsa-native';
-import IdentityCardList from '../components/IdentityCardList.tsx';
-import Header from '../components/Header.tsx';
-import Footer from '../components/Footer.tsx';
+import IdentityCardList from '../components/IdentityCardList';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 function HomeScreen(): JSX.Element {
-  const { colors } = useTheme() as ColourTheme;
   const [did, setDID] = useState<string | null>(null);
   console.log(did);
 
@@ -39,10 +36,12 @@ function HomeScreen(): JSX.Element {
   }, []);
 
   return (
-    <View className={`h-[100%] w-[100%] bg-${colors.background}`}>
+    <View className="flex flex-col h-[100%] w-[100%] bg-white dark:bg-dark-green">
       <Header />
       <ScrollView>
-        <Text className={`text-[28px] p-[30] font-bold text-${colors.text}`}>Credentials</Text>
+        <Text className="text-[28px] p-[30] font-bold text-text-grey dark:text-white">
+          Credentials
+        </Text>
         <IdentityCardList />
       </ScrollView>
       <Footer />

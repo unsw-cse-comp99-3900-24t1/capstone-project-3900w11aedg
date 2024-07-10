@@ -22,15 +22,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -42,41 +33,42 @@ const axios_1 = __importDefault(require("axios"));
 const react_native_keychain_1 = require("react-native-keychain");
 const react_native_rsa_native_1 = require("react-native-rsa-native");
 const IdentityCardList_tsx_1 = __importDefault(require("../components/IdentityCardList.tsx"));
+const Header_tsx_1 = __importDefault(require("../components/Header.tsx"));
+const Footer_tsx_1 = __importDefault(require("../components/Footer.tsx"));
 function HomeScreen() {
     const [did, setDID] = (0, react_1.useState)(null);
-    const fetchDid = () => __awaiter(this, void 0, void 0, function* () {
-        const storedDid = yield async_storage_1.default.getItem('did');
+    console.log(did);
+    const fetchDid = async () => {
+        const storedDid = await async_storage_1.default.getItem('did');
         if (storedDid) {
             setDID(storedDid);
         }
         else {
-            const keyPair = yield react_native_rsa_native_1.RSA.generateKeys(4096);
-            const response = yield axios_1.default.post('http://10.0.2.2:3000/generate/did', {
+            const keyPair = await react_native_rsa_native_1.RSA.generateKeys(4096);
+            const response = await axios_1.default.post('http://10.0.2.2:3000/generate/did', {
                 publicKey: keyPair.public,
             });
             const newDid = response.data.did;
-            yield async_storage_1.default.setItem('did', newDid);
-            yield (0, react_native_keychain_1.setGenericPassword)('privateKey', keyPair.private);
+            await async_storage_1.default.setItem('did', newDid);
+            await (0, react_native_keychain_1.setGenericPassword)('privateKey', keyPair.private);
             setDID(newDid);
         }
-    });
+    };
     (0, react_1.useEffect)(() => {
         fetchDid().catch((error) => {
             console.log(error);
             console.log(error.message);
         });
     }, []);
-    return (<react_native_1.ScrollView>
-      <react_native_1.Text>Your DID is {did}</react_native_1.Text>
-      <react_native_1.Text style={styles.mainTitle}>Credentials</react_native_1.Text>
-      <IdentityCardList_tsx_1.default />
-    </react_native_1.ScrollView>);
+    return (<react_native_1.View className="flex flex-col h-[100%] w-[100%] bg-white dark:bg-dark-green">
+      <Header_tsx_1.default />
+      <react_native_1.ScrollView>
+        <react_native_1.Text className="text-[28px] p-[30] font-bold text-text-grey dark:text-white">
+          Credentials
+        </react_native_1.Text>
+        <IdentityCardList_tsx_1.default />
+      </react_native_1.ScrollView>
+      <Footer_tsx_1.default />
+    </react_native_1.View>);
 }
-const styles = react_native_1.StyleSheet.create({
-    mainTitle: {
-        fontSize: 28,
-        padding: 30,
-        fontWeight: 'bold',
-    },
-});
 exports.default = HomeScreen;
