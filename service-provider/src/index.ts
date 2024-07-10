@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
 import {
   createDiscloseCryptosuite,
-  createVerifyCryptosuite
+  createVerifyCryptosuite,
 } from '@digitalbazaar/bbs-2023-cryptosuite';
 import documentLoader from '../../lib/src/document-loader.js';
 
@@ -32,17 +32,15 @@ const format = ':method :url :status :res[content-length] - :response-time ms\n:
 
 app.use(morgan(format));
 
-// const internalUse = {
-//   origin: `http://localhost:${port}`,
-//   allowedHeaders: 'Content-Type',
-// };/
-
 app.use(cors());
 
 app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
 });
 
+/**
+ * TODO - Move to Service Provider CLI
+ */
 app.post('/generate/qr-code', async (req: Request, res: Response) => {
   const { claims } = req.body;
   let { domain } = req.body;
@@ -96,13 +94,15 @@ app.post('/claims/verify', async (req: Request, res: Response) => {
       selectivePointers: ['/credentialSubject'],
     }),
   });
-
+  ///////////////////////////////////////
+  // TODO - Move to Identity Owner Backend
   const derivedVC = await vc.derive({
     verifiableCredential: token,
     suite: suiteDerive,
     documentLoader,
   });
   token = derivedVC;
+  ///////////////////////////////////////
 
   const suite = new DataIntegrityProof({
     signer: null,
@@ -116,7 +116,6 @@ app.post('/claims/verify', async (req: Request, res: Response) => {
   if (result.verified) {
     res.status(200).send({ valid: true });
   } else {
-    console.log(result.results[0].error);
     res.status(500).send({ valid: false });
   }
 });

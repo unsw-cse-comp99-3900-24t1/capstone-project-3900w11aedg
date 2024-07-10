@@ -63,6 +63,7 @@ program
     try {
       const { keyPair, did, didDocument } = await generateKeyPair();
       await generateDID(didDocument, did);
+      console.log(keyPair);
       saveData(didURL, keyPairURL, keyPair, did);
       console.log(`Key pair created.`);
       console.log(`Your DID: ${did}`);
