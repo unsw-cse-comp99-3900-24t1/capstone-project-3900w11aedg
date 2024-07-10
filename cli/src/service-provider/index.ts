@@ -7,8 +7,10 @@ import { saveData } from '../../../lib/src/data.js';
 import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
 import path from 'path';
 import config from './cli.config.json' assert { type: 'json' };
+import uploadDIDDocument from '../../../lib/src/generate-did.js';
 
 const rootDir = path.resolve(config.rootDir);
+const backendUrl = path.resolve(config.backendRoute);
 
 const program = new Command();
 const didURL = path.join(rootDir, 'did.txt');
@@ -24,11 +26,11 @@ program
   });
 
 program
-  .command('qr-code <url>')
+  .command('qr-code')
   .description('Create a QR Code')
-  .action(async (url: string) => {
+  .action(async () => {
     try {
-      const qr = await urlToQRCode(url);
+      const qr = await urlToQRCode(backendUrl);
       await saveQRCode(qr, rootDir + '/qr-code.png');
       console.log();
     } catch (err) {
@@ -41,9 +43,8 @@ program
   .description('Creates a new key pair')
   .action(async () => {
     try {
-      const { did, keyPair } = await generateKeyPair({ controller: 'did:web:unsw%2Eedu%2Eau' });
-      // const publicKey = keyPair.publicKey.toString();
-      // const did = await generateDID(publicKey);
+      const { keyPair, did, didDocument } = await generateKeyPair();
+      await uploadDIDDocument(didDocument, did);
       saveData(didURL, keyPairURL, keyPair, did);
       console.log(`Key pair created.`);
       console.log(`Your DID: ${did}`);

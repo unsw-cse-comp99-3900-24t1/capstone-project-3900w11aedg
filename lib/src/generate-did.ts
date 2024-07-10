@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-async function generateDIDDocument(
+async function uploadDIDDocument(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   didDocument: any,
   did: string
@@ -17,4 +17,4 @@ async function generateDIDDocument(
   return didDocument;
 }
 
-export default generateDIDDocument;
+export default uploadDIDDocument;
