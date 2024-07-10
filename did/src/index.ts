@@ -34,7 +34,7 @@ app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
 });
 
-app.post('/:id/.well-known/did.json', (req: Request, res: Response) => {
+app.post('/.well-known/:id/did.json', (req: Request, res: Response) => {
   const didDocument = req.body;
   const { id } = req.params;
   if (!id) {
@@ -42,14 +42,21 @@ app.post('/:id/.well-known/did.json', (req: Request, res: Response) => {
     return;
   }
   const path = __dirname + `/.well-known/${id}`;
-  if (!fs.existsSync(path)) {
-    fs.mkdirSync(path, { recursive: true });
+  try {
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path, { recursive: true });
+    }
+    fs.writeFileSync(
+      __dirname + `/.well-known/${id}/did.json`,
+      JSON.stringify(didDocument, null, 2)
+    );
+    res.status(200).send({ message: 'DID Document saved successfully' });
+  } catch (err) {
+    res.status(500).send({ err });
   }
-  fs.writeFileSync(__dirname + `/.well-known/${id}/did.json`, JSON.stringify(didDocument, null, 2));
-  res.status(200).send({ message: 'DID Document saved successfully' });
 });
 
-app.get('/:id/.well-known/did.json', (req: Request, res: Response) => {
+app.get('/.well-known/:id/did.json', (req: Request, res: Response) => {
   const { id } = req.params;
   const didDocument = fs.readFileSync(__dirname + `/.well-known/${id}/did.json`, 'utf-8');
   if (!didDocument) {

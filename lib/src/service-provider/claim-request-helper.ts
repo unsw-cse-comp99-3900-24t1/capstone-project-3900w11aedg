@@ -7,6 +7,8 @@ import path from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+export const MOCK_CHALLENGE = '12ec21';
+
 export const requestClaims = async (
   domain: string,
   claims: object,
@@ -41,6 +43,7 @@ export const constructRequest = (domain: string, claims: object, serviceProvider
     query: [
       {
         domain,
+        challenge: MOCK_CHALLENGE,
         did: serviceProviderDID,
         claims,
         url: presentationURL,

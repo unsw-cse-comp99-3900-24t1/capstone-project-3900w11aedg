@@ -23,11 +23,22 @@ program
   .description('Signs a credential')
   .action(async (credential: string) => {
     const { did, keyPair } = await loadData(didURL, keyPairURL);
-    const credentialJSON = fs.readFileSync(
+    console.log(keyPair);
+    const credentialRead = fs.readFileSync(
       rootDir + '/credentials/' + credential + '.json',
       'utf8'
     );
-    const signedCredential = await signCredential(credentialJSON, keyPair, did);
+    const credentialJSON = JSON.parse(credentialRead);
+    credentialJSON.issuer = did;
+    const signedCredential = await signCredential(credentialJSON, keyPair);
+    const path = rootDir + `/signed-credentials`;
+    if (!fs.existsSync(path)) {
+      fs.mkdirSync(path, { recursive: true });
+    }
+    fs.writeFileSync(
+      path + `/signed-${credential}.json`,
+      JSON.stringify(signedCredential, null, 2)
+    );
     console.log(`Signed credential: ${JSON.stringify(signedCredential, null, 2)}`);
   });
 
@@ -49,12 +60,11 @@ program
   .description('Creates a new key pair')
   .action(async () => {
     try {
-      const keyPair = await generateKeyPair({ id: 'https://www.unsw.edu.au/' });
-      const publicKey = keyPair.publicKey.toString();
-      const did = await generateDID(publicKey);
-      saveData(didURL, keyPairURL, keyPair, did.id);
+      const { keyPair, did, didDocument } = await generateKeyPair();
+      await generateDID(didDocument, did);
+      saveData(didURL, keyPairURL, keyPair, did);
       console.log(`Key pair created.`);
-      console.log(`Your DID: ${did.id}`);
+      console.log(`Your DID: ${did}`);
     } catch (err) {
       console.error('Error creating key pair', err);
     }

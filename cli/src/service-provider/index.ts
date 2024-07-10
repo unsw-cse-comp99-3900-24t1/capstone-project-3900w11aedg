@@ -2,7 +2,7 @@
 
 import { Command } from 'commander';
 import generateKeyPair from '../../../lib/src/key.js';
-import generateDID from '../../../lib/src/generate-did.js';
+// import generateDID from '../../../lib/src/generate-did.js';
 import { saveData } from '../../../lib/src/data.js';
 import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
 import path from 'path';
@@ -41,12 +41,12 @@ program
   .description('Creates a new key pair')
   .action(async () => {
     try {
-      const keyPair = await generateKeyPair({ id: 'https://www.unsw.edu.au/' });
-      const publicKey = keyPair.publicKey.toString();
-      const did = await generateDID(publicKey);
-      saveData(didURL, keyPairURL, keyPair, did.id);
+      const { did, keyPair } = await generateKeyPair({ controller: 'did:web:unsw%2Eedu%2Eau' });
+      // const publicKey = keyPair.publicKey.toString();
+      // const did = await generateDID(publicKey);
+      saveData(didURL, keyPairURL, keyPair, did);
       console.log(`Key pair created.`);
-      console.log(`Your DID: ${did.id}`);
+      console.log(`Your DID: ${did}`);
     } catch (err) {
       console.error('Error creating key pair', err);
     }
