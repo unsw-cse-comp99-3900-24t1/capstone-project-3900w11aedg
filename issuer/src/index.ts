@@ -102,9 +102,9 @@ app.post('/credential/offer', async (req: Request, res: Response) => {
       __dirname + '/credentials/' + 'unsigned-credential.json',
       'utf8'
     );
-    const { did, keyPair } = await loadData(didURL, keyPairURL);
+    const { keyPair } = await loadData(didURL, keyPairURL);
     const credentialJSON = fs.readFileSync(__dirname + '/credentials/' + credential, 'utf8');
-    const signedCredential = await signCredential(credentialJSON, keyPair, did);
+    const signedCredential = await signCredential(credentialJSON, keyPair);
     res.status(200).send(signedCredential);
   } catch (error) {
     res.status(400).send(error);

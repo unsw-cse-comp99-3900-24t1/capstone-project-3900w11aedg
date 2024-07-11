@@ -1,3 +1,4 @@
 {
-  "rootDir": "../issuer/src"
+  "rootDir": "../issuer/src",
+  "backendRoute": "http://localhost:3210/.well-known/openid-credential-issuer"
 }

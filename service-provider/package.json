@@ -10,6 +10,7 @@
     "dev": "nodemon -x node --loader ts-node/esm src/index.ts",
     "start": "node dist/service-provider/src/index.js",
     "format": "prettier .",
+    "format:fix": "prettier -w .",
     "coverage": "jest --coverage"
   },
   "nodemonConfig": {
@@ -40,31 +41,23 @@
   "description": "",
   "dependencies": {
     "@digitalbazaar/bbs-2023-cryptosuite": "^1.2.0",
-    "@digitalbazaar/bls12-381-multikey": "^1.3.0",
     "@digitalbazaar/data-integrity": "^2.1.0",
+    "@digitalbazaar/did-method-key": "^5.2.0",
     "@digitalbazaar/vc": "^6.3.0",
-    "axios": "^1.7.2",
     "body-parser": "^1.20.2",
-    "cborg": "^4.2.2",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "did-resolver": "^4.1.0",
-    "exit": "^0.1.2",
     "express": "^4.19.2",
     "json-schema-library": "^9.3.5",
-    "mock-fs": "^5.2.0",
     "morgan": "^1.10.0",
     "qr-image": "^3.2.0",
     "qrcode": "^1.5.3",
     "supertest": "^7.0.0",
-    "uuid": "^10.0.0",
     "web-did-resolver": "^2.0.27"
   },
   "devDependencies": {
-    "@babel/cli": "^7.24.7",
     "@babel/core": "^7.24.7",
-    "@babel/node": "^7.24.7",
-    "@babel/preset-env": "^7.24.7",
     "@eslint/js": "^9.4.0",
     "@jest/globals": "^29.7.0",
     "@types/cors": "^2.8.17",
@@ -72,9 +65,7 @@
     "@types/jest": "^29.5.12",
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.14.2",
-    "@types/qrcode": "^1.5.5",
     "@types/supertest": "^6.0.2",
-    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "babel-jest": "^29.7.0",
     "eslint": "^8.57.0",
@@ -88,7 +79,6 @@
     "nodemon": "^3.1.3",
     "prettier": "^3.3.2",
     "ts-jest": "^29.1.5",
-    "ts-jest-mock-import-meta": "^1.2.0",
     "typescript": "^5.4.5",
     "typescript-eslint": "^7.13.0"
   }

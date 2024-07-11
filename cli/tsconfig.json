@@ -54,7 +54,10 @@
     // "checkJs": true,                                  /* Enable error reporting in type-checked JavaScript files. */
     "maxNodeModuleJsDepth": 2,
     /* Specify the maximum folder depth used for checking JavaScript files from 'node_modules'. Only applicable with 'allowJs'. */
-
+    "rootDirs": [
+      ".",
+      "../lib"
+    ],
     /* Emit */
     // "declaration": true,                              /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
     // "declarationMap": true,                           /* Create sourcemaps for d.ts files. */
@@ -137,7 +140,8 @@
     /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "./src/**/*.ts"
+    "./src/**/*.ts",
+    "../lib/src/**/*.ts"
   ],
   "ts-node": {
     "esm": true,

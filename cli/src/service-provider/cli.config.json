@@ -1,3 +1,4 @@
 {
-  "rootDir": "../service-provider/src"
+  "rootDir": "../service-provider/src",
+  "backendRoute": "http://localhost:3333/claims"
 }
