@@ -2,6 +2,7 @@
   "query": [
     {
       "domain": "localhost:3333",
+      "challenge": "12ec21",
       "did": "did:web:example.com",
       "claims": {
         "id": "vp token example",

@@ -147,7 +147,7 @@
   },
   "include": [
     "./src/**/*.ts",
-    "../lib/**/*"
+    "../lib/src/**/*.ts"
   ],
   "exclude": [
     "node_modules",

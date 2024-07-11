@@ -23,6 +23,7 @@ export const loadData = async (
   }
 
   const keyPair = JSON.parse(fs.readFileSync(keyPairURL, 'utf8'));
+  console.log(keyPair);
   keyPair.publicKey = new Uint8Array(Object.values(keyPair.publicKey));
   keyPair.secretKey = new Uint8Array(Object.values(keyPair.secretKey));
   const did = fs.readFileSync(didURL, 'utf8');

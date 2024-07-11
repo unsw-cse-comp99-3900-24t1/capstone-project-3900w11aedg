@@ -43,17 +43,15 @@ app.post('/credential/request', cors(internalUse), async (_req: Request, res: Re
   res.status(200).send('Request received');
 });
 
-app.post('/generate/did', cors(internalUse), async (req: Request, res: Response) => {
-  const { id } = req.body;
-  if (!id) {
-    res.status(404).send('No id found');
-    return;
+app.post('/generate/did', cors(internalUse), async (_req: Request, res: Response) => {
+  try {
+    const { keyPair, did, didDocument } = await generateKeyPair();
+    await generateDID(didDocument, did);
+    saveData(didURL, keyPairURL, keyPair, did);
+    res.status(200).send("DID generated successfully and saved to 'did.txt'");
+  } catch (error) {
+    res.status(500).send(error);
   }
-  const keyPair = await generateKeyPair({ id });
-  const publicKey = keyPair.publicKey.toString();
-  const did = await generateDID(publicKey);
-  saveData(didURL, keyPairURL, keyPair, did.id);
-  res.status(200).send("DID generated successfully and saved to 'did.txt'");
 });
 
 app.listen(port, () => {

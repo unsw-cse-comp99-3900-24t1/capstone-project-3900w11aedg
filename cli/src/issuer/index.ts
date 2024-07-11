@@ -11,6 +11,7 @@ import config from './cli.config.json' assert { type: 'json' };
 import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
 
 const rootDir = path.resolve(config.rootDir);
+const backendUrl = path.resolve(config.backendRoute);
 
 const program = new Command();
 const didURL = path.join(rootDir, 'did.txt');
@@ -43,11 +44,11 @@ program
   });
 
 program
-  .command('qr-code <url>')
+  .command('qr-code')
   .description('Create a QR Code')
-  .action(async (url: string) => {
+  .action(async () => {
     try {
-      const qr = await urlToQRCode(url);
+      const qr = await urlToQRCode(backendUrl);
       await saveQRCode(qr, rootDir + '/qr-code.png');
       console.log();
     } catch (err) {
@@ -62,6 +63,7 @@ program
     try {
       const { keyPair, did, didDocument } = await generateKeyPair();
       await generateDID(didDocument, did);
+      console.log(keyPair);
       saveData(didURL, keyPairURL, keyPair, did);
       console.log(`Key pair created.`);
       console.log(`Your DID: ${did}`);
