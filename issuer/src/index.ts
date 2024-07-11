@@ -48,21 +48,56 @@ app.post('/generate/qr-code', cors(internalUse), async (_req: Request, res: Resp
   res.status(200).send({ qrCode });
 });
 
-/**
- * TODO
- */
+const issuerMetadata = {
+  credential_issuer: "https://www.unsw.edu.au/",
+  credential_configurations_supported: {
+    UniversityDegree_LDP_VC: {
+      format: "ldp-vc",
+      credential_definition: {
+        "@context": [
+          "https://www.w3.org/2018/credentials/v1",
+          "https://www.w3.org/2018/credentials/examples/v1"
+        ],
+        type: [
+          "VerifiableCredential",
+          "UniversityDegreeCredential"
+        ],
+        credentialSubject: {
+          alumniOf: {
+            mandatory: true,
+            display: {
+              name: "Alumni of UNSW"
+            },
+          },
+        },
+      },
+      display: {
+        name: "University Graduate Credential",
+        logo: {
+          uri: "https://universitiesaustralia.edu.au/wp-content/uploads/2019/05/UNSW-1-300x300.png",
+        },
+        description: "The holder of this credential is a graduate of UNSW."
+      },
+    },
+  },
+  authorization_endpoint: `http://localhost:${port}/authorise`,
+  token_endpoint: `http://localhost:${port}/token`,
+  credential_endpoint: `http://localhost:${port}/credential/offer`,
+};
+
+// Returns the Issuer's metadata
 app.get('/.well-known/openid-credential-issuer', async (_req: Request, res: Response) => {
-  console.log('TODO');
-  res.status(200).send({});
+  res.json({ credential_offer: issuerMetadata });
 });
 
 /**
  * TODO
  */
 app.post('/authorise', async (req: Request, res: Response) => {
-  const { credentialIdentifiers } = req.body;
-  console.log('Credential Identifiers:', credentialIdentifiers);
-  console.log('TODO');
+  const { authorization_details } = req.body;
+  
+  
+  
   const authCode = 'AUTH_CODE';
   res.status(200).send({ authCode });
 });
