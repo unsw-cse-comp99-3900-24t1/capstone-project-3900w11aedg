@@ -3,17 +3,11 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import fs from 'node:fs';
-import * as vc from '@digitalbazaar/vc';
 import { requestClaims } from '../../lib/src/service-provider/claim-request-helper.js';
+import { verifyClaim } from '../../lib/src/service-provider/claim-verify-helper.js';
 import { loadData } from '../../lib/src/data.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
-import {
-  createDiscloseCryptosuite,
-  createVerifyCryptosuite,
-} from '@digitalbazaar/bbs-2023-cryptosuite';
-import documentLoader from '../../lib/src/document-loader.js';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -84,34 +78,13 @@ app.get('/request-claims/:filename', async (req, res) => {
 });
 
 app.post('/claims/verify', async (req: Request, res: Response) => {
-  let { vp_token: token } = req.body;
+  const { vp_token: token } = req.body;
+  if (!token) {
+    res.status(404).send('No token found');
+    return;
+  }
 
-  const suiteDerive = new DataIntegrityProof({
-    signer: null,
-    date: null,
-    cryptosuite: createDiscloseCryptosuite({
-      proofId: null,
-      selectivePointers: ['/credentialSubject'],
-    }),
-  });
-  ///////////////////////////////////////
-  // TODO - Move to Identity Owner Backend
-  const derivedVC = await vc.derive({
-    verifiableCredential: token,
-    suite: suiteDerive,
-    documentLoader,
-  });
-  token = derivedVC;
-  ///////////////////////////////////////
-
-  const suite = new DataIntegrityProof({
-    signer: null,
-    date: new Date().toDateString(),
-    cryptosuite: createVerifyCryptosuite(),
-  });
-  suite.verificationMethod = token.proof.verificationMethod;
-
-  const result = await vc.verifyCredential({ credential: token, suite, documentLoader });
+  const result = await verifyClaim(token);
 
   if (result.verified) {
     res.status(200).send({ valid: true });
