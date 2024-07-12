@@ -5,7 +5,7 @@ import LoginButton from '../components/LoginButton';
 
 function LoginScreen(): JSX.Element {
   return (
-    <View className="flex items-center">
+    <View className="flex items-center bg-white dark:bg-dark-green h-[100%]">
       <Header />
       <Image
         source={require('../assets/large_logo.png')}

@@ -9,6 +9,7 @@ type Props = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
 function LoginButton(): JSX.Element {
   const navigation = useNavigation<Props>();
+  const [backgroundTimer, setBackgroundTimer] = React.useState<NodeJS.Timeout | null>(null);
 
   // Prompts user to enter biometric data, navigating to homescreen with success case
   const handleBiometricAuth = async () => {
@@ -32,12 +33,21 @@ function LoginButton(): JSX.Element {
   };
 
   React.useEffect(() => {
-    handleBiometricAuth();
     const handleAppState = async (nextAppState: string) => {
       if (nextAppState === 'background') {
-        navigation.navigate('Login');
+        // Set a 2 minute timer before logging user out of app
+        const timer = setTimeout(() => {
+          navigation.navigate('Login');
+          handleBiometricAuth();
+        }, 120000);
+        setBackgroundTimer(timer);
       } else if (nextAppState === 'active') {
-        handleBiometricAuth();
+        if (backgroundTimer) {
+          setTimeout(() => {
+            clearTimeout(backgroundTimer);
+            setBackgroundTimer(null);
+          }, 500);
+        }
       }
     };
     const subscription = AppState.addEventListener('change', handleAppState);
