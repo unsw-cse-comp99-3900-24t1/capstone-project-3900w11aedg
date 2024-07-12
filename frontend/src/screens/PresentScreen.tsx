@@ -8,9 +8,9 @@ import Footer from '../components/Footer';
 
 type Props = NativeStackNavigationProp<RootStackParamList>;
 
-export default function PresentScreen({ requestData }: any): JSX.Element {
+export default function PresentScreen(): JSX.Element {
   const navigation = useNavigation<Props>();
-  console.log(requestData);
+  // console.log(requestData);
 
   return (
     <View className="flex flex-col h-[100%] w-[100%] bg-white dark:bg-dark-green">
