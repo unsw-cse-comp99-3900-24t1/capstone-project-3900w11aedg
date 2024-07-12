@@ -2,10 +2,16 @@ import { Image, Dimensions } from 'react-native';
 import React from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
-function ScanQR(): JSX.Element {
+interface ScanQRProps {
+  onRead: (route: string) => Promise<void>;
+}
+
+function ScanQR({ onRead }: ScanQRProps): JSX.Element {
   return (
     <QRCodeScanner
-      onRead={() => console.log('scanned')}
+      onRead={(e) => {
+        onRead(e.data);
+      }}
       showMarker={true}
       customMarker={
         <Image

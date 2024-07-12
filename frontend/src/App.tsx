@@ -6,6 +6,7 @@ import LoginScreen from './screens/LoginScreen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import HomeScreen from './screens/HomeScreen';
 import ScanScreen from './screens/ScanScreen';
+import PresentScreen from './screens/PresentScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -17,6 +18,7 @@ function App(): JSX.Element {
           <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Scan" component={ScanScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Present" component={PresentScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
