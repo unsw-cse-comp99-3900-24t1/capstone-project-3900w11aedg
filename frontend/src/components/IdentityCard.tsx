@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, View, Text, StyleSheet, Pressable } from 'react-native';
+import { Image, View, Text, Pressable } from 'react-native';
 import FlipCard from 'react-native-flip-card';
 
 interface IProps {
@@ -19,43 +19,43 @@ interface IProps {
 const IdentityCard: React.FC<IProps> = ({ card, onPress }) => {
   return (
     <FlipCard>
-      <View style={styles.frontCardContainer}>
-        <View style={styles.frontCardContainerTop}>
-          <Text style={styles.frontCardTitle}>{card.name}</Text>
-          <View style={styles.frontCardContainerFlip}>
+      <View className="h-40 w-80 bg-card-green rounded-md">
+        <View className="flex-1 flex-row justify-between p-4">
+          <Text className="text-lg font-bold mb-2">{card.name}</Text>
+          <View className="w-7 h-7">
             <Image
               source={require('../assets/fliparrow.png')}
-              className="w-[100%] h-[100%]"
+              className="w-full h-full"
               resizeMode="contain"
             />
           </View>
         </View>
         <Pressable onPress={onPress}>
-          <View style={styles.frontCardContainerBottom}>
-            <Text style={styles.text}>{card.type}</Text>
+          <View className="h-20 pl-5">
+            <Text className="text-white">{card.type}</Text>
           </View>
         </Pressable>
       </View>
-      <View style={styles.backCardContainer}>
-        <View style={styles.backCardContainerTop}>
-          <Text style={styles.frontCardTitle}>{card.name}</Text>
-          <View style={styles.frontCardContainerFlip}>
+      <View className="h-40 w-80 bg-card-grey rounded-md">
+        <View className="flex-1 flex-row justify-between p-4">
+          <Text className="text-lg font-bold mb-2">{card.name}</Text>
+          <View className="w-7 h-7">
             <Image
               source={require('../assets/fliparrow.png')}
-              className="w-[100%] h-[100%]"
+              className="w-full h-full"
               resizeMode="contain"
             />
           </View>
         </View>
-        <Text style={styles.backCardContainerIssuedBy}>{card.credIssuedBy}</Text>
+        <Text className="pl-4">{card.credIssuedBy}</Text>
         <Pressable onPress={onPress}>
-          <View style={styles.backCardContainerBottom}>
-            <View style={styles.backCardContainerKey}>
+          <View className="h-20 flex-row pt-1 px-4 justify-around">
+            <View>
               <Text>Name</Text>
               <Text>{card.type} No.</Text>
               <Text>{card.type} Type</Text>
             </View>
-            <View style={styles.backCardContainerValue}>
+            <View>
               <Text>{card.credName}</Text>
               <Text>{card.credNumber}</Text>
               <Text>{card.credType}</Text>
@@ -66,68 +66,5 @@ const IdentityCard: React.FC<IProps> = ({ card, onPress }) => {
     </FlipCard>
   );
 };
-
-const styles = StyleSheet.create({
-  frontCardContainer: {
-    height: 160,
-    width: 320,
-    backgroundColor: 'rgb(82, 126, 120)',
-    borderRadius: 8,
-  },
-  frontCardTitle: {
-    marginTop: 0,
-    marginBottom: 8,
-    fontSize: 18,
-    fontWeight: 'bold',
-    border: 2,
-    height: 30,
-  },
-  frontCardContainerTop: {
-    justifyContent: 'space-between',
-    flex: 1,
-    flexDirection: 'row',
-    padding: 15,
-  },
-  frontCardContainerBottom: {
-    height: 80,
-    paddingLeft: 20,
-  },
-  frontCardContainerFlip: {
-    width: 30,
-    height: 30,
-  },
-  backCardContainer: {
-    height: 160,
-    width: 320,
-    borderRadius: 8,
-    backgroundColor: 'rgb(108, 114, 114)',
-  },
-  backCardContainerIssuedBy: {
-    paddingLeft: 15,
-  },
-  backCardContainerBottom: {
-    height: 80,
-    flexDirection: 'row',
-    paddingTop: 5,
-    paddingLeft: 15,
-    paddingRight: 15,
-    justifyContent: 'space-around',
-  },
-  backCardContainerTop: {
-    justifyContent: 'space-between',
-    flex: 1,
-    flexDirection: 'row',
-    paddingLeft: 15,
-    paddingRight: 15,
-    paddingTop: 15,
-    height: 30,
-  },
-  backCardContainerKey: {
-    fontSize: 12,
-  },
-  backCardContainerValue: {
-    fontSize: 12,
-  },
-});
 
 export default IdentityCard;
