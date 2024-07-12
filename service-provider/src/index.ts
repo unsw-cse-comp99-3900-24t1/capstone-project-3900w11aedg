@@ -3,17 +3,9 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import fs from 'node:fs';
-import { requestClaims } from '../../lib/src/service-provider/claim-request-helper.js';
 import { verifyClaim } from '../../lib/src/service-provider/claim-verify-helper.js';
-import { loadData } from '../../lib/src/data.js';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 const app = express();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const keyPairURL = path.join(__dirname, 'keyPair.key');
-const didURL = path.join(__dirname, 'did.txt');
 const port = 3333;
 
 app.use(express.json());
@@ -30,41 +22,6 @@ app.use(cors());
 
 app.get('/', (_req: Request, res: Response) => {
   res.send('Hello, world!');
-});
-
-/**
- * TODO - Move to Service Provider CLI
- */
-app.post('/generate/qr-code', async (req: Request, res: Response) => {
-  const { claims } = req.body;
-  let { domain } = req.body;
-  try {
-    const { did } = await loadData(didURL, keyPairURL);
-
-    if (!claims) {
-      res.status(404).send('No claims found');
-      return;
-    }
-
-    if (!domain) {
-      res.status(404).send('No domain found');
-      return;
-    } else if (domain === 'localhost') {
-      domain += `:${port}`;
-    }
-
-    const qrCodeUrl = await requestClaims(domain, claims, did);
-    res.status(200).json({ qrCodeUrl });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    let status = 500;
-    if (err.message === 'Invalid DID') {
-      status = 400;
-      return;
-    }
-    console.log(err);
-    res.status(status).send({ err });
-  }
 });
 
 app.get('/request-claims/:filename', async (req, res) => {

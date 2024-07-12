@@ -2,7 +2,6 @@
 
 import { Command } from 'commander';
 import generateKeyPair from '../../../lib/src/key.js';
-// import generateDID from '../../../lib/src/generate-did.js';
 import { saveData } from '../../../lib/src/data.js';
 import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
 import path from 'path';
@@ -10,10 +9,11 @@ import config from './cli.config.json' assert { type: 'json' };
 import uploadDIDDocument from '../../../lib/src/generate-did.js';
 import { verifyClaim } from '../../../lib/src/service-provider/claim-verify-helper.js';
 import fs from 'fs';
+import { generateQRCodeUrl } from '../../../lib/src/service-provider/claim-request-helper.js';
 
 const rootDir = path.resolve(config.rootDir);
-const backendUrl = path.resolve(config.backendRoute);
 const issuerDir = path.resolve(config.issuerDir);
+const backendRoute = config.backendRoute; 
 
 const program = new Command();
 const didURL = path.join(rootDir, 'did.txt');
@@ -33,9 +33,14 @@ program
   .description('Create a QR Code')
   .action(async () => {
     try {
-      const qr = await urlToQRCode(backendUrl);
+      const claims = fs.readFileSync(
+        rootDir + '/requests/claims-data.json',
+        'utf8'
+      );
+      const url = await generateQRCodeUrl(backendRoute, JSON.parse(claims), didURL, keyPairURL);
+      const qr = await urlToQRCode(url);
       await saveQRCode(qr, rootDir + '/qr-code.png');
-      console.log();
+      console.log("QR Code generated.");
     } catch (err) {
       console.error('Error creating QR code', err);
     }
