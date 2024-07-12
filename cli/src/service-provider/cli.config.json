@@ -1,5 +1,5 @@
 {
   "rootDir": "../service-provider/src",
   "issuerDir": "../issuer/src",
-  "backendRoute": "http://localhost:3333/claims"
+  "backendRoute": "localhost:3333"
 }

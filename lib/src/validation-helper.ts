@@ -1,7 +1,9 @@
 import { Resolver } from 'did-resolver';
 import { getResolver } from 'web-did-resolver';
 import claimsSchema from './schema.js';
-import * as js from 'json-schema-library';
+import js from 'json-schema-library';
+
+const { Draft07 } = js;
 
 export async function isValidDID(did: string) {
   const resolver = new Resolver(getResolver());
@@ -11,11 +13,12 @@ export async function isValidDID(did: string) {
 
 export function isValidClaim(claims: object) {
   if (Object.keys(claims).length === 0) return false;
-  const jsonSchema = new js.Draft07(claimsSchema);
+  const jsonSchema = new Draft07(claimsSchema);
   return jsonSchema.isValid(claims);
 }
 
 export function isValidDomain(domain: string) {
   const domainRegex = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  return domain === 'localhost' || domainRegex.test(domain);
+  const localhostRegex = /^localhost:\d+$/;
+  return localhostRegex.test(domain) || domainRegex.test(domain);
 }
