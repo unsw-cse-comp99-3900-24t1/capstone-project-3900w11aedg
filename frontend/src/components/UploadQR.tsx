@@ -1,10 +1,11 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import {
   BinaryBitmap,
   MultiFormatReader,
   RGBLuminanceSource,
   HybridBinarizer,
+  NotFoundException,
 } from '@zxing/library';
 import base64 from 'base-64';
 import React from 'react';
@@ -60,8 +61,12 @@ function UploadQR({ onRead }: ScanQRProps): JSX.Element {
         const url = reader.decode(binaryBitmap);
         onRead(url.getText());
       }
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        Alert.alert('Error', 'Please upload an image with a valid QR code.');
+      } else {
+        console.log(error);
+      }
     }
   };
 

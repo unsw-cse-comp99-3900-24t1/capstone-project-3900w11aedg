@@ -12,12 +12,14 @@ import ScanSwitch from '../components/ScanSwitch';
 type Props = NativeStackNavigationProp<RootStackParamList>;
 
 function ScanScreen(): JSX.Element {
-  const [method, setMethod] = React.useState<'Scan' | 'Upload'>('Upload');
+  const [method, setMethod] = React.useState<'Scan' | 'Upload'>('Scan');
   const navigation = useNavigation<Props>();
   const onRead = async (route: string) => {
     console.log(route);
     // check if route is valid
-    // call route
+    // Throw error -> gets an error alert/popup
+    // else call route
+    // Get payload and navigate to Present with it as param
     navigation.navigate('Present', { requestData: 'lol' });
   };
 
