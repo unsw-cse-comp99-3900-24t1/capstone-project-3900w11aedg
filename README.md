@@ -2,8 +2,6 @@
 
 # Project Structure
 
-___
-
 - backend: Identity Owner Backend (per user)
 - frontend: Identity Owner Frontend (per user)
 - issuer: Issuer API (per issuer)
