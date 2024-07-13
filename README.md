@@ -20,7 +20,8 @@ Please refer to the README.md in each folder for more information.
 docker-compose up
 ```
 
-Note: You are unable to view the frontend as it requires an emulator to run the frontend. You can view the frontend by
+Note: You are unable to view the frontend as it requires an emulator (e.g. Android Studio) to run the frontend. You can
+view the frontend by
 running the frontend locally.
 
 # How to run (without docker)
@@ -31,6 +32,14 @@ running the frontend locally.
 cd did
 npm install
 npm run build && npm start # or npm run dev
+```
+
+- Installing the library (required for backend, issuer and service-provider)
+
+```bash
+cd lib
+npm install
+npm run build
 ```
 
 - Running the backend
