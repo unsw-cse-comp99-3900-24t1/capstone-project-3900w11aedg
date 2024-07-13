@@ -3,3 +3,4 @@ dist/
 coverage/
 src/keyPair.key
 src/did.txt
+src/qr-code.png
