@@ -42,7 +42,6 @@
     "did-resolver": "^4.1.0",
     "json-schema-library": "^9.3.5",
     "klona": "^2.0.6",
-    "qr-image": "^3.2.0",
     "qrcode": "^1.5.3",
     "ts-node": "^10.9.2",
     "uuid": "^10.0.0",
