@@ -19,16 +19,15 @@ services:
     environment:
       - NODE_ENV=development
     command: [ "npm", "run", "dev" ]
-  frontend:
-    build:
-      context: .
-      dockerfile: ./frontend/Dockerfile
-    ports:
-      - "8081:8081"
-    environment:
-      - NODE_ENV=development
-    command: [ "npm", "start" ]
-
+  #  frontend:
+  #    build:
+  #      context: .
+  #      dockerfile: ./frontend/Dockerfile
+  #    ports:
+  #      - "8081:8081"
+  #    environment:
+  #      - NODE_ENV=development
+  #    command: [ "npm", "start" ]
   service-provider:
     build:
       context: .
