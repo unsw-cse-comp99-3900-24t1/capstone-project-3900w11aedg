@@ -9,6 +9,8 @@ import fs from 'fs';
 import { signCredential } from '../../lib/src/issuer/signing.js';
 import { fileURLToPath } from 'url';
 import { saveQRCode, urlToQRCode } from '../../lib/src/qr.js';
+import { v4 as uuidv4 } from 'uuid';
+import issuerMetadata from './meta-data.json' assert { type: 'json' };
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
@@ -48,103 +50,96 @@ app.post('/generate/qr-code', cors(internalUse), async (_req: Request, res: Resp
   res.status(200).send({ qrCode });
 });
 
-const issuerMetadata = {
-  credential_issuer: "https://www.unsw.edu.au/",
-  credential_configurations_supported: {
-    UniversityDegree_LDP_VC: {
-      format: "ldp-vc",
-      credential_definition: {
-        "@context": [
-          "https://www.w3.org/2018/credentials/v1",
-          "https://www.w3.org/2018/credentials/examples/v1"
-        ],
-        type: [
-          "VerifiableCredential",
-          "UniversityDegreeCredential"
-        ],
-        credentialSubject: {
-          alumniOf: {
-            mandatory: true,
-            display: {
-              name: "Alumni of UNSW"
-            },
-          },
-        },
-      },
-      display: {
-        name: "University Graduate Credential",
-        logo: {
-          uri: "https://universitiesaustralia.edu.au/wp-content/uploads/2019/05/UNSW-1-300x300.png",
-        },
-        description: "The holder of this credential is a graduate of UNSW."
-      },
-    },
-  },
-  authorization_endpoint: `http://localhost:${port}/authorise`,
-  token_endpoint: `http://localhost:${port}/token`,
-  credential_endpoint: `http://localhost:${port}/credential/offer`,
-};
-
 // Returns the Issuer's metadata
 app.get('/.well-known/openid-credential-issuer', async (_req: Request, res: Response) => {
   res.json({ credential_offer: issuerMetadata });
 });
 
-/**
- * TODO
- */
+// const authorization_request = { 
+//   response_type: "code",  // must always be set to code
+//   client_id: "did:example:123456789abcdefghi",  // real client_id requires prior registration with issuer
+//   authorization_details: {
+//     type: "openid_credential",
+//     credential_configuration_id: "UniversityDegree_LDP_VC",
+//   }
+// };
+
+const authorizationStore: { [key: string]: any } = {}; // In-memory store for authorization codes for now, no backend database
+
+// Returns an authorisation token, given requester client and wanted credential
 app.post('/authorise', async (req: Request, res: Response) => {
-  const { authorization_details } = req.body;
+  const { response_type, client_id, authorization_details } = req.body;
   
+  if (!response_type || response_type !== 'code') {
+    res.status(400).send('Response type must be "code"');
+    return;
+  }
+
+  if (!client_id) {
+    res.status(400).send('Client identifier must be provided');
+    return;
+  }
   
-  
-  const authCode = 'AUTH_CODE';
-  res.status(200).send({ authCode });
+  if (!authorization_details) {
+    res.status(400).send('Authorisation details must be provided');
+    return;
+  }
+
+  const authCode = uuidv4();
+
+  authorizationStore[authCode] = { 
+    client_id: client_id, 
+    authorization_details: authorization_details, 
+  };
+
+  res.status(200).send({ code: authCode });
 });
 
-/**
- * TODO
- */
-app.post('/token', async (_req: Request, res: Response) => {
-  const token = 'TOKEN';
-  console.log('TODO');
-  res.status(200).send({ token });
-});
+// const credential_request = {
+//   auth_code: "ACCESSTOKEN",
+//   credential_identifier: "UniversityDegree_LDP_VC",
+// }
 
-/**
- * TODO
- */
+// Issues the requested credential to the Identity Owner 
 app.post('/credential/offer', async (req: Request, res: Response) => {
   try {
-    const token = req.header('Authorization');
-    const { proof } = req.body;
+    const { auth_code, credential_identifier } = req.body;
 
-    if (!proof) {
-      res.status(400).send('Proof is required');
+    if (!auth_code) {
+      res.status(400).send('Authorization token is required');
       return;
     }
 
-    if (!token) {
-      res.status(400).send('Token is required');
+    const authDetails = authorizationStore[auth_code];
+    if (!authDetails) {
+      res.status(400).send('Authorization token is invalid');
       return;
     }
 
-    console.log('Token:', token);
-    console.log('Proof:', proof);
+    if (authDetails['credential_configuration_id'] !== credential_identifier) {
+      res.status(400).send('Credential requested does not match the authorised credential');
+      return;
+    }
 
-    // Change credential to be signed
-    const credential = fs.readFileSync(
-      __dirname + '/credentials/' + 'unsigned-credential.json',
-      'utf8'
-    );
-    const { keyPair } = await loadData(didURL, keyPairURL);
-    const credentialJSON = fs.readFileSync(__dirname + '/credentials/' + credential, 'utf8');
-    const signedCredential = await signCredential(credentialJSON, keyPair);
-    res.status(200).send(signedCredential);
+    delete authorizationStore[auth_code];
+
+    const signedCredential = await _signCredential(credential_identifier);
+    res.status(200).send({ credential: signedCredential });
   } catch (error) {
     res.status(400).send(error);
   }
 });
+
+async function _signCredential(credential_identifier: string) {
+  const credential = fs.readFileSync(
+    __dirname + '/credentials/' + credential_identifier + '.json',
+    'utf8'
+  );
+  const credentialJSON = JSON.parse(credential);
+  const { keyPair } = await loadData(didURL, keyPairURL);
+
+  return await signCredential(credentialJSON, keyPair);
+}
 
 const server = app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
