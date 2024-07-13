@@ -25,7 +25,6 @@
     "@types/node": "^20.14.9",
     "commander": "^12.1.0",
     "cross-env": "^7.0.3",
-    "crossenv": "^0.0.2-security",
     "globals": "^15.8.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3"

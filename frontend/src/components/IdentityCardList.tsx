@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Modal, Text, Pressable } from 'react-native';
+import { View, Modal, Text, Pressable } from 'react-native';
 import IdentityCard from './IdentityCard';
 
 interface Card {
@@ -52,9 +52,9 @@ const IdentityCardList: React.FC = () => {
   };
 
   return (
-    <View style={styles.list}>
+    <View className="flex flex-row flex-wrap justify-center">
       {cards.map((card) => (
-        <View key={card.id} style={styles.cardContainer}>
+        <View key={card.id} className="m-2">
           <IdentityCard card={card} onPress={() => handleCardPress(card)} />
           <Modal
             visible={!!selectedCard}
@@ -62,24 +62,32 @@ const IdentityCardList: React.FC = () => {
             animationType="slide"
             onRequestClose={handleCloseModal}
           >
-            <Pressable style={styles.modalOverlay} onPress={handleCloseModal}>
-              <Pressable style={styles.modalContent} onPress={() => {}}>
+            <Pressable
+              className="flex-1 justify-center items-center bg-dark-green opacity-80"
+              onPress={handleCloseModal}
+            >
+              <Pressable
+                className="w-[80%] h-[45%] p-5 bg-card-view-grey rounded-lg items-center"
+                onPress={() => {}}
+              >
                 {selectedCard && (
                   <>
-                    <View style={styles.modalInsideContent}>
-                      <View style={styles.cardDetails}>
-                        <View style={styles.cardDetailsKey}>
-                          <Text>Issued By</Text>
-                          <Text>Created</Text>
-                          <Text>Expiry</Text>
+                    <View className="p-5 space-y-5 flex-1 justify-start items-center">
+                      <View className="h-20 w-[100%] flex-row pt-1 px-4 space-x-4 bg-card-view-grey rounded-md justify-around">
+                        <View>
+                          <Text className="text-white font-medium">Issued By</Text>
+                          <Text className="text-white font-medium">Created</Text>
+                          <Text className="text-white font-medium">Expiry</Text>
                         </View>
-                        <View style={styles.cardDetailsValue}>
-                          <Text>{selectedCard.credIssuedBy}</Text>
-                          <Text>{selectedCard.creationDate}</Text>
-                          <Text>{selectedCard.expiryDate}</Text>
+                        <View>
+                          <Text className="text-grey">{selectedCard.credIssuedBy}</Text>
+                          <Text className="text-grey">{selectedCard.creationDate}</Text>
+                          <Text className="text-grey">{selectedCard.expiryDate}</Text>
                         </View>
                       </View>
-                      <View style={styles.qrCodeBlock} />
+                      <View className="p-3 bg-card-view-grey rounded-md justify-around">
+                        <Text className="text-red-500 font-bold">Remove Credential</Text>
+                      </View>
                     </View>
                   </>
                 )}
@@ -91,65 +99,5 @@ const IdentityCardList: React.FC = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  list: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  cardContainer: {
-    margin: 8,
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
-  modalContent: {
-    width: 330,
-    height: 400,
-    padding: 20,
-    backgroundColor: 'rgb(143, 149, 149)',
-    borderRadius: 10,
-    alignItems: 'center',
-  },
-  modalInsideContent: {
-    padding: 20,
-    flex: 1,
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: 'green',
-  },
-  modalText: {
-    fontSize: 16,
-    marginVertical: 10,
-    color: 'green',
-  },
-  qrCodeBlock: {
-    width: 100,
-    height: 100,
-    backgroundColor: 'white',
-  },
-  cardDetails: {
-    height: 80,
-    width: 270,
-    flexDirection: 'row',
-    paddingTop: 5,
-    paddingLeft: 15,
-    paddingRight: 15,
-    backgroundColor: 'rgb(96, 102, 101)',
-    borderRadius: 8,
-    justifyContent: 'space-around',
-  },
-  cardDetailsKey: {},
-  cardDetailsValue: {},
-});
 
 export default IdentityCardList;
