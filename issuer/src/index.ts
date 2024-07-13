@@ -55,15 +55,6 @@ app.get('/.well-known/openid-credential-issuer', async (_req: Request, res: Resp
   res.json({ credential_offer: issuerMetadata });
 });
 
-// const authorization_request = { 
-//   response_type: "code",  // must always be set to code
-//   client_id: "did:example:123456789abcdefghi",  // real client_id requires prior registration with issuer
-//   authorization_details: {
-//     type: "openid_credential",
-//     credential_configuration_id: "UniversityDegree_LDP_VC",
-//   }
-// };
-
 const authorizationStore: { [key: string]: { 
     client_id: string, 
     authorization_details: {
@@ -100,11 +91,6 @@ app.post('/authorise', async (req: Request, res: Response) => {
 
   res.status(200).send({ code: authCode });
 });
-
-// const credential_request = {
-//   auth_code: "ACCESSTOKEN",
-//   credential_identifier: "UniversityDegree_LDP_VC",
-// }
 
 // Issues the requested credential to the Identity Owner 
 app.post('/credential/offer', async (req: Request, res: Response) => {
