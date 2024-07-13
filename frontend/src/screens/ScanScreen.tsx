@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../config/types';
@@ -15,12 +15,21 @@ function ScanScreen(): JSX.Element {
   const [method, setMethod] = React.useState<'Scan' | 'Upload'>('Scan');
   const navigation = useNavigation<Props>();
   const onRead = async (route: string) => {
-    console.log(route);
+    try {
+      if (!route.match('request-claims/request-data')) {
+        Alert.alert('Error', 'Please scan a valid QR code.');
+        throw Error('Invalid QR code');
+      }
+      navigation.navigate('Present', { requestData: 'lol' });
+    } catch (error) {
+      console.log(error);
+    }
+
+    // request-claims/request-data
     // check if route is valid
     // Throw error -> gets an error alert/popup
     // else call route
     // Get payload and navigate to Present with it as param
-    navigation.navigate('Present', { requestData: 'lol' });
   };
 
   return (
