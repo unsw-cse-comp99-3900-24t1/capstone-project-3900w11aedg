@@ -59,7 +59,7 @@ app.post('/issuer/poll', cors(internalUse), async (req: Request, res: Response) 
 
   try {
     const response = await axios.get(`${issuerUrl}/.well-known/openid-credential-issuer`);
-    res.json(response.data);
+    res.status(200).json(response.data);
   } catch (error) {
     res.status(500).send(`Error fetching issuer metadata at ${issuerUrl}/.well-known/openid-credential-issuer`);
     return
@@ -98,8 +98,7 @@ app.post('/credential/request', cors(internalUse), async (req: Request, res: Res
   try {
     const response = await axios.post(credential_endpoint, credential_request);
     const signedCredential = response.data.credential;
-    console.log("received credential\n", signedCredential);
-    res.json(signedCredential);
+    res.status(200).json(signedCredential);
   } catch (error) {
     res.status(500).send(`Error authorising credential request at ${authorization_endpoint}`);
   }
