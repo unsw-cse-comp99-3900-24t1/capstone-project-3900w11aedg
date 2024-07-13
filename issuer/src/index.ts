@@ -64,7 +64,13 @@ app.get('/.well-known/openid-credential-issuer', async (_req: Request, res: Resp
 //   }
 // };
 
-const authorizationStore: { [key: string]: any } = {}; // In-memory store for authorization codes for now, no backend database
+const authorizationStore: { [key: string]: { 
+    client_id: string, 
+    authorization_details: {
+      type: string,
+      credential_configuration_id: string,
+    }, 
+} } = {}; // In-memory store for authorization codes for now, no backend database
 
 // Returns an authorisation token, given requester client and wanted credential
 app.post('/authorise', async (req: Request, res: Response) => {
@@ -116,7 +122,7 @@ app.post('/credential/offer', async (req: Request, res: Response) => {
       return;
     }
 
-    if (authDetails['credential_configuration_id'] !== credential_identifier) {
+    if (authDetails['authorization_details']['credential_configuration_id'] !== credential_identifier) {
       res.status(400).send('Credential requested does not match the authorised credential');
       return;
     }
