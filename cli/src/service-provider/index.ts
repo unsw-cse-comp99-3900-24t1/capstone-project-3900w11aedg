@@ -34,10 +34,10 @@ program
   .action(async () => {
     try {
       const claims = fs.readFileSync(
-        rootDir + '/requests/claims-data.json',
+        rootDir + '/claims/claims-data.json',
         'utf8'
       );
-      const url = await generateQRCodeUrl(backendRoute, JSON.parse(claims), didURL, keyPairURL);
+      const url = await generateQRCodeUrl(backendRoute, rootDir, JSON.parse(claims), didURL, keyPairURL);
       const qr = await urlToQRCode(url);
       await saveQRCode(qr, rootDir + '/qr-code.png');
       console.log("QR Code generated.");

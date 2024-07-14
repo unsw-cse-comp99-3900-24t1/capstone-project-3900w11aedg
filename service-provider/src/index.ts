@@ -4,9 +4,13 @@ import cors from 'cors';
 import morgan from 'morgan';
 import fs from 'node:fs';
 import { verifyClaim } from '../../lib/src/service-provider/claim-verify-helper.js';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 const app = express();
 const port = 3333;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.use(express.json());
 app.use(bodyParser.json());

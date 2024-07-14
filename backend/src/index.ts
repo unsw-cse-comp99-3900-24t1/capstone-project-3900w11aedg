@@ -27,7 +27,7 @@ const format = ':method :url :status :res[content-length] - :response-time ms\n:
 app.use(morgan(format));
 
 const internalUse = {
-  origin: `http://localhost:${port}`,
+  origin: ['http://localhost:8081', 'http://10.0.2.2:8081', 'http://127.0.0.1:8081'],
   allowedHeaders: 'Content-Type',
 };
 
@@ -42,7 +42,7 @@ app.post('/generate/did', cors(internalUse), async (_req: Request, res: Response
     const { keyPair, did, didDocument } = await generateKeyPair();
     await generateDID(didDocument, did);
     saveData(didURL, keyPairURL, keyPair, did);
-    res.status(200).send("DID generated successfully and saved to 'did.txt'");
+    res.status(200).send({ did });
   } catch (error) {
     res.status(500).send(error);
   }
@@ -53,7 +53,7 @@ app.post('/issuer/poll', cors(internalUse), async (req: Request, res: Response) 
   const { issuerUrl } = req.body;
 
   if (!issuerUrl) {
-    res.status(400).send('Must provide target Issuer\'s URL');
+    res.status(400).send("Must provide target Issuer's URL");
     return;
   }
 
@@ -61,24 +61,26 @@ app.post('/issuer/poll', cors(internalUse), async (req: Request, res: Response) 
     const response = await axios.get(`${issuerUrl}/.well-known/openid-credential-issuer`);
     res.status(200).json(response.data);
   } catch (error) {
-    res.status(500).send(`Error fetching issuer metadata at ${issuerUrl}/.well-known/openid-credential-issuer`);
-    return
+    res
+      .status(500)
+      .send(`Error fetching issuer metadata at ${issuerUrl}/.well-known/openid-credential-issuer`);
+    return;
   }
 });
 
-// Requests the credential selected from the options returned by /issuer/poll 
+// Requests the credential selected from the options returned by /issuer/poll
 app.post('/credential/request', cors(internalUse), async (req: Request, res: Response) => {
   const { credential_identifier, authorization_endpoint, credential_endpoint } = req.body;
 
   const { did } = await loadData(didURL, keyPairURL);
 
-  const authorization_request = { 
-    response_type: "code",
+  const authorization_request = {
+    response_type: 'code',
     client_id: did,
     authorization_details: {
-      type: "openid_credential",
+      type: 'openid_credential',
       credential_configuration_id: credential_identifier,
-    }
+    },
   };
 
   let auth_code: string;
@@ -93,7 +95,7 @@ app.post('/credential/request', cors(internalUse), async (req: Request, res: Res
   const credential_request = {
     auth_code: auth_code,
     credential_identifier: credential_identifier,
-  }
+  };
 
   try {
     const response = await axios.post(credential_endpoint, credential_request);
