@@ -1,21 +1,53 @@
 version: '3'
 services:
+  did:
+    build:
+      context: .
+      dockerfile: ./did/Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+    command: [ "npm", "run", "dev" ]
+
   backend:
     build:
-      context: ./backend
+      context: .
+      dockerfile: ./backend/Dockerfile
     ports:
       - "3000:3000"
-    volumes:
-      - ./backend:/app
     environment:
-      NODE_ENV: development
-
-  frontend:
+      - NODE_ENV=development
+    command: [ "npm", "run", "dev" ]
+  #  frontend:
+  #    build:
+  #      context: .
+  #      dockerfile: ./frontend/Dockerfile
+  #    ports:
+  #      - "8081:8081"
+  #    environment:
+  #      - NODE_ENV=development
+  #    command: [ "npm", "start" ]
+  service-provider:
     build:
-      context: ./frontend
+      context: .
+      dockerfile: ./service-provider/Dockerfile
     ports:
-      - "8081:8081"
-    volumes:
-      - ./frontend:/app
+      - "3333:3333"
     environment:
-      NODE_ENV: development
+      - NODE_ENV=development
+    command: [ "npm", "run", "dev" ]
+
+  issuer:
+    build:
+      context: .
+      dockerfile: ./issuer/Dockerfile
+    ports:
+      - "3210:3210"
+    environment:
+      - NODE_ENV=development
+    command: [ "npm", "run", "dev" ]
+  cli:
+    build:
+      context: .
+      dockerfile: ./cli/Dockerfile
