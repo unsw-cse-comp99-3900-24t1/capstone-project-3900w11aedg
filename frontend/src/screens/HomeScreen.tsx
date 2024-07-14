@@ -18,11 +18,11 @@ function HomeScreen(): JSX.Element {
       setDID(storedDid);
     } else {
       const keyPair = await RSA.generateKeys(4096);
-      const response = await axios.post('http://10.0.2.2:3000/generate/did', {
-        publicKey: keyPair.public,
-      });
+      const response = await axios.post('http://10.0.2.2:3000/generate/did');
+      console.log('res received');
+      // console.log(response);
       const newDid = response.data.did;
-      await AsyncStorage.setItem('did', newDid);
+      // await AsyncStorage.setItem('did', newDid);
       await setGenericPassword('privateKey', keyPair.private);
       setDID(newDid);
     }

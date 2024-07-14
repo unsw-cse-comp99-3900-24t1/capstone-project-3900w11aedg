@@ -2,10 +2,12 @@ import { View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import {
   BinaryBitmap,
+  BarcodeFormat,
   MultiFormatReader,
   RGBLuminanceSource,
   HybridBinarizer,
   NotFoundException,
+  DecodeHintType,
 } from '@zxing/library';
 import base64 from 'base-64';
 import React from 'react';
@@ -50,15 +52,18 @@ function UploadQR({ onRead }: ScanQRProps): JSX.Element {
   const upload = async () => {
     try {
       if (image) {
+        const hints = new Map();
+        hints.set(DecodeHintType.POSSIBLE_FORMATS, [BarcodeFormat.QR_CODE]);
+        hints.set(DecodeHintType.TRY_HARDER, true);
         const reader = new MultiFormatReader();
         const binaryString = base64.decode(image.base64);
-        const bytes = new Int32Array(binaryString.length);
+        const bytes = new Uint8ClampedArray(binaryString.length);
         for (let i = 0; i < binaryString.length; i++) {
           bytes[i] = binaryString.charCodeAt(i);
         }
         const luminanceSource = new RGBLuminanceSource(bytes, image.width, image.height);
         const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
-        const url = reader.decode(binaryBitmap);
+        const url = reader.decode(binaryBitmap, hints);
         onRead(url.getText());
       }
     } catch (error) {

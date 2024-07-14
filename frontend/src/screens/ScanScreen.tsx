@@ -8,6 +8,7 @@ import Footer from '../components/Footer';
 import ScanQR from '../components/ScanQR';
 import UploadQR from '../components/UploadQR';
 import ScanSwitch from '../components/ScanSwitch';
+import axios from 'axios';
 
 type Props = NativeStackNavigationProp<RootStackParamList>;
 
@@ -16,10 +17,13 @@ function ScanScreen(): JSX.Element {
   const navigation = useNavigation<Props>();
   const onRead = async (route: string) => {
     try {
-      if (!route.match('request-claims/request-data')) {
+      if (!route.match('request-claims')) {
         Alert.alert('Error', 'Please scan a valid QR code.');
         throw Error('Invalid QR code');
       }
+      console.log(route);
+      const response = await axios.get(route);
+      console.log(response);
       navigation.navigate('Present', { requestData: 'lol' });
     } catch (error) {
       console.log(error);
