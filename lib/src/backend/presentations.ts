@@ -1,11 +1,10 @@
 import * as vc from '@digitalbazaar/vc';
 import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
 import {
-    createDiscloseCryptosuite,
+    createDiscloseCryptosuite, createSignCryptosuite
   } from '@digitalbazaar/bbs-2023-cryptosuite';
 import documentLoader from '../document-loader.js';
-import { randomUUID } from 'crypto';
-import { createSignCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
+//import { randomUUID } from 'crypto';
 
 export const deriveCredential = async (verifiableCredential: object): Promise<object> => {
   const suite = new DataIntegrityProof({
@@ -24,9 +23,9 @@ export const deriveCredential = async (verifiableCredential: object): Promise<ob
 }
 
 //eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const createPresentation = async(credentials: object, keyPair: any): Promise<object> => {
+export const createPresentation = async(credentials: object, keyPair: any): Promise<any> => {
   const presentation = vc.createPresentation({
-    verifiableCredential: credentials, holder: keyPair.controller
+    verifiableCredential: credentials
   });
   
   const suite = new DataIntegrityProof({
@@ -36,6 +35,6 @@ export const createPresentation = async(credentials: object, keyPair: any): Prom
   });
 
   return await vc.signPresentation({
-    presentation, suite, challenge: randomUUID(), documentLoader
+    presentation, suite, challenge: "n-0S6_WzA2Mj", documentLoader
   });
 }

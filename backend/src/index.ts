@@ -55,16 +55,15 @@ app.post('/create/presentation', async (req: Request, res: Response) => {
     res.status(400).send('Missing claim or service provider URL');
   }
 
-  const derivedCredentials = [];
-  for (const credential of claim) {
-    derivedCredentials.push(await deriveCredential(credential));
-  }
+  const promises = claim.map(async (credential: object) => await deriveCredential(credential));
+  const derivedCredentials = await Promise.all(promises);
 
   const { keyPair } = await loadData(didURL, keyPairURL);
   const presentation = await createPresentation(derivedCredentials, keyPair);
 
   try {
-    await axios.post(serviceProviderUrl, presentation);
+    await axios.post(serviceProviderUrl, { vp_token: presentation });
+    res.status(200).send('Presentation sent successfully.');
   } catch (error) {
     res.status(500).send('Error sending presentation: ' + error);
   }

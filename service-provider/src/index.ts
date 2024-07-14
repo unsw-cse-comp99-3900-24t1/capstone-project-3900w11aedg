@@ -41,8 +41,8 @@ app.post('/claims/verify', async (req: Request, res: Response) => {
     return;
   }
 
-  const result = await verifyClaim(token);
-
+  const result = await verifyClaim(token, true);
+  console.log(result.error);
   if (result.verified) {
     res.status(200).send({ valid: true });
   } else {
