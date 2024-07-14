@@ -1,14 +1,10 @@
 import fs from 'fs';
-import { fileURLToPath } from 'url';
-import path from 'path';
 import { loadData } from '../data.js';
 import { isValidClaim, isValidDomain } from '../validation-helper.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 export const generateQRCodeUrl = async (
   domain: string, 
+  rootDir: string,
   claims: object,
   didURL: string,
   keyPairURL: string
@@ -19,22 +15,23 @@ export const generateQRCodeUrl = async (
     throw new Error('Invalid domain or claims');
   }
 
-  return await requestClaims(domain, claims, did);
+  return await requestClaims(domain, rootDir, claims, did);
 };
 
 export const requestClaims = async (
   domain: string,
+  rootDir: string,
   claims: object,
   did: string
 ): Promise<string> => {
   const presentationRequest = constructRequest(domain, claims, did);
 
-  const path = __dirname + `/requests`;
+  const path = rootDir + `/requests`;
   if (!fs.existsSync(path)) {
     fs.mkdirSync(path, { recursive: true });
   }
   fs.writeFileSync(
-    __dirname + `/requests/request-data.json`,
+    rootDir + `/requests/request-data.json`,
     JSON.stringify(presentationRequest, null, 2)
   );
 
