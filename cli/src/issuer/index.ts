@@ -50,7 +50,7 @@ program
     try {
       const qr = await urlToQRCode(backendUrl);
       await saveQRCode(qr, rootDir + '/qr-code.png');
-      console.log();
+      console.log('QR code created');
     } catch (err) {
       console.error('Error creating QR code', err);
     }
