@@ -4,3 +4,4 @@ coverage/
 src/keyPair.key
 src/did.txt
 src/signed-credentials/
+src/qr-code.png
