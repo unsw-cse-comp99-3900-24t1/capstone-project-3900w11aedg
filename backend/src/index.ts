@@ -4,9 +4,11 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import generateDID from '../../lib/src/generate-did.js';
 import generateKeyPair from '../../lib/src/key.js';
-import { saveData } from '../../lib/src/data.js';
+import { saveData, loadData } from '../../lib/src/data.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createPresentation, deriveCredential } from '../../lib/src/backend/presentations.js';
+import axios from 'axios';
 
 const app = express();
 const port = 3000;
@@ -51,6 +53,27 @@ app.post('/generate/did', cors(internalUse), async (_req: Request, res: Response
     res.status(200).send("DID generated successfully and saved to 'did.txt'");
   } catch (error) {
     res.status(500).send(error);
+  }
+});
+
+app.post('/create/presentation', async (req: Request, res: Response) => {
+  const { claim, serviceProviderUrl } = req.body;
+  if (!claim || !serviceProviderUrl) {
+    res.status(400).send('Missing claim or service provider URL');
+  }
+
+  const derivedCredentials = [];
+  for (const credential of claim) {
+    derivedCredentials.push(await deriveCredential(credential));
+  }
+
+  const { keyPair } = await loadData(didURL, keyPairURL);
+  const presentation = await createPresentation(derivedCredentials, keyPair);
+
+  try {
+    await axios.post(serviceProviderUrl, presentation);
+  } catch (error) {
+    res.status(500).send('Error sending presentation: ' + error);
   }
 });
 
