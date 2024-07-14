@@ -8,13 +8,17 @@ import { loadData, saveData } from '../../lib/src/data.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import axios from 'axios';
+import { getProjectRoot } from '../../lib/src/find.js';
 
 const app = express();
 const port = 3000;
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename);
-const keyPairURL = path.join(__dirname, 'keyPair.key');
-const didURL = path.join(__dirname, 'did.txt');
+const __basedir = getProjectRoot(__dirname);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(<any>global)['__basedir'] = __basedir;
+const keyPairURL = path.join(__basedir, 'keyPair.key');
+const didURL = path.join(__basedir, 'did.txt');
 
 app.use(express.json());
 app.use(bodyParser.json());

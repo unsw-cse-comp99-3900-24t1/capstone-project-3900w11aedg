@@ -4,13 +4,17 @@ import cors from 'cors';
 import morgan from 'morgan';
 import fs from 'node:fs';
 import { verifyClaim } from '../../lib/src/service-provider/claim-verify-helper.js';
-import { fileURLToPath } from 'url';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { getProjectRoot } from '../../lib/src/find.js';
 
 const app = express();
 const port = 3333;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const __basedir = getProjectRoot(__dirname);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(<any>global)['__basedir'] = __basedir;
 
 app.use(express.json());
 app.use(bodyParser.json());
@@ -31,7 +35,7 @@ app.get('/', (_req: Request, res: Response) => {
 app.get('/request-claims/:filename', async (req, res) => {
   const { filename } = req.params;
   try {
-    const request = fs.readFileSync(__dirname + `/requests/${filename}` + '.json', 'utf-8');
+    const request = fs.readFileSync(__basedir + `/requests/${filename}` + '.json', 'utf-8');
     res.status(200).send(JSON.parse(request));
   } catch (err) {
     res.status(500).send({ err });
@@ -45,12 +49,15 @@ app.post('/claims/verify', async (req: Request, res: Response) => {
     return;
   }
 
-  const result = await verifyClaim(token);
-
-  if (result.verified) {
-    res.status(200).send({ valid: true });
-  } else {
-    res.status(500).send({ valid: false });
+  try {
+    const result = await verifyClaim(token);
+    if (result.verified) {
+      res.status(200).send({ valid: true });
+    } else {
+      res.status(500).send({ valid: false });
+    }
+  } catch (err) {
+    res.status(500).send({ valid: false, err });
   }
 });
 
