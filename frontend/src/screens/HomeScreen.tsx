@@ -19,14 +19,16 @@ function HomeScreen(): JSX.Element {
       const newDid = response.data.did;
       await AsyncStorage.setItem('did', newDid);
       setDID(newDid);
+      console.log(newDid);
     }
   };
 
   useEffect(() => {
-    fetchDid().catch((error) => {
-      console.log(error);
-      console.log(error.message);
-    });
+    try {
+      fetchDid();
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   return (
