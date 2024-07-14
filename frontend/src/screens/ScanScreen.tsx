@@ -17,14 +17,26 @@ function ScanScreen(): JSX.Element {
   const navigation = useNavigation<Props>();
   const onRead = async (route: string) => {
     try {
-      if (!route.match('request-claims')) {
-        Alert.alert('Error', 'Please scan a valid QR code.');
+      console.log(route);
+      if (route.match('request-claims')) {
+        console.log(route);
+        // const response = await axios.get(smth);
+        navigation.navigate('Present', { requestData: 'lol' });
+      } else if (route.match('openid-credential-issuer')) {
+        let issuer = route.split('cli\\')[1]; // remove once qr code fixe
+        issuer = issuer?.split('\\.well-known')[0];
+        console.log(route);
+        console.log(issuer);
+        if (issuer) {
+          const response = await axios.post('http://localhost:3000/issuer/poll', {
+            issuerUrl: 'http://localhost:3210',
+          });
+          console.log(response);
+        }
+      } else {
+        Alert.alert('Error', 'Please scan a valid QR code from a service provider or issuer.');
         throw Error('Invalid QR code');
       }
-      console.log(route);
-      const response = await axios.get(route);
-      console.log(response);
-      navigation.navigate('Present', { requestData: 'lol' });
     } catch (error) {
       console.log(error);
     }

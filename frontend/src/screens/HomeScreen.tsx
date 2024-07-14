@@ -15,11 +15,15 @@ function HomeScreen(): JSX.Element {
     if (storedDid) {
       setDID(storedDid);
     } else {
-      const response = await axios.post('http://10.0.2.2:3000/generate/did', {});
-      const newDid = response.data.did;
-      await AsyncStorage.setItem('did', newDid);
-      setDID(newDid);
-      console.log(newDid);
+      try {
+        const response = await axios.post('http://localhost:3000/generate/did', {});
+        const newDid = response.data.did;
+        await AsyncStorage.setItem('did', newDid);
+        setDID(newDid);
+        console.log(newDid);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
