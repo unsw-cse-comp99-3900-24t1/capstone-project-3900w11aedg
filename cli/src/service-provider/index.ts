@@ -13,7 +13,7 @@ import { generateQRCodeUrl } from '../../../lib/src/service-provider/claim-reque
 
 const rootDir = path.resolve(config.rootDir);
 const issuerDir = path.resolve(config.issuerDir);
-const backendRoute = config.backendRoute; 
+const backendRoute = config.backendRoute;
 
 const program = new Command();
 const didURL = path.join(rootDir, 'did.txt');
@@ -35,12 +35,12 @@ program
     try {
       const claims = fs.readFileSync(
         rootDir + '/claims/claims-data.json',
-        'utf8'
+        'utf8',
       );
       const url = await generateQRCodeUrl(backendRoute, rootDir, JSON.parse(claims), didURL, keyPairURL);
       const qr = await urlToQRCode(url);
       await saveQRCode(qr, rootDir + '/qr-code.png');
-      console.log("QR Code generated.");
+      console.log('QR Code generated.');
     } catch (err) {
       console.error('Error creating QR code', err);
     }
@@ -62,12 +62,12 @@ program
   });
 
 program
-  .command('verify-credential <credential>')  
+  .command('verify-credential <credential>')
   .description('Verify a credential')
   .action(async (credential: object) => {
     const signedCredential = fs.readFileSync(
       issuerDir + '/signed-credentials/signed-' + credential + '.json',
-      'utf8'
+      'utf8',
     );
     try {
       await verify(JSON.parse(signedCredential));

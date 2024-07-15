@@ -11,7 +11,7 @@ import config from './cli.config.json' assert { type: 'json' };
 import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
 
 const rootDir = path.resolve(config.rootDir);
-const backendUrl = path.resolve(config.backendRoute);
+const backendUrl = config.backendRoute;
 
 const program = new Command();
 const didURL = path.join(rootDir, 'did.txt');
@@ -27,7 +27,7 @@ program
     console.log(keyPair);
     const credentialRead = fs.readFileSync(
       rootDir + '/credentials/' + credential + '.json',
-      'utf8'
+      'utf8',
     );
     const credentialJSON = JSON.parse(credentialRead);
     credentialJSON.issuer = did;
@@ -38,7 +38,7 @@ program
     }
     fs.writeFileSync(
       path + `/signed-${credential}.json`,
-      JSON.stringify(signedCredential, null, 2)
+      JSON.stringify(signedCredential, null, 2),
     );
     console.log(`Signed credential: ${JSON.stringify(signedCredential, null, 2)}`);
   });

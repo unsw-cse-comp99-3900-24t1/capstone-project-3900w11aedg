@@ -5,7 +5,6 @@ import morgan from 'morgan';
 import fs from 'node:fs';
 import { verify } from '../../lib/src/service-provider/verification.js';
 import base64url from 'base64-url';
-import { isValidVPToken } from '../../lib/src/validation-helper.js';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
@@ -45,9 +44,6 @@ app.post('/presentation/verify', async (req: Request, res: Response) => {
   if (!vp_token) {
     res.status(400).send('No token found');
     return;
-  } else if (!isValidVPToken(vp_token)) {
-    res.status(404).send('Invalid token format');
-    return;
   }
 
   try {
@@ -61,7 +57,7 @@ app.post('/presentation/verify', async (req: Request, res: Response) => {
     }
   } catch (err) {
     res.status(500).send({ valid: false, err });
-  }  
+  }
 });
 
 const server = app.listen(port, () => {
