@@ -5,13 +5,17 @@ import morgan from 'morgan';
 import fs from 'node:fs';
 import { verify } from '../../lib/src/service-provider/verification.js';
 import base64url from 'base64-url';
-import { fileURLToPath } from 'url';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { getProjectRoot } from '../../lib/src/find.js';
 
 const app = express();
 const port = 3333;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const __basedir = getProjectRoot(__dirname);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(<any>global)['__basedir'] = __basedir;
 
 app.use(express.json());
 app.use(bodyParser.json());
@@ -32,7 +36,7 @@ app.get('/', (_req: Request, res: Response) => {
 app.get('/request-claims/:filename', async (req, res) => {
   const { filename } = req.params;
   try {
-    const request = fs.readFileSync(__dirname + `/requests/${filename}` + '.json', 'utf-8');
+    const request = fs.readFileSync(__basedir + `/requests/${filename}` + '.json', 'utf-8');
     res.status(200).send(JSON.parse(request));
   } catch (err) {
     res.status(500).send({ err });
@@ -48,7 +52,6 @@ app.post('/presentation/verify', async (req: Request, res: Response) => {
 
   try {
     const result = await verify(JSON.parse(base64url.decode(vp_token)), true);
-
     if (result.verified) {
       res.status(200).send({ valid: true });
     } else {

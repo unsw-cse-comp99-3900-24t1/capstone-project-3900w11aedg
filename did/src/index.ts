@@ -9,6 +9,9 @@ import path from 'path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const __basedir = path.join(__dirname, '..');
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+(<any>global)['__basedir'] = __basedir;
 
 const app = express();
 const port = 5000;
@@ -41,13 +44,13 @@ app.post('/.well-known/:id/did.json', (req: Request, res: Response) => {
     res.status(400).send('Invalid DID');
     return;
   }
-  const path = __dirname + `/.well-known/${id}`;
+  const path = __basedir + `/.well-known/${id}`;
   try {
     if (!fs.existsSync(path)) {
       fs.mkdirSync(path, { recursive: true });
     }
     fs.writeFileSync(
-      __dirname + `/.well-known/${id}/did.json`,
+      __basedir + `/.well-known/${id}/did.json`,
       JSON.stringify(didDocument, null, 2)
     );
     res.status(200).send({ message: 'DID Document saved successfully' });
@@ -58,7 +61,7 @@ app.post('/.well-known/:id/did.json', (req: Request, res: Response) => {
 
 app.get('/.well-known/:id/did.json', (req: Request, res: Response) => {
   const { id } = req.params;
-  const didDocument = fs.readFileSync(__dirname + `/.well-known/${id}/did.json`, 'utf-8');
+  const didDocument = fs.readFileSync(__basedir + `/.well-known/${id}/did.json`, 'utf-8');
   if (!didDocument) {
     res.status(404).send('DID Document not found');
     return;

@@ -1,7 +1,7 @@
 node_modules/
 dist/
 coverage/
-src/keyPair.key
-src/did.txt
-src/signed-credentials/
-src/qr-code.png
+keyPair.key
+did.txt
+signed-credentials/
+qr-code.png

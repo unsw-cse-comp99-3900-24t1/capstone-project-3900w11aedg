@@ -1,5 +1,5 @@
 node_modules/
 dist/
 coverage/
-src/did.txt
-src/keyPair.key
+did.txt
+keyPair.key
