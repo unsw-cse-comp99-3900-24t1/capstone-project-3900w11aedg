@@ -53,21 +53,24 @@ app.post('/generate/did', cors(internalUse), async (_req: Request, res: Response
 
 app.post('/presentation/create', async (req: Request, res: Response) => {
   const { credentials, serviceProviderUrl, claimsToKeep } = req.body;
-  if (!credentials || !serviceProviderUrl || !claimsToKeep) {
+  if (!credentials || !serviceProviderUrl) {
     res.status(400).send('Missing claim or service provider URL');
+    return;
   } else if (!areValidCredentials(credentials) || !isValidUrl(serviceProviderUrl)) {
-    res.status(404).send('Invalid credentials format or URL');
+    res.status(400).send('Invalid credentials format or URL');
+    return;
+  }
+
+  if (claimsToKeep && (!Array.isArray(claimsToKeep) || claimsToKeep.length == 0)) {
+    res.status(400).send('Invalid claims to keep format');
+    return;
   }
 
   try {
     const presentation = await deriveAndCreatePresentation(credentials, claimsToKeep);
     const vp_token = base64url.encode(JSON.stringify(presentation));
-    try {
-      await axios.post(serviceProviderUrl, { vp_token });
-      res.status(200).send('Presentation sent successfully.');
-    } catch (error) {
-      res.status(500).send('Error sending presentation: ' + error);
-    }
+    await axios.post(serviceProviderUrl, { vp_token });
+    res.status(200).send('Presentation sent successfully.');
   } catch (err) {
     res.status(500).send('Error deriving and creating presentation: ' + err);
   }
