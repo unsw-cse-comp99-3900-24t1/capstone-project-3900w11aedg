@@ -3,7 +3,9 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import fs from 'node:fs';
-import { verifyClaim } from '../../lib/src/service-provider/claim-verify-helper.js';
+import { verify } from '../../lib/src/service-provider/verification.js';
+import base64url from 'base64-url';
+import { isValidVPToken } from '../../lib/src/validation-helper.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { getProjectRoot } from '../../lib/src/find.js';
@@ -42,18 +44,22 @@ app.get('/request-claims/:filename', async (req, res) => {
   }
 });
 
-app.post('/claims/verify', async (req: Request, res: Response) => {
-  const { vp_token: token } = req.body;
-  if (!token) {
-    res.status(404).send('No token found');
+app.post('/presentation/verify', async (req: Request, res: Response) => {
+  const { vp_token } = req.body;
+  if (!vp_token) {
+    res.status(400).send('No token found');
+    return;
+  } else if (!isValidVPToken(vp_token)) {
+    res.status(404).send('Invalid token format');
     return;
   }
 
   try {
-    const result = await verifyClaim(token);
+    const result = await verify(JSON.parse(base64url.decode(vp_token)), true);
     if (result.verified) {
       res.status(200).send({ valid: true });
     } else {
+      console.log(result.error);
       res.status(500).send({ valid: false });
     }
   } catch (err) {

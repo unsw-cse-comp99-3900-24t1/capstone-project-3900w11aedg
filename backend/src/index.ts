@@ -7,8 +7,11 @@ import generateKeyPair from '../../lib/src/key.js';
 import { loadData, saveData } from '../../lib/src/data.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { deriveAndCreatePresentation } from '../../lib/src/backend/presentations.js';
 import axios from 'axios';
 import { getProjectRoot } from '../../lib/src/find.js';
+import base64url from 'base64-url';
+import { areValidCredentials, isValidUrl } from '../../lib/src/validation-helper.js';
 
 const app = express();
 const port = 3000;
@@ -52,12 +55,30 @@ app.post('/generate/did', cors(internalUse), async (_req: Request, res: Response
   }
 });
 
+app.post('/presentation/create', async (req: Request, res: Response) => {
+  const { credentials, serviceProviderUrl } = req.body;
+  if (!credentials || !serviceProviderUrl) {
+    res.status(400).send('Missing claim or service provider URL');
+  } else if (!areValidCredentials(credentials) || !isValidUrl(serviceProviderUrl)) {
+    res.status(400).send('Invalid credentials format or URL');
+  }
+
+  try {
+    const presentation = await deriveAndCreatePresentation(credentials);
+    const vp_token = base64url.encode(JSON.stringify(presentation));
+    await axios.post(serviceProviderUrl, { vp_token });
+    res.status(200).send('Presentation sent successfully.');
+  } catch (err) {
+    res.status(500).send('Error deriving or creating presentation: ' + err);
+  }
+});
+
 // Retrieves a specific issuer's metadata given the endpoint
 app.post('/issuer/poll', cors(internalUse), async (req: Request, res: Response) => {
   const { issuerUrl } = req.body;
 
   if (!issuerUrl) {
-    res.status(400).send("Must provide target Issuer's URL");
+    res.status(400).send('Must provide target Issuer\'s URL');
     return;
   }
 
@@ -106,7 +127,7 @@ app.post('/credential/request', cors(internalUse), async (req: Request, res: Res
     const signedCredential = response.data.credential;
     res.status(200).json(signedCredential);
   } catch (error) {
-    res.status(500).send(`Error authorising credential request at ${authorization_endpoint}`);
+    res.status(500).send(`Error receiving credential request at ${credential_endpoint}`);
   }
 });
 

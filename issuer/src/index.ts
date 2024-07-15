@@ -136,6 +136,7 @@ async function _signCredential(credential_identifier: string) {
     'utf8'
   );
   const credentialJSON = JSON.parse(credential);
+  credentialJSON["issuanceDate"] = new Date().toISOString();
   const { keyPair } = await loadData(didURL, keyPairURL);
 
   return await signCredential(credentialJSON, keyPair);
