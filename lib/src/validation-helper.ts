@@ -24,11 +24,6 @@ export function isValidDomain(domain: string) {
   return localhostRegex.test(domain) || domainRegex.test(domain);
 }
 
-export function isValidVPToken(vp_token: string) {
-  const base64Regex = /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
-  return base64Regex.test(vp_token);
-}
-
 export function isValidUrl(url: string) {
   const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
   return urlRegex.test(url);
@@ -36,7 +31,7 @@ export function isValidUrl(url: string) {
 
 export function areValidCredentials(credentials: Array<object>): boolean {
   try {
-    credentials.map(credential => _checkCredential({credential}));
+    credentials.map(credential => _checkCredential({ credential }));
     return true;
   } catch {
     return false;
