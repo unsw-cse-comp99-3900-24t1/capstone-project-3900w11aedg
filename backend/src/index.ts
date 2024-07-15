@@ -102,7 +102,7 @@ app.post('/credential/request', cors(internalUse), async (req: Request, res: Res
     const signedCredential = response.data.credential;
     res.status(200).json(signedCredential);
   } catch (error) {
-    res.status(500).send(`Error authorising credential request at ${authorization_endpoint}`);
+    res.status(500).send(`Error receiving credential request at ${credential_endpoint}`);
   }
 });
 
