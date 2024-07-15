@@ -7,8 +7,8 @@ issuer/service provider agent and its backend route.
 
 ```json
 {
-  "rootDir": "../service-provider/src",
-  "issuerDir": "../issuer/src",
+  "rootDir": "../service-provider",
+  "issuerDir": "../issuer",
   "backendRoute": "localhost:3333"
 }
 ```
