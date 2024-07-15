@@ -4,7 +4,7 @@ import { createDiscloseCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
 import documentLoader from '../document-loader.js';
 
 //eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const deriveAndCreatePresentation = async (credentials: any, claimsToKeep?: string[]): Promise<object> => {
+export const deriveAndCreatePresentation = async (credentials: any, claimsToKeep?: string[]): Promise<any> => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (claimsToKeep && claimsToKeep.some((claim) => credentials.every((vc: any) => !Object.keys(vc.credentialSubject).includes(claim)))) {
     throw new Error(`Some claims to keep are not present in any credential`);
