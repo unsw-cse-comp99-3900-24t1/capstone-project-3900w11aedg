@@ -94,13 +94,13 @@ program
       );
       signedCredentials.push(JSON.parse(credentialData));
     });
-    const presentation = selectedClaimsList ? await deriveAndCreatePresentation(signedCredentials, selectedClaimsList)
-                                            : await deriveAndCreatePresentation(signedCredentials);
-    
-    console.log('Derived credentials:');
-    console.log(presentation.verifiableCredential);
-    
+
     try {
+      const presentation = selectedClaimsList ? await deriveAndCreatePresentation(signedCredentials, selectedClaimsList)
+                                              : await deriveAndCreatePresentation(signedCredentials);
+      console.log('Derived credentials:');
+      console.log(presentation.verifiableCredential);
+      
       await verify(presentation, true);
       console.log('The presentation is verified.');
     } catch (err) {
