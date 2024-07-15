@@ -67,8 +67,7 @@ app.post('/presentation/create', async (req: Request, res: Response) => {
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const presentation = await deriveAndCreatePresentation(credentials, claimsToKeep) as any;
+    const presentation = await deriveAndCreatePresentation(credentials, claimsToKeep);
     const vp_token = base64url.encode(JSON.stringify(presentation));
     await axios.post(serviceProviderUrl, { vp_token });
     res.status(200).send('Presentation sent successfully.');
