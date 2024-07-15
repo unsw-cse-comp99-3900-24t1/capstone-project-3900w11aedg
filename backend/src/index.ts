@@ -4,10 +4,13 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import generateDID from '../../lib/src/generate-did.js';
 import generateKeyPair from '../../lib/src/key.js';
-import { loadData, saveData } from '../../lib/src/data.js';
+import { saveData, loadData } from '../../lib/src/data.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { deriveAndCreatePresentation } from '../../lib/src/backend/presentations.js';
 import axios from 'axios';
+import base64url from 'base64-url';
+import { areValidCredentials, isValidUrl } from '../../lib/src/validation-helper.js';
 
 const app = express();
 const port = 3000;
@@ -45,6 +48,29 @@ app.post('/generate/did', cors(internalUse), async (_req: Request, res: Response
     res.status(200).send({ did });
   } catch (error) {
     res.status(500).send(error);
+  }
+});
+
+app.post('/presentation/create', async (req: Request, res: Response) => {
+  const { credentials, serviceProviderUrl } = req.body;
+  if (!credentials || !serviceProviderUrl) {
+    res.status(400).send('Missing claim or service provider URL');
+  } else if (!areValidCredentials(credentials) || !isValidUrl(serviceProviderUrl)) {
+    res.status(404).send('Invalid credentials format or URL');
+  }
+
+  try {
+    const presentation = await deriveAndCreatePresentation(credentials);
+    const vp_token = base64url.encode(JSON.stringify(presentation));
+
+    try {
+      await axios.post(serviceProviderUrl, { vp_token });
+      res.status(200).send('Presentation sent successfully.');
+    } catch (error) {
+      res.status(500).send('Error sending presentation: ' + error);
+    }
+  } catch (err) {
+    res.status(500).send('Error deriving and creating presentation: ' + err);
   }
 });
 

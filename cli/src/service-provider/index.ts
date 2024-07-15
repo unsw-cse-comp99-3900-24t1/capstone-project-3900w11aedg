@@ -7,7 +7,7 @@ import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
 import path from 'path';
 import config from './cli.config.json' assert { type: 'json' };
 import uploadDIDDocument from '../../../lib/src/generate-did.js';
-import { verifyClaim } from '../../../lib/src/service-provider/claim-verify-helper.js';
+import { verify } from '../../../lib/src/service-provider/verification.js';
 import fs from 'fs';
 import { generateQRCodeUrl } from '../../../lib/src/service-provider/claim-request-helper.js';
 
@@ -70,7 +70,7 @@ program
       'utf8'
     );
     try {
-      await verifyClaim(JSON.parse(signedCredential));
+      await verify(JSON.parse(signedCredential));
       console.log('The credential is verified.');
     } catch (err) {
       console.log(`The credential is not verified, due to ${err}`);
