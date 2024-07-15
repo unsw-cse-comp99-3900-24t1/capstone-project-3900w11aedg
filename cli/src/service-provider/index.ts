@@ -10,6 +10,7 @@ import uploadDIDDocument from '../../../lib/src/generate-did.js';
 import { verify } from '../../../lib/src/service-provider/verification.js';
 import fs from 'fs';
 import { generateQRCodeUrl } from '../../../lib/src/service-provider/claim-request-helper.js';
+import { deriveAndCreatePresentation } from '../../../lib/src/backend/presentations.js';
 
 const rootDir = path.resolve(config.rootDir);
 const issuerDir = path.resolve(config.issuerDir);
@@ -74,6 +75,36 @@ program
       console.log('The credential is verified.');
     } catch (err) {
       console.log(`The credential is not verified, due to ${err}`);
+    }
+  });
+
+program
+  .command('verify-presentation <credentials> [selectedClaims]')
+  .description('Verify a presentation with required credentials and optional selectedClaims, in format: verify-presentation credential1,credential2 claim1,claim2')
+  .action(async (credentials: string, selectedClaims: string) => {
+    const credentialsList = credentials.split(',');
+    const selectedClaimsList = selectedClaims ? selectedClaims.split(',') : null;
+
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const signedCredentials: any[] = [];
+    credentialsList.map((credential) => {
+      const credentialData = fs.readFileSync(
+        issuerDir + '/signed-credentials/signed-' + credential + '.json',
+        'utf8'
+      );
+      signedCredentials.push(JSON.parse(credentialData));
+    });
+    const presentation = selectedClaimsList ? await deriveAndCreatePresentation(signedCredentials, selectedClaimsList)
+                                            : await deriveAndCreatePresentation(signedCredentials);
+    
+    console.log('Derived credentials:');
+    console.log(presentation.verifiableCredential);
+    
+    try {
+      await verify(presentation, true);
+      console.log('The presentation is verified.');
+    } catch (err) {
+      console.log(`The presentation is not verified, due to ${err}`);
     }
   });
 
