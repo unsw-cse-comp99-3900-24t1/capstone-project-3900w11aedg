@@ -23,13 +23,6 @@ const keyPairURL = path.join(rootDir, 'keyPair.key');
 program.name('service-provider').description('NSW Ivy Nightclub CLI').version('1.0.0');
 
 program
-  .command('verify <did>')
-  .description('Verify a user')
-  .action((did: string) => {
-    console.log(`Verifying ${did}!`);
-  });
-
-program
   .command('qr-code')
   .description('Create a QR Code')
   .action(async () => {
@@ -90,17 +83,17 @@ program
     credentialsList.map((credential) => {
       const credentialData = fs.readFileSync(
         issuerDir + '/signed-credentials/signed-' + credential + '.json',
-        'utf8'
+        'utf8',
       );
       signedCredentials.push(JSON.parse(credentialData));
     });
 
     try {
       const presentation = selectedClaimsList ? await deriveAndCreatePresentation(signedCredentials, selectedClaimsList)
-                                              : await deriveAndCreatePresentation(signedCredentials);
+        : await deriveAndCreatePresentation(signedCredentials);
       console.log('Derived credentials:');
       console.log(presentation.verifiableCredential);
-      
+
       await verify(presentation, true);
       console.log('The presentation is verified.');
     } catch (err) {
