@@ -39,7 +39,7 @@ function HomeScreen(): JSX.Element {
     <View className="flex flex-col h-[100%] w-[100%] bg-white dark:bg-dark-green">
       <Header />
       <ScrollView>
-        <Text className="text-[28px] p-[30] font-bold text-text-grey dark:text-white">
+        <Text className="text-[28px] p-[10] px-[30] font-bold text-text-grey dark:text-white">
           Credentials
         </Text>
         <IdentityCardList />
