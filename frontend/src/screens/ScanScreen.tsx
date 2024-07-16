@@ -1,24 +1,41 @@
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../config/types';
-import { useNavigation } from '@react-navigation/native';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import ScanQR from '../components/ScanQR';
 import UploadQR from '../components/UploadQR';
 import ScanSwitch from '../components/ScanSwitch';
+import axios from 'axios';
 
-type Props = NativeStackNavigationProp<RootStackParamList>;
+type Props = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Issue'>;
+};
 
-function ScanScreen(): JSX.Element {
-  const [method, setMethod] = React.useState<'Scan' | 'Upload'>('Upload');
-  const navigation = useNavigation<Props>();
+function ScanScreen({ navigation }: Props): JSX.Element {
+  const [method, setMethod] = React.useState<'Scan' | 'Upload'>('Scan');
   const onRead = async (route: string) => {
-    console.log(route);
-    // check if route is valid
-    // call route
-    navigation.navigate('Present', { requestData: 'lol' });
+    try {
+      if (route.match('request-claims')) {
+        // const response = await axios.get();
+        navigation.navigate('Present', { requestData: 'response.data' });
+      } else if (route.match('openid-credential-issuer')) {
+        const response = await axios.post('http://localhost:3000/issuer/poll', {
+          issuerUrl: route,
+        });
+        if (response.data) {
+          navigation.navigate('Issue', { issuerMetadata: response.data });
+        } else {
+          Alert.alert('Issuer Error', 'There are no valid credentials offered from this issuer.');
+        }
+      } else {
+        Alert.alert('Error', 'Please scan a valid QR code from a service provider or issuer.');
+        throw Error('Invalid QR code');
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

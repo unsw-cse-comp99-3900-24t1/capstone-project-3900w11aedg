@@ -1,12 +1,9 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
-import {
-  BinaryBitmap,
-  MultiFormatReader,
-  RGBLuminanceSource,
-  HybridBinarizer,
-} from '@zxing/library';
-import base64 from 'base-64';
+import jsQR from 'jsqr';
+import jpeg from 'jpeg-js';
+import { decode } from 'fast-png';
+import { Buffer } from 'buffer';
 import React from 'react';
 
 interface ScanQRProps {
@@ -16,7 +13,7 @@ interface ScanQRProps {
 type ImageAsset = {
   base64: string;
   height: number;
-  uri: string;
+  type: string;
   width: number;
 } | null;
 
@@ -33,13 +30,13 @@ function UploadQR({ onRead }: ScanQRProps): JSX.Element {
       res.assets &&
       res.assets[0]?.base64 &&
       res.assets[0]?.height &&
-      res.assets[0]?.uri &&
+      res.assets[0]?.type &&
       res.assets[0]?.width
     ) {
       const imageData: ImageAsset = {
         base64: res.assets[0].base64,
         height: res.assets[0].height,
-        uri: res.assets[0].uri,
+        type: res.assets[0].type,
         width: res.assets[0].width,
       };
       setImage(imageData);
@@ -49,19 +46,29 @@ function UploadQR({ onRead }: ScanQRProps): JSX.Element {
   const upload = async () => {
     try {
       if (image) {
-        const reader = new MultiFormatReader();
-        const binaryString = base64.decode(image.base64);
-        const bytes = new Int32Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) {
-          bytes[i] = binaryString.charCodeAt(i);
+        if (image.type !== 'image/jpeg' && image.type !== 'image/png') {
+          throw new Error('Invalid image type. Please upload a PNG or JPEG image.');
         }
-        const luminanceSource = new RGBLuminanceSource(bytes, image.width, image.height);
-        const binaryBitmap = new BinaryBitmap(new HybridBinarizer(luminanceSource));
-        const url = reader.decode(binaryBitmap);
-        onRead(url.getText());
+        let qrCode;
+        const buffer = Buffer.from(image.base64, 'base64');
+        if (image.type === 'image/jpeg') {
+          const rawImage = jpeg.decode(buffer, { useTArray: true });
+          qrCode = jsQR(new Uint8ClampedArray(rawImage.data), image.width, image.height);
+        } else if (image.type === 'image/png') {
+          // png broken - only always has only 1 channel instead of 4
+          const rawImage = decode(buffer);
+          qrCode = jsQR(new Uint8ClampedArray(rawImage.data), image.width, image.height);
+        }
+        if (!qrCode?.data) {
+          throw new Error('Image does not have a visible QR code.');
+        }
+        onRead(qrCode.data);
       }
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert('Error', error.message);
+      }
+      console.log(error);
     }
   };
 
@@ -73,7 +80,7 @@ function UploadQR({ onRead }: ScanQRProps): JSX.Element {
             className="w-[90%] h-[90%]"
             resizeMode="contain"
             resizeMethod="scale"
-            source={{ uri: image.uri }}
+            source={{ uri: `data:${image.type};base64,${image.base64}` }}
           />
         ) : (
           <>
