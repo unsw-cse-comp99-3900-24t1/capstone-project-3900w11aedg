@@ -9,7 +9,7 @@ module.exports = {
         'dark-green': '#081715',
         'navbar-grey': '#495351',
         'button-grey': '#A7A7A7',
-        'popup-grey': '#606665',
+        'popup-grey': '#444343',
         'text-grey': '#F2F2F2',
         'blurred-grey': '#9B9B9B',
         'green-gradient': {

@@ -1,0 +1,85 @@
+{
+  "credential_issuer": "http://localhost:3210",
+  "credential_configurations_supported": {
+    "UniversityDegree_LDP_VC": {
+      "format": "ldp-vc",
+      "cryptographic_binding_methods_supported": [
+        "did:web:example#key-1"
+      ],
+      "credential_signing_alg_values_supported": [
+        "BBS"
+      ],
+      "credential_definition": {
+        "@context": [
+          "https://www.w3.org/2018/credentials/v1",
+          "https://www.w3.org/2018/credentials/examples/v1"
+        ],
+        "type": [
+          "VerifiableCredential",
+          "UniversityDegreeCredential"
+        ],
+        "credentialSubject": {
+          "alumniOf": {
+            "mandatory": true,
+            "display": {
+              "name": "Alumni of UNSW"
+            }
+          }
+        }
+      },
+      "display": [
+        {
+          "name": "University Graduate Credential",
+          "logo": {
+            "uri": "https://universitiesaustralia.edu.au/wp-content/uploads/2019/05/UNSW-1-300x300.png"
+          },
+          "description": "The holder of this credential is a graduate of UNSW."
+        }
+      ]
+    },
+    "MastersDegree_LDP_VC": {
+      "format": "ldp-vc",
+      "cryptographic_binding_methods_supported": [
+        "did:web:example#key-2"
+      ],
+      "credential_signing_alg_values_supported": [
+        "BBS"
+      ],
+      "credential_definition": {
+        "@context": [
+          "https://www.w3.org/2018/credentials/v1",
+          "https://www.w3.org/2018/credentials/examples/v1"
+        ],
+        "type": [
+          "VerifiableCredential",
+          "MastersDegreeCredential"
+        ],
+        "credentialSubject": {
+          "alumniOf": {
+            "mandatory": true,
+            "display": {
+              "name": "Alumni of UNSW"
+            }
+          }
+        }
+      },
+      "display": [
+        {
+          "name": "Masters Degree Credential",
+          "logo": {
+            "uri": "https://universitiesaustralia.edu.au/wp-content/uploads/2019/05/UNSW-1-300x300.png"
+          },
+          "description": "The holder of this credential has earned a master's degree from UNSW."
+        }
+      ]
+    }
+  },
+  "display": {
+    "name": "University of New South Wales",
+    "logo": {
+      "uri": "https://scienceandtechnologyaustralia.org.au/wp-content/uploads/2023/01/Untitled-design-55.png"
+    }
+  },
+  "authorization_endpoint": "http://localhost:3210/authorise",
+  "credential_endpoint": "http://localhost:3210/credential/offer"
+}

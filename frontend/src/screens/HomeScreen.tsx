@@ -1,9 +1,7 @@
-import { View, ScrollView, Text } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { setGenericPassword } from 'react-native-keychain';
-import { RSA } from 'react-native-rsa-native';
 import IdentityCardList from '../components/IdentityCardList';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -17,22 +15,24 @@ function HomeScreen(): JSX.Element {
     if (storedDid) {
       setDID(storedDid);
     } else {
-      const keyPair = await RSA.generateKeys(4096);
-      const response = await axios.post('http://10.0.2.2:3000/generate/did', {
-        publicKey: keyPair.public,
-      });
-      const newDid = response.data.did;
-      await AsyncStorage.setItem('did', newDid);
-      await setGenericPassword('privateKey', keyPair.private);
-      setDID(newDid);
+      try {
+        const response = await axios.post('http://localhost:3000/generate/did', {});
+        const newDid = response.data.did;
+        await AsyncStorage.setItem('did', newDid);
+        setDID(newDid);
+        console.log(newDid);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
   useEffect(() => {
-    fetchDid().catch((error) => {
-      console.log(error);
-      console.log(error.message);
-    });
+    try {
+      fetchDid();
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   return (

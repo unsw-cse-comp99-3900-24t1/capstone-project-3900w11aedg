@@ -1,0 +1,37 @@
+{
+  "query": [
+    {
+      "domain": "localhost:3333",
+      "did": "did:web:localhost%3A5000:.well-known:589e492a-7b75-4d9c-8563-ff29f6571274",
+      "claims": {
+        "id": "vp token example",
+        "input_descriptors": [
+          {
+            "id": "id card credential",
+            "format": {
+              "ldp_vc": {
+                "proof_type": [
+                  "Ed25519Signature2018"
+                ]
+              }
+            },
+            "constraints": {
+              "fields": [
+                {
+                  "path": [
+                    "$.type"
+                  ],
+                  "filter": {
+                    "type": "string",
+                    "pattern": "IDCardCredential"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "url": "https://localhost:3333/claims/verify"
+    }
+  ]
+}

@@ -1,17 +1,17 @@
 # Use the official Node.js image as a base
-FROM node:14
+FROM node:18
 
 # Create and change to the app directory
-WORKDIR /app
+WORKDIR /usr/src/frontend
 
 # Copy package.json and package-lock.json
-COPY package*.json ./
+COPY frontend/package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest of the application code
-COPY . .
+COPY frontend .
 
 # Compile TypeScript to JavaScript
 RUN npm run build
