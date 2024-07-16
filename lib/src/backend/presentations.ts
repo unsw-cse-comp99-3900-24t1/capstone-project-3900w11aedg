@@ -2,6 +2,7 @@ import * as vc from '@digitalbazaar/vc';
 import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
 import { createDiscloseCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
 import documentLoader from '../document-loader.js';
+import { v4 as uuidv4 } from 'uuid';
 
 //eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const deriveAndCreatePresentation = async (credentials: any, claimsToKeep?: string[]): Promise<any> => {
@@ -16,6 +17,7 @@ export const deriveAndCreatePresentation = async (credentials: any, claimsToKeep
 
   return vc.createPresentation({
     verifiableCredential: derivedCredentials,
+    id: uuidv4(),
   });
 };
 
