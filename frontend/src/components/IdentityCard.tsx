@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, View, Text, Pressable } from 'react-native';
 import FlipCard from 'react-native-flip-card';
+import { useNavigation } from '@react-navigation/native';
 
 interface IProps {
   card: {
@@ -13,10 +14,15 @@ interface IProps {
     creationDate: string;
     expiryDate: string;
   };
-  onPress: () => void;
 }
 
-const IdentityCard: React.FC<IProps> = ({ card, onPress }) => {
+const IdentityCard: React.FC<IProps> = ({ card }) => {
+  const navigation = useNavigation();
+
+  const handleCardPress = () => {
+    navigation.navigate('View', { card });
+  };
+
   return (
     <FlipCard>
       <View className="h-40 w-80 bg-card-green rounded-md">
@@ -30,7 +36,7 @@ const IdentityCard: React.FC<IProps> = ({ card, onPress }) => {
             />
           </View>
         </View>
-        <Pressable onPress={onPress}>
+        <Pressable onPress={handleCardPress}>
           <View className="h-20 pl-5">
             <Text className="text-white">{card.type}</Text>
           </View>
@@ -48,7 +54,7 @@ const IdentityCard: React.FC<IProps> = ({ card, onPress }) => {
           </View>
         </View>
         <Text className="pl-4">{card.credIssuedBy}</Text>
-        <Pressable onPress={onPress}>
+        <Pressable onPress={handleCardPress}>
           <View className="h-20 flex-row pt-1 px-4 justify-around">
             <View>
               <Text>Name</Text>
