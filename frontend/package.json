@@ -20,6 +20,7 @@
     "@react-navigation/native-stack": "^6.9.26",
     "axios": "^1.7.2",
     "buffer": "^6.0.3",
+    "cross-env": "^7.0.3",
     "fast-png": "^6.2.0",
     "jpeg-js": "^0.4.4",
     "jsqr": "^1.4.0",
