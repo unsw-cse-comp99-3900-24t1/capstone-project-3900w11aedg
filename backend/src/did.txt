@@ -1,1 +1,0 @@
-did:web:localhost%3A5000:.well-known:c0fbd93a-c777-4790-b808-f526b0c88ba8

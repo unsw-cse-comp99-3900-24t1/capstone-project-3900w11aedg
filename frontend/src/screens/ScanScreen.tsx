@@ -25,7 +25,7 @@ function ScanScreen({ navigation }: Props): JSX.Element {
           issuerUrl: route,
         });
         if (response.data) {
-          navigation.navigate('Issue', { credentialOffers: response.data });
+          navigation.navigate('Issue', { issuerMetadata: response.data });
         } else {
           Alert.alert('Issuer Error', 'There are no valid credentials offered from this issuer.');
         }

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../config/types';
@@ -13,12 +13,12 @@ type Props = {
 };
 
 export default function IssuanceScreen({ route, navigation }: Props): JSX.Element {
-  const { credentialOffers } = route.params ?? {};
+  const { issuerMetadata } = route.params ?? {};
 
   return (
     <View className="flex flex-col h-[100%] w-[100%] bg-white dark:bg-dark-green">
       <Header />
-      <ScrollView className="flex flex-col px-[5%] h-[100%]">
+      <View className="flex flex-col px-[5%] h-[100%]">
         <TouchableOpacity
           className="w-[30%] bg-theme-gold py-[3px] rounded-[15px]"
           onPress={() => navigation.goBack()}
@@ -28,8 +28,12 @@ export default function IssuanceScreen({ route, navigation }: Props): JSX.Elemen
         <Text className="mt-[8%] font-medium text-3xl text-text-grey dark:text-white">
           Add a credential
         </Text>
-        {credentialOffers ? <IssueCredentialList credentialOffers={credentialOffers} /> : <></>}
-      </ScrollView>
+        {issuerMetadata ? (
+          <IssueCredentialList issuerMetadata={Object.values(issuerMetadata)[0]} />
+        ) : (
+          <></>
+        )}
+      </View>
       <Footer />
     </View>
   );
