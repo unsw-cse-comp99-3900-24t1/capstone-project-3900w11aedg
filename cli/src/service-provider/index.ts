@@ -7,13 +7,14 @@ import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
 import path from 'path';
 import config from './cli.config.json' assert { type: 'json' };
 import uploadDIDDocument from '../../../lib/src/generate-did.js';
-import { verifyClaim } from '../../../lib/src/service-provider/claim-verify-helper.js';
+import { verify } from '../../../lib/src/service-provider/verification.js';
 import fs from 'fs';
 import { generateQRCodeUrl } from '../../../lib/src/service-provider/claim-request-helper.js';
+import { deriveAndCreatePresentation } from '../../../lib/src/backend/presentations.js';
 
 const rootDir = path.resolve(config.rootDir);
 const issuerDir = path.resolve(config.issuerDir);
-const backendRoute = config.backendRoute; 
+const backendRoute = config.backendRoute;
 
 const program = new Command();
 const didURL = path.join(rootDir, 'did.txt');
@@ -35,12 +36,12 @@ program
     try {
       const claims = fs.readFileSync(
         rootDir + '/claims/claims-data.json',
-        'utf8'
+        'utf8',
       );
       const url = await generateQRCodeUrl(backendRoute, rootDir, JSON.parse(claims), didURL, keyPairURL);
       const qr = await urlToQRCode(url);
       await saveQRCode(qr, rootDir + '/qr-code.png');
-      console.log("QR Code generated.");
+      console.log('QR Code generated.');
     } catch (err) {
       console.error('Error creating QR code', err);
     }
@@ -62,18 +63,48 @@ program
   });
 
 program
-  .command('verify-credential <credential>')  
+  .command('verify-credential <credential>')
   .description('Verify a credential')
   .action(async (credential: object) => {
     const signedCredential = fs.readFileSync(
       issuerDir + '/signed-credentials/signed-' + credential + '.json',
-      'utf8'
+      'utf8',
     );
     try {
-      await verifyClaim(JSON.parse(signedCredential));
+      await verify(JSON.parse(signedCredential));
       console.log('The credential is verified.');
     } catch (err) {
       console.log(`The credential is not verified, due to ${err}`);
+    }
+  });
+
+program
+  .command('verify-presentation <credentials> [selectedClaims]')
+  .description('Verify a presentation with required credentials and optional selectedClaims, in format: verify-presentation credential1,credential2 claim1,claim2')
+  .action(async (credentials: string, selectedClaims: string) => {
+    const credentialsList = credentials.split(',');
+    const selectedClaimsList = selectedClaims ? selectedClaims.split(',') : null;
+
+    //eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const signedCredentials: any[] = [];
+    credentialsList.map((credential) => {
+      const credentialData = fs.readFileSync(
+        issuerDir + '/signed-credentials/signed-' + credential + '.json',
+        'utf8'
+      );
+      signedCredentials.push(JSON.parse(credentialData));
+    });
+
+    try {
+      const presentation = selectedClaimsList ? await deriveAndCreatePresentation(signedCredentials, selectedClaimsList)
+                                              : await deriveAndCreatePresentation(signedCredentials);
+      console.log('Derived credentials:');
+      console.log(presentation.verifiableCredential);
+      
+      await verify(presentation, true);
+      console.log('The presentation is verified.');
+    } catch (err) {
+      console.log(`The presentation is not verified, due to ${err}`);
     }
   });
 

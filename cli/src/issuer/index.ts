@@ -27,7 +27,7 @@ program
     console.log(keyPair);
     const credentialRead = fs.readFileSync(
       rootDir + '/credentials/' + credential + '.json',
-      'utf8'
+      'utf8',
     );
     const credentialJSON = JSON.parse(credentialRead);
     credentialJSON.issuer = did;
@@ -38,7 +38,7 @@ program
     }
     fs.writeFileSync(
       path + `/signed-${credential}.json`,
-      JSON.stringify(signedCredential, null, 2)
+      JSON.stringify(signedCredential, null, 2),
     );
     console.log(`Signed credential: ${JSON.stringify(signedCredential, null, 2)}`);
   });
