@@ -11,7 +11,7 @@ import config from './cli.config.json' assert { type: 'json' };
 import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
 
 const rootDir = path.resolve(config.rootDir);
-const backendUrl = path.resolve(config.backendRoute);
+const backendUrl = config.backendRoute;
 
 const program = new Command();
 const didURL = path.join(rootDir, 'did.txt');

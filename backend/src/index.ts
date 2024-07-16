@@ -58,12 +58,12 @@ app.post('/issuer/poll', cors(internalUse), async (req: Request, res: Response) 
   }
 
   try {
-    const response = await axios.get(`${issuerUrl}/.well-known/openid-credential-issuer`);
+    const response = await axios.get(issuerUrl);
     res.status(200).json(response.data);
   } catch (error) {
     res
       .status(500)
-      .send(`Error fetching issuer metadata at ${issuerUrl}/.well-known/openid-credential-issuer`);
+      .send(`Error fetching issuer metadata at ${issuerUrl}`);
     return;
   }
 });
