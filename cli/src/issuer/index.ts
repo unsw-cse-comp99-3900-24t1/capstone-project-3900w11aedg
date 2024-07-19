@@ -9,9 +9,15 @@ import generateDID from '../../../lib/src/generate-did.js';
 import { signCredential } from '../../../lib/src/issuer/signing.js';
 import config from './cli.config.json' assert { type: 'json' };
 import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
+import { fileURLToPath } from 'url';
+import { getProjectRoot } from '../../../lib/src/find.js';
 
 const rootDir = path.resolve(config.rootDir);
 const backendUrl = config.backendRoute;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const __basedir = getProjectRoot(__dirname);
 
 const program = new Command();
 const didURL = path.join(rootDir, 'did.txt');
@@ -24,7 +30,6 @@ program
   .description('Signs a credential')
   .action(async (credential: string) => {
     const { did, keyPair } = await loadData(didURL, keyPairURL);
-    console.log(keyPair);
     const credentialRead = fs.readFileSync(
       rootDir + '/credentials/' + credential + '.json',
       'utf8',
@@ -32,7 +37,7 @@ program
     const credentialJSON = JSON.parse(credentialRead);
     credentialJSON.issuer = did;
     const signedCredential = await signCredential(credentialJSON, keyPair);
-    const path = rootDir + `/signed-credentials`;
+    const path = __basedir + `/signed-credentials`;
     if (!fs.existsSync(path)) {
       fs.mkdirSync(path, { recursive: true });
     }
@@ -63,8 +68,8 @@ program
     try {
       const { keyPair, did, didDocument } = await generateKeyPair();
       await generateDID(didDocument, did);
-      console.log(keyPair);
       saveData(didURL, keyPairURL, keyPair, did);
+      console.log(keyPair);
       console.log(`Key pair created.`);
       console.log(`Your DID: ${did}`);
     } catch (err) {

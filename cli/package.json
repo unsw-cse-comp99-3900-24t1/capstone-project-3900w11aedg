@@ -13,7 +13,9 @@
     "start-service-provider-dev": "node --loader ts-node/esm src/service-provider/index.ts",
     "start-service-provider": "node ./dist/cli/src/service-provider/index.js",
     "start-issuer-dev": "node --loader ts-node/esm src/issuer/index.ts",
-    "start-issuer": "node ./dist/cli/src/issuer/index.js"
+    "start-issuer": "node ./dist/cli/src/issuer/index.js",
+    "start-identity-owner-dev": "node --loader ts-node/esm src/identity-owner/index.ts",
+    "start-identity-owner": "node ./dist/cli/src/identity-owner/index.js"
   },
   "type": "module",
   "keywords": [],

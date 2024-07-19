@@ -10,24 +10,21 @@ import uploadDIDDocument from '../../../lib/src/generate-did.js';
 import { verify } from '../../../lib/src/service-provider/verification.js';
 import fs from 'fs';
 import { generateQRCodeUrl } from '../../../lib/src/service-provider/claim-request-helper.js';
-import { deriveAndCreatePresentation } from '../../../lib/src/backend/presentations.js';
+import { fileURLToPath } from 'url';
+import { getProjectRoot } from '../../../lib/src/find.js';
 
 const rootDir = path.resolve(config.rootDir);
-const issuerDir = path.resolve(config.issuerDir);
 const backendRoute = config.backendRoute;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const __basedir = getProjectRoot(__dirname);
 
 const program = new Command();
 const didURL = path.join(rootDir, 'did.txt');
 const keyPairURL = path.join(rootDir, 'keyPair.key');
 
 program.name('service-provider').description('NSW Ivy Nightclub CLI').version('1.0.0');
-
-program
-  .command('verify <did>')
-  .description('Verify a user')
-  .action((did: string) => {
-    console.log(`Verifying ${did}!`);
-  });
 
 program
   .command('qr-code')
@@ -55,6 +52,7 @@ program
       const { keyPair, did, didDocument } = await generateKeyPair();
       await uploadDIDDocument(didDocument, did);
       saveData(didURL, keyPairURL, keyPair, did);
+      console.log(keyPair);
       console.log(`Key pair created.`);
       console.log(`Your DID: ${did}`);
     } catch (err) {
@@ -67,7 +65,7 @@ program
   .description('Verify a credential')
   .action(async (credential: object) => {
     const signedCredential = fs.readFileSync(
-      issuerDir + '/signed-credentials/signed-' + credential + '.json',
+      __basedir + '/signed-credentials/signed-' + credential + '.json',
       'utf8',
     );
     try {
@@ -79,30 +77,19 @@ program
   });
 
 program
-  .command('verify-presentation <credentials> [selectedClaims]')
+  .command('verify-presentation <presentationId>')
   .description('Verify a presentation with required credentials and optional selectedClaims, in format: verify-presentation credential1,credential2 claim1,claim2')
-  .action(async (credentials: string, selectedClaims: string) => {
-    const credentialsList = credentials.split(',');
-    const selectedClaimsList = selectedClaims ? selectedClaims.split(',') : null;
-
-    //eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const signedCredentials: any[] = [];
-    credentialsList.map((credential) => {
-      const credentialData = fs.readFileSync(
-        issuerDir + '/signed-credentials/signed-' + credential + '.json',
-        'utf8'
-      );
-      signedCredentials.push(JSON.parse(credentialData));
-    });
-
+  .action(async (presentationId: string) => {
     try {
-      const presentation = selectedClaimsList ? await deriveAndCreatePresentation(signedCredentials, selectedClaimsList)
-                                              : await deriveAndCreatePresentation(signedCredentials);
-      console.log('Derived credentials:');
-      console.log(presentation.verifiableCredential);
-      
-      await verify(presentation, true);
-      console.log('The presentation is verified.');
+      const presentation = JSON.parse(fs.readFileSync(
+        __basedir + '/presentations/' + presentationId + '.json',
+        'utf8'));
+      const results = await verify(presentation, true);
+      if (results.verified) {
+        console.log('The presentation is verified.');
+      } else {
+        console.log('The presentation is not verified.');
+      }
     } catch (err) {
       console.log(`The presentation is not verified, due to ${err}`);
     }
