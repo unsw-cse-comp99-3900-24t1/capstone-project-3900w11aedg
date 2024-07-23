@@ -6,8 +6,8 @@ import fs from 'fs';
 import { loadData } from '../src/data';
 
 const rootDir = path.resolve('../service-provider');
-const didURL = path.join(rootDir, '/src/did.txt');
-const keyPairURL = path.join(rootDir, '/src/keyPair.key');
+const didURL = path.join(rootDir, 'did.txt');
+const keyPairURL = path.join(rootDir, 'keyPair.key');
 
 const domain = 'example.com';
 const serviceProviderDID = 'did:web:example.com';

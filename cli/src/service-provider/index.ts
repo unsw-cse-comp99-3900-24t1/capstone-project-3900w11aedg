@@ -21,8 +21,8 @@ const __dirname = path.dirname(__filename);
 const __basedir = getProjectRoot(__dirname);
 
 const program = new Command();
-const didURL = path.join(rootDir, '/src/did.txt');
-const keyPairURL = path.join(rootDir, '/src/keyPair.key');
+const didURL = path.join(rootDir, 'did.txt');
+const keyPairURL = path.join(rootDir, 'keyPair.key');
 
 program.name('service-provider').description('NSW Ivy Nightclub CLI').version('1.0.0');
 
