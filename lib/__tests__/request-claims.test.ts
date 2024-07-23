@@ -11,10 +11,12 @@ jest.unstable_mockModule('../src/data', () => ({
 }));
 
 jest.unstable_mockModule('fs', () => ({
-  existsSync: jest.fn(),
-  readFileSync: jest.fn(),
-  writeFileSync: jest.fn(),
-  mkdirSync: jest.fn(),
+  default: {
+    existsSync: jest.fn(),
+    readFileSync: jest.fn(),
+    writeFileSync: jest.fn(),
+    mkdirSync: jest.fn(),
+  },
 }));
 
 const { loadData } = await import('../src/data');

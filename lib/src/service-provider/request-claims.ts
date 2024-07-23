@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import fs from 'fs';
 import { loadData } from '../data.js';
 import { isValidClaim, isValidDomain } from '../validation-helper.js';
 import { Claims, ClaimsRequest } from '../../types/ClaimsRequest.js';
