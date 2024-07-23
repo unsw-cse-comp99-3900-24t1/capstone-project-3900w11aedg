@@ -9,7 +9,7 @@ import config from './cli.config.json' assert { type: 'json' };
 import uploadDIDDocument from '../../../lib/src/generate-did.js';
 import { verify } from '../../../lib/src/service-provider/verification.js';
 import fs from 'fs';
-import { generateQRCodeUrl } from '../../../lib/src/service-provider/claim-request-helper.js';
+import { generateQRCodeUrl } from '../../../lib/src/service-provider/request-claims.js';
 import { fileURLToPath } from 'url';
 import { getProjectRoot } from '../../../lib/src/find.js';
 
@@ -21,8 +21,8 @@ const __dirname = path.dirname(__filename);
 const __basedir = getProjectRoot(__dirname);
 
 const program = new Command();
-const didURL = path.join(rootDir, 'did.txt');
-const keyPairURL = path.join(rootDir, 'keyPair.key');
+const didURL = path.join(rootDir, '/src/did.txt');
+const keyPairURL = path.join(rootDir, '/src/keyPair.key');
 
 program.name('service-provider').description('NSW Ivy Nightclub CLI').version('1.0.0');
 
