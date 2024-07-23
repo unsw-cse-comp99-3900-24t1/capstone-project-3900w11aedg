@@ -53,18 +53,18 @@ const mockRequest = {
 describe('Request claims', () => {
   describe('generateQRCodeUrl', () => {
     it('should generate a valid QR code URL', async () => {    
-      const result = await generateQRCodeUrl(domain, 'rootDir', claims, didURL, keyPairURL);
+      const result = await generateQRCodeUrl(domain, 'test-output', claims, didURL, keyPairURL);
       expect(result).toBe(`http://${domain}/request-claims/request-data`);
     });
 
     it('should throw an error if the domain is invalid', async () => {
-      await expect(generateQRCodeUrl('invalidDomain', 'rootDir', claims, didURL, keyPairURL))
+      await expect(generateQRCodeUrl('invalidDomain', 'test-output', claims, didURL, keyPairURL))
         .rejects
         .toThrow('Invalid domain or claims');
     });
 
     it('should throw an error if the didURL or keyPairURL are invalid', async () => {
-      await expect(generateQRCodeUrl(domain, 'rootDir', claims, 'invalidDidURL', 'invalidKeyPairURL'))
+      await expect(generateQRCodeUrl(domain, 'test-output', claims, 'invalidDidURL', 'invalidKeyPairURL'))
         .rejects
         .toThrow('Error loading DID');
     });
@@ -72,7 +72,7 @@ describe('Request claims', () => {
 
   describe('requestClaims', () => {
     it('should save the request and return the link to the file', async () => {
-      const result = await requestClaims(domain, 'rootDir', claims, serviceProviderDID);
+      const result = await requestClaims(domain, 'test-output', claims, serviceProviderDID);
       const request = fs.readFileSync(
         rootDir + '/requests/request-data.json',
         'utf8',
