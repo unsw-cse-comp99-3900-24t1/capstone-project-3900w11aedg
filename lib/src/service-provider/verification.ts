@@ -1,12 +1,19 @@
 import * as vc from '@digitalbazaar/vc';
 import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
-import {
-    createVerifyCryptosuite,
-  } from '@digitalbazaar/bbs-2023-cryptosuite';
+import { createVerifyCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
 import documentLoader from '../document-loader.js';
-  
-//eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const verify = async(verifiableDocument: any, isPresentation: boolean = false): Promise<any> => {
+import { 
+	VerifiablePresentation,
+	VerifiableCredential, 
+	VerifyCredentialResult,
+	VerifyPresentationResult 
+} from '@digitalbazaar/vc';
+
+export const verifyDocument = async (
+	verifiableDocument: VerifiablePresentation | VerifiableCredential,
+	isPresentation: boolean = false
+): Promise<VerifyCredentialResult | VerifyPresentationResult> => {
+
 	const suite = new DataIntegrityProof({
 		signer: null,
 		date: new Date().toDateString(),
