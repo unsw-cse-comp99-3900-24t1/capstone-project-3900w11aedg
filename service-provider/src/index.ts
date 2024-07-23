@@ -2,12 +2,12 @@ import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
-import fs from 'node:fs';
 import { verify } from '../../lib/src/service-provider/verification.js';
 import base64url from 'base64-url';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { getProjectRoot } from '../../lib/src/find.js';
+import fs from 'fs';
 
 const app = express();
 const port = 3333;

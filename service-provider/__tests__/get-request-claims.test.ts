@@ -1,8 +1,52 @@
-import { afterEach, describe, expect, it } from '@jest/globals';
+import { afterEach, describe, expect, it, jest } from '@jest/globals';
 import request from 'supertest';
+
+jest.unstable_mockModule('fs', () => ({
+  default: {
+    existsSync: jest.fn().mockReturnValue(true),
+    readFileSync: jest.fn().mockReturnValue(JSON.stringify({
+      'query': [
+        {
+          'domain': 'localhost:3333',
+          'did': 'did:web:example.com',
+          'claims': {
+            'id': 'vp token example',
+            'input_descriptors': [
+              {
+                'id': 'id card credential',
+                'format': {
+                  'ldp_vc': {
+                    'proof_type': [
+                      'DataIntegrityProof',
+                    ],
+                  },
+                },
+                'constraints': {
+                  'fields': [
+                    {
+                      'path': [
+                        '$.type',
+                      ],
+                      'filter': {
+                        'type': 'string',
+                        'pattern': 'IDCardCredential',
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+          'url': 'https://localhost:3333/claims/verify',
+        },
+      ],
+    })),
+  },
+}));
 
 const app = await import('../src/index');
 const { server } = await import('../src');
+
 
 describe('GET /request-claims/:filename', () => {
   afterEach(async () => {
@@ -10,6 +54,7 @@ describe('GET /request-claims/:filename', () => {
   });
 
   it('should respond with a valid status and a claims request', async () => {
+
     const filename = 'request-data';
     const response = await request(app.default).get(`/request-claims/${filename}`);
 
@@ -25,6 +70,7 @@ describe('GET /request-claims/:filename', () => {
   });
 
   it('should respond with status 500 if the file read failed', async () => {
+    jest.resetAllMocks();
     const response = await request(app.default).get(`/request-claims/invalid`);
     expect(response.status).toBe(500);
   });
