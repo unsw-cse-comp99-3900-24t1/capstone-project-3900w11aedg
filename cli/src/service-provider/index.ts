@@ -9,7 +9,7 @@ import config from './cli.config.json' assert { type: 'json' };
 import uploadDIDDocument from '../../../lib/src/generate-did.js';
 import { verify } from '../../../lib/src/service-provider/verification.js';
 import fs from 'fs';
-import { generateQRCodeUrl } from '../../../lib/src/service-provider/claim-request-helper.js';
+import { generateQRCodeUrl } from '../../../lib/src/service-provider/request-claims.js';
 import { fileURLToPath } from 'url';
 import { getProjectRoot } from '../../../lib/src/find.js';
 
