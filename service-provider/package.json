@@ -25,14 +25,7 @@
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1"
     },
-    "transform": {
-      "^.+\\.[jt]sx?$": [
-        "ts-jest",
-        {
-          "useESM": true
-        }
-      ]
-    }
+    "transform": {}
   },
   "type": "module",
   "keywords": [],

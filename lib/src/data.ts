@@ -7,7 +7,7 @@ export const saveData = (
   keyPairURL: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   keyPair: any,
-  did: string
+  did: string,
 ) => {
   fs.writeFileSync(didURL, did);
   fs.writeFileSync(keyPairURL, JSON.stringify(keyPair, null, 2));

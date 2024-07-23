@@ -1,4 +1,4 @@
-import { expect, describe, it, afterEach } from '@jest/globals';
+import { afterEach, describe, expect, it } from '@jest/globals';
 import request from 'supertest';
 
 const app = await import('../src/index');
@@ -12,11 +12,11 @@ describe('GET /request-claims/:filename', () => {
   it('should respond with a valid status and a claims request', async () => {
     const filename = 'request-data';
     const response = await request(app.default).get(`/request-claims/${filename}`);
-    
+
     expect(response.status).toBe(200);
-    
+
     const result = response.body;
-    expect(typeof result).toBe("object");
+    expect(typeof result).toBe('object');
     expect(result).toHaveProperty('query');
     expect(result.query[0]).toHaveProperty('domain');
     expect(result.query[0]).toHaveProperty('did');
@@ -118,7 +118,7 @@ describe('GET /request-claims/:filename', () => {
 //     const response = await request(app.default)
 //       .post('/generate/qr-code')
 //       .send({ claims: { test: 'structure' }, domain });
-  
+
 //     expect(response.status).toBe(400);
 //   });
 // });

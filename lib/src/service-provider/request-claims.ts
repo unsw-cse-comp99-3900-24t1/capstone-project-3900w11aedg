@@ -1,25 +1,25 @@
-import fs from 'fs';
+import * as fs from 'fs';
 import { loadData } from '../data.js';
 import { isValidClaim, isValidDomain } from '../validation-helper.js';
 import { Claims, ClaimsRequest } from '../../types/ClaimsRequest.js';
 
 export const generateQRCodeUrl = async (
-  domain: string, 
+  domain: string,
   rootDir: string,
   claims: Claims,
   didURL: string,
-  keyPairURL: string
+  keyPairURL: string,
 ): Promise<string> => {
   let did: string;
   try {
     ({ did } = await loadData(didURL, keyPairURL));
   } catch (err) {
-    throw new Error('Error loading DID');
+
+    throw new Error('Error loading DID.');
   }
   if (!isValidDomain(domain) || !isValidClaim(claims)) {
     throw new Error('Invalid domain or claims');
   }
-
   return await requestClaims(domain, rootDir, claims, did);
 };
 
@@ -27,7 +27,7 @@ export const requestClaims = async (
   domain: string,
   rootDir: string,
   claims: Claims,
-  did: string
+  did: string,
 ): Promise<string> => {
   const presentationRequest = constructRequest(domain, claims, did);
 
@@ -37,7 +37,7 @@ export const requestClaims = async (
   }
   fs.writeFileSync(
     rootDir + `/requests/request-data.json`,
-    JSON.stringify(presentationRequest, null, 2)
+    JSON.stringify(presentationRequest, null, 2),
   );
 
   return `http://${domain}/request-claims/request-data`;
