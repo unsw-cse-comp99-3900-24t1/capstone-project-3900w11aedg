@@ -7,11 +7,12 @@ import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
 import path from 'path';
 import config from './cli.config.json' assert { type: 'json' };
 import uploadDIDDocument from '../../../lib/src/generate-did.js';
-import { verify } from '../../../lib/src/service-provider/verification.js';
+import { verifyDocument } from '../../../lib/src/service-provider/verification.js';
 import fs from 'fs';
 import { generateQRCodeUrl } from '../../../lib/src/service-provider/request-claims.js';
 import { fileURLToPath } from 'url';
 import { getProjectRoot } from '../../../lib/src/find.js';
+import { deriveCredential } from '../../../lib/src/backend/presentations.js';
 
 const rootDir = path.resolve(config.rootDir);
 const backendRoute = config.backendRoute;
@@ -69,8 +70,17 @@ program
       'utf8',
     );
     try {
-      await verify(JSON.parse(signedCredential));
-      console.log('The credential is verified.');
+      const derivedCredential = await deriveCredential(JSON.parse(signedCredential));
+      if (!derivedCredential) {
+        throw new Error('Error deriving the credential.');
+      }
+
+      const results = await verifyDocument(derivedCredential);
+      if (results.verified) {
+        console.log('The credential is verified.');
+      } else {
+        console.log('The credential is not verified.');
+      }
     } catch (err) {
       console.log(`The credential is not verified, due to ${err}`);
     }
@@ -84,7 +94,7 @@ program
       const presentation = JSON.parse(fs.readFileSync(
         __basedir + '/presentations/' + presentationId + '.json',
         'utf8'));
-      const results = await verify(presentation, true);
+      const results = await verifyDocument(presentation, true);
       if (results.verified) {
         console.log('The presentation is verified.');
       } else {
