@@ -8,6 +8,7 @@ import config from './cli.config.json' assert { type: 'json' };
 import generateKeyPair from '../../../lib/src/key.js';
 import uploadDIDDocument from '../../../lib/src/generate-did.js';
 import { saveData } from '../../../lib/src/data.js';
+import { DIDDocument } from 'did-resolver';
 
 const rootDir = path.resolve(config.rootDir);
 
@@ -26,7 +27,7 @@ program
   .action(async () => {
     try {
       const { keyPair, did, didDocument } = await generateKeyPair();
-      await uploadDIDDocument(didDocument, did);
+      await uploadDIDDocument(didDocument as DIDDocument, did);
       saveData(didURL, keyPairURL, keyPair, did);
       console.log(keyPair);
       console.log(`Key pair created.`);

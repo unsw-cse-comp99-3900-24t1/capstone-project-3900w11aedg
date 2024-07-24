@@ -1,19 +1,20 @@
 import fs from 'node:fs';
 import { from } from '@digitalbazaar/bls12-381-multikey';
 import { isValidDID } from './validation-helper.js';
+import type { KeyPair } from '../types/data.js';
 
 export const saveData = (
   didURL: string,
   keyPairURL: string,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  keyPair: any,
+  keyPair: KeyPair,
   did: string,
 ) => {
   fs.writeFileSync(didURL, did);
   fs.writeFileSync(keyPairURL, JSON.stringify(keyPair, null, 2));
 };
 
-export const loadData = async (didURL: string, keyPairURL: string) => {
+
+export const loadData = async (didURL: string, keyPairURL: string): Promise<({ keyPair: KeyPair, did: string })> => {
   if (!fs.existsSync(didURL) || !fs.existsSync(keyPairURL)) {
     throw new Error('Path for did or keyPair does not exist.');
   }

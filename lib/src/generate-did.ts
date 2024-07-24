@@ -1,11 +1,10 @@
 import axios from 'axios';
+import { DIDDocument } from 'did-resolver';
 
 async function uploadDIDDocument(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  didDocument: any,
-  did: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): Promise<any> {
+  didDocument: DIDDocument,
+  did: string,
+) {
   const address = did.split(':')[4];
 
   try {
@@ -13,8 +12,6 @@ async function uploadDIDDocument(
   } catch (error) {
     throw new Error('Error saving the did document' + error);
   }
-
-  return didDocument;
 }
 
 export default uploadDIDDocument;

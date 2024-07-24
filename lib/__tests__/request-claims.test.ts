@@ -1,6 +1,7 @@
 import { describe, expect, it, jest } from '@jest/globals';
 import { Claims } from '../types/ClaimsRequest';
 import path from 'path';
+import { KeyPair } from '../types/data';
 
 const rootDir = path.resolve('../service-provider');
 const didURL = path.join(rootDir, 'did.txt');
@@ -70,7 +71,7 @@ describe('Request claims', () => {
     it('should generate a valid QR code URL', async () => {
       (loadData as jest.MockedFunction<typeof loadData>).mockResolvedValueOnce({
         did: 'did:web:example.com',
-        keyPair: null,
+        keyPair: {} as KeyPair,
       });
       const result = await generateQRCodeUrl(domain, 'test-output', claims, didURL, keyPairURL);
       expect(result).toBe(`http://${domain}/request-claims/request-data`);
@@ -79,7 +80,7 @@ describe('Request claims', () => {
     it('should throw an error if the domain is invalid', async () => {
       (loadData as jest.MockedFunction<typeof loadData>).mockResolvedValueOnce({
         did: 'did:web:example.com',
-        keyPair: null,
+        keyPair: {} as KeyPair,
       });
       await expect(generateQRCodeUrl('invalidDomain', 'test-output', claims, didURL, keyPairURL))
         .rejects

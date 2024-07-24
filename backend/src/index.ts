@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import generateDID from '../../lib/src/generate-did.js';
+import uploadDIDDocument from '../../lib/src/generate-did.js';
 import generateKeyPair from '../../lib/src/key.js';
 import { loadData, saveData } from '../../lib/src/data.js';
 import path from 'path';
@@ -12,6 +12,7 @@ import axios from 'axios';
 import { getProjectRoot } from '../../lib/src/find.js';
 import base64url from 'base64-url';
 import { areValidCredentials, isValidUrl } from '../../lib/src/validation-helper.js';
+import { DIDDocument } from 'did-resolver';
 
 const app = express();
 const port = 3000;
@@ -47,7 +48,7 @@ app.get('/', (_req: Request, res: Response) => {
 app.post('/generate/did', cors(internalUse), async (_req: Request, res: Response) => {
   try {
     const { keyPair, did, didDocument } = await generateKeyPair();
-    await generateDID(didDocument, did);
+    await uploadDIDDocument(didDocument as DIDDocument, did);
     saveData(didURL, keyPairURL, keyPair, did);
     res.status(200).send({ did });
   } catch (error) {
