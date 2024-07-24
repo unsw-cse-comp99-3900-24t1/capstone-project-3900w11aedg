@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import jsQR from 'jsqr';
 import jpeg from 'jpeg-js';
-import { decode } from 'fast-png';
+import { PNG } from 'pngjs/browser';
 import { Buffer } from 'buffer';
 import React from 'react';
 
@@ -27,6 +27,7 @@ function UploadQR({ onRead }: ScanQRProps): JSX.Element {
       includeBase64: true,
     });
     if (
+      res &&
       res.assets &&
       res.assets[0]?.base64 &&
       res.assets[0]?.height &&
@@ -49,16 +50,22 @@ function UploadQR({ onRead }: ScanQRProps): JSX.Element {
         if (image.type !== 'image/jpeg' && image.type !== 'image/png') {
           throw new Error('Invalid image type. Please upload a PNG or JPEG image.');
         }
-        let qrCode;
         const buffer = Buffer.from(image.base64, 'base64');
-        if (image.type === 'image/jpeg') {
-          const rawImage = jpeg.decode(buffer, { useTArray: true });
-          qrCode = jsQR(new Uint8ClampedArray(rawImage.data), image.width, image.height);
-        } else if (image.type === 'image/png') {
-          // png broken - only always has only 1 channel instead of 4
-          const rawImage = decode(buffer);
-          qrCode = jsQR(new Uint8ClampedArray(rawImage.data), image.width, image.height);
+        let imageData: Uint8Array;
+        if (image.type === 'image/png') {
+          const png = new PNG();
+          imageData = await new Promise((resolve, _reject) => {
+            png.parse(buffer, (_error, data) => {
+              resolve(data.data);
+            });
+          });
+        } else {
+          imageData = jpeg.decode(buffer, { useTArray: true }).data;
         }
+        if (!imageData) {
+          throw new Error('Unable to decode image.');
+        }
+        const qrCode = jsQR(new Uint8ClampedArray(imageData), image.width, image.height);
         if (!qrCode?.data) {
           throw new Error('Image does not have a visible QR code.');
         }
