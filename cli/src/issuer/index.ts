@@ -5,12 +5,13 @@ import fs from 'fs';
 import path from 'path';
 import { loadData, saveData } from '../../../lib/src/data.js';
 import generateKeyPair from '../../../lib/src/key.js';
-import generateDID from '../../../lib/src/generate-did.js';
+import uploadDIDDocument from '../../../lib/src/generate-did.js';
 import { signCredential } from '../../../lib/src/issuer/signing.js';
 import config from './cli.config.json' assert { type: 'json' };
 import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
 import { fileURLToPath } from 'url';
 import { getProjectRoot } from '../../../lib/src/find.js';
+import { DIDDocument } from 'did-resolver';
 
 const rootDir = path.resolve(config.rootDir);
 const backendUrl = config.backendRoute;
@@ -67,7 +68,7 @@ program
   .action(async () => {
     try {
       const { keyPair, did, didDocument } = await generateKeyPair();
-      await generateDID(didDocument, did);
+      await uploadDIDDocument(didDocument as DIDDocument, did);
       saveData(didURL, keyPairURL, keyPair, did);
       console.log(keyPair);
       console.log(`Key pair created.`);
