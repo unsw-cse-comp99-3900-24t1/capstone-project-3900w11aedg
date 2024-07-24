@@ -2,12 +2,12 @@ import express, { Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import morgan from 'morgan';
-import { verify } from '../../lib/src/service-provider/verification.js';
-import base64url from 'base64-url';
+import { verifyDocument } from '../../lib/src/service-provider/verification.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { getProjectRoot } from '../../lib/src/find.js';
 import fs from 'fs';
+import { decodeToken } from '../../lib/src/validation-helper.js';
 
 const app = express();
 const port = 3333;
@@ -45,13 +45,14 @@ app.get('/request-claims/:filename', async (req, res) => {
 
 app.post('/presentation/verify', async (req: Request, res: Response) => {
   const { vp_token } = req.body;
-  if (!vp_token) {
-    res.status(400).send('No token found');
+  const presentation = decodeToken(vp_token);
+  if (!vp_token || !presentation) {
+    res.status(400).send('Missing or invalid token');
     return;
   }
 
   try {
-    const result = await verify(JSON.parse(base64url.decode(vp_token)), true);
+    const result = await verifyDocument(presentation, true);
     if (result.verified) {
       res.status(200).send({ valid: true });
     } else {
