@@ -4,6 +4,7 @@ export type RootStackParamList = {
   Scan: undefined;
   Present: { requestData?: string };
   Issue: { issuerMetadata?: keyof { [key: string]: IssuerMetadata } };
+  View: undefined; // plz type view
 };
 
 export type IssuerMetadata = {

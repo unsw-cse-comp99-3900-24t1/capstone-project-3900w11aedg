@@ -3,13 +3,14 @@ import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../config/types';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 type Props = NativeStackNavigationProp<RootStackParamList>;
 
 function Footer(): JSX.Element {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<Props>();
+  const route = useRoute();
 
   return (
     <View
@@ -18,6 +19,7 @@ function Footer(): JSX.Element {
       <TouchableOpacity
         className="basis-[20%] flex items-center gap-1"
         onPress={() => navigation.navigate('Home')}
+        disabled={route.name === 'Home'}
       >
         <Image
           source={require('../assets/credentials.png')}
@@ -29,6 +31,7 @@ function Footer(): JSX.Element {
       <TouchableOpacity
         className="basis-[30%] flex items-center gap-1"
         onPress={() => navigation.navigate('Scan')}
+        disabled={route.name === 'Scan'}
       >
         <Image
           source={require('../assets/scan.png')}
@@ -37,7 +40,10 @@ function Footer(): JSX.Element {
         />
         <Text className="text-theme-gold">Scan</Text>
       </TouchableOpacity>
-      <TouchableOpacity className="basis-[20%] flex items-center gap-1">
+      <TouchableOpacity
+        className="basis-[20%] flex items-center gap-1"
+        disabled={route.name === 'Settings'}
+      >
         <Image
           source={require('../assets/settings.png')}
           resizeMode="contain"
