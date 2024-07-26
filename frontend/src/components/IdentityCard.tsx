@@ -45,7 +45,7 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
       <View className="h-40 w-80 bg-card-grey rounded-md">
         <View className="flex-1 flex-row justify-between p-4">
           <Text className="text-lg font-bold mb-2">{card.name}</Text>
-          <View className="w-7 h-7">
+          <View className="w-7">
             <Image
               source={require('../assets/fliparrow.png')}
               className="w-full h-full"
@@ -55,11 +55,11 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
         </View>
         <Text className="pl-4">{card.credIssuedBy}</Text>
         <Pressable onPress={handleCardPress}>
-          <View className="h-20 flex-row pt-1 px-4 justify-around">
+          <View className="flex-row pt-1 px-10 justify-around">
             <View>
               <Text>Name</Text>
-              <Text>{card.type} No.</Text>
-              <Text>{card.type} Type</Text>
+              <Text> No.</Text>
+              <Text>Type</Text>
             </View>
             <View>
               <Text>{card.credName}</Text>
