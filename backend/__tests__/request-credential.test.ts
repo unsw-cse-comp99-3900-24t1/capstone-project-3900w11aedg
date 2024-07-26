@@ -128,8 +128,10 @@ const restartServer = async () => {
   await server.close();
   jest.resetModules();
   jest.clearAllMocks();
-  app = await import('../src/index');
-  ({ server } = await import('../src'));
+  if (!jest.isEnvironmentTornDown()) {
+    app = await import('../src/index');
+    ({ server } = await import('../src'));
+  }
 };
 
 describe('POST /issuer/poll', () => {
@@ -138,10 +140,6 @@ describe('POST /issuer/poll', () => {
   });
 
   afterEach(async () => {
-    await server.close();
-  });
-
-  afterAll(async () => {
     await server.close();
   });
 
