@@ -2,6 +2,8 @@ import { afterEach, describe, expect, it, jest } from '@jest/globals';
 import request from 'supertest';
 import { KeyPair } from '../../lib/types/data';
 
+jest.useFakeTimers();
+
 jest.unstable_mockModule('axios', () => ({
   default: {
     post: jest.fn(),
