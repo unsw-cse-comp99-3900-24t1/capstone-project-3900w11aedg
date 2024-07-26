@@ -142,6 +142,8 @@
   "ts-node": {
     "esm": true,
     "compiler": "typescript",
+    "experimentalSpecifierResolution": "node",
+    "transpileOnly": true,
     "files": true
   },
   "include": [

@@ -118,7 +118,9 @@
   },
   "ts-node": {
     "esm": true,
-    "compiler": "typescript"
+    "compiler": "typescript",
+    "experimentalSpecifierResolution": "node",
+    "transpileOnly": true,
   },
   "include": ["src/**/*", "../lib/src/**/*"],
   "exclude": ["node_modules", "dist"]
