@@ -2,8 +2,6 @@ import { afterEach, describe, expect, it, jest } from '@jest/globals';
 import request from 'supertest';
 import { KeyPair } from '../../lib/types/data';
 
-jest.useFakeTimers();
-
 jest.unstable_mockModule('axios', () => ({
   default: {
     post: jest.fn(),
@@ -143,6 +141,10 @@ describe('POST /issuer/poll', () => {
     await server.close();
   });
 
+  afterAll(async () => {
+    await server.close();
+  });
+
   it('No issuer URL passed in', async () => {
     const res = await request(app.default).post('/issuer/poll');
     expect(res.status).toBe(400);
@@ -165,6 +167,10 @@ describe('POST /credential/request', () => {
   });
 
   afterEach(async () => {
+    await server.close();
+  });
+
+  afterAll(async () => {
     await server.close();
   });
 
