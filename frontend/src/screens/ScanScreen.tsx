@@ -18,7 +18,6 @@ function ScanScreen({ navigation }: Props): JSX.Element {
   const onRead = async (route: string) => {
     try {
       if (route.match('request-claims')) {
-        // const response = await axios.get();
         navigation.navigate('Present', { requestData: 'response.data' });
       } else if (route.match('openid-credential-issuer')) {
         const response = await axios.post('http://localhost:3000/issuer/poll', {
@@ -31,7 +30,7 @@ function ScanScreen({ navigation }: Props): JSX.Element {
         }
       } else {
         Alert.alert('Error', 'Please scan a valid QR code from a service provider or issuer.');
-        throw Error('Invalid QR code');
+        throw new Error('Invalid QR code');
       }
     } catch (error) {
       console.log(error);
