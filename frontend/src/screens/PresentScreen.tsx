@@ -2,15 +2,18 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import React from 'react';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../config/types';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp } from '@react-navigation/native';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-type Props = NativeStackNavigationProp<RootStackParamList>;
+type Props = {
+  route: RouteProp<RootStackParamList, 'Present'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Present'>;
+};
 
-export default function PresentScreen(): JSX.Element {
-  const navigation = useNavigation<Props>();
-  // console.log(requestData);
+export default function PresentScreen({ route, navigation }: Props): JSX.Element {
+  const { requestData } = route.params ?? '';
+  console.log(requestData);
 
   return (
     <View className="flex flex-col h-[100%] w-[100%] bg-white dark:bg-dark-green">

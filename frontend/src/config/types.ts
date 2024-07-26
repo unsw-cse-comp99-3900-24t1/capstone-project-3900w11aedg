@@ -62,27 +62,3 @@ export type CredentialConfig = {
     text_color?: string;
   }[];
 };
-
-export type VerifiableCredential = {
-  '@context': string[];
-  id?: string;
-  type: string[];
-  name?: string;
-  description?: string;
-  issuer: string;
-  validFrom?: string;
-  validUntil?: string;
-  credentialStatus?: {
-    id?: string;
-    type: string;
-    statusPurpose?: string;
-    statusListIndex?: string;
-    statusListCredential?: string;
-  };
-  credentialSchema?: {
-    id: string;
-    type: string;
-  }[];
-  // sus
-  credentialSubject: object;
-};
