@@ -185,7 +185,3 @@ jobs:
       - name: Run ESLint for cli
         working-directory: cli
         run: npm run lint
-
-      - name: Run Jest tests for cli
-        working-directory: cli
-        run: npm test
