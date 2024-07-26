@@ -2,9 +2,10 @@ import * as vc from '@digitalbazaar/vc';
 import { DataIntegrityProof } from '@digitalbazaar/data-integrity';
 import { createSignCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
 import documentLoader from '../document-loader.js';
+import { UnsignedCredential, VerifiableCredential } from '../../types/credentials.js';
+import { KeyPair } from '../../types/data.js';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const signCredential = async (credential: any, keyPair: any) => {
+export const signCredential = async (credential: UnsignedCredential, keyPair: KeyPair): Promise<VerifiableCredential> => {
   const suite = new DataIntegrityProof({
     signer: keyPair.signer(),
     date: new Date().toDateString(),
@@ -17,5 +18,5 @@ export const signCredential = async (credential: any, keyPair: any) => {
     credential,
     suite,
     documentLoader,
-  });
+  }) as VerifiableCredential;
 };

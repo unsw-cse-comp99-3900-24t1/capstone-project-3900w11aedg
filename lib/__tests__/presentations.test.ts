@@ -11,7 +11,6 @@ const { deriveCredential, deriveAndCreatePresentation } = await import('../src/b
 
 const mockCredential: VerifiableCredential = {
   '@context': [
-
     'https://www.context.org/sample',
   ],
   'type': [

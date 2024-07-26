@@ -1,13 +1,23 @@
+export type UnsignedCredential = {
+  '@context': string[] | string,
+  type: string[] | string,
+  issuer: string,
+  issuanceDate: string,
+  credentialSubject: {
+    [key: string]: object | string;
+  },
+}
+
 export type VerifiablePresentation = {
-  '@context': [string] | string,
-  type: [string] | string,
+  '@context': string[] | string,
+  type: string[] | string,
   verifiableCredential: [VerifiableCredential],
   id: string
 }
 
 export type VerifiableCredential = {
-  '@context': [string] | string,
-  type: [string] | string,
+  '@context': string[] | string,
+  type: string[] | string,
   issuer: string,
   issuanceDate: string,
   credentialSubject: {
