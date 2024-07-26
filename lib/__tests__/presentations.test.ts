@@ -96,8 +96,10 @@ describe('Derivation', () => {
         credentialSubject: { degree: 'Bachelor of Computer Science (Honours)' },
       }],
     } as never);
-    const res = await deriveAndCreatePresentation([mockCredential], ['degree']);
-    expect(res.verifiableCredential[0].credentialSubject).toStrictEqual({ degree: 'Bachelor of Computer Science (Honours)' });
+    const res = await deriveAndCreatePresentation([mockCredential], ['degree']) as VerifiablePresentation;
+    expect(res.verifiableCredential.length).toBe(1);
+    const derivedCredential = res.verifiableCredential[0] as VerifiableCredential;
+    expect(derivedCredential.credentialSubject).toStrictEqual({ degree: 'Bachelor of Computer Science (Honours)' });
   });
 
   it('Deriving a presentation with multiple credentials', async () => {

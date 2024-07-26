@@ -11,7 +11,7 @@ export type UnsignedCredential = {
 export type VerifiablePresentation = {
   '@context': string[] | string,
   type: string[] | string,
-  verifiableCredential: [VerifiableCredential],
+  verifiableCredential: VerifiableCredential[],
   id: string
 }
 
