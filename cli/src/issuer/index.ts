@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import { loadData, saveData } from '../../../lib/src/data.js';
 import generateKeyPair from '../../../lib/src/key.js';
-import uploadDIDDocument from '../../../lib/src/generate-did.js';
+import uploadDIDDocument from '../../../lib/src/upload-did-document.js';
 import { signCredential } from '../../../lib/src/issuer/signing.js';
 import config from './cli.config.json' assert { type: 'json' };
 import { saveQRCode } from '../../../lib/src/qr.js';

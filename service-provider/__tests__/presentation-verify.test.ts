@@ -4,49 +4,55 @@ import base64url from 'base64-url';
 import { v4 as uuidv4 } from 'uuid';
 
 jest.unstable_mockModule('../../lib/src/service-provider/verification', () => ({
-  verifyDocument: jest.fn()
+  verifyDocument: jest.fn(),
 }));
 
-const { verifyDocument } = await import('../../lib/src/service-provider/verification');
-const app = await import('../src/index');
-const { server } = await import('../src');
+let app = await import('../src/index');
+let { server } = await import('../src');
+
+const restartServer = async () => {
+  await server.close();
+  jest.resetModules();
+  jest.clearAllMocks();
+  app = await import('../src/index');
+  ({ server } = await import('../src'));
+};
 
 const mockCredential = {
-  "@context": [
-    "https://www.context.org/sample"
+  '@context': [
+    'https://www.context.org/sample',
   ],
-  "type": [
-    "VerifiableCredential"
+  'type': [
+    'VerifiableCredential',
   ],
-  "issuer": "did:web:example.com",
-  "issuanceDate": "2024-07-23T10:01:42Z",
-  "credentialSubject": {
-    "alumniOf": "University of New South Wales",
+  'issuer': 'did:web:example.com',
+  'issuanceDate': '2024-07-23T10:01:42Z',
+  'credentialSubject': {
+    'alumniOf': 'University of New South Wales',
   },
-  "proof": {
-    "type": "DataIntegrityProof",
-    "verificationMethod": "did:web:example.com#key",
-    "cryptosuite": "bbs-2023",
-    "proofPurpose": "assertionMethod",
-    "proofValue": "eyJhbGciOi"
-  }
-}
+  'proof': {
+    'type': 'DataIntegrityProof',
+    'verificationMethod': 'did:web:example.com#key',
+    'cryptosuite': 'bbs-2023',
+    'proofPurpose': 'assertionMethod',
+    'proofValue': 'eyJhbGciOi',
+  },
+};
 const mockPresentation = {
-  "@context": [
-    "https://www.context.org/sample"
+  '@context': [
+    'https://www.context.org/sample',
   ],
-  "type": [
-    "VerifiablePresentation"
+  'type': [
+    'VerifiablePresentation',
   ],
-  "verifiableCredential": [mockCredential],
-  "id": uuidv4()
-}
+  'verifiableCredential': [mockCredential],
+  'id': uuidv4(),
+};
 const vp_token = base64url.encode(JSON.stringify(mockPresentation));
 
 describe('POST /presentation/verify', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    jest.resetModules();
+  beforeEach(async () => {
+    await restartServer();
   });
 
   afterEach(async () => {
@@ -54,15 +60,16 @@ describe('POST /presentation/verify', () => {
   });
 
   it('should respond with status 200 and a valid result', async () => {
-    (verifyDocument as jest.MockedFunction<typeof verifyDocument>).mockResolvedValue({ 
+    const { verifyDocument } = await import('../../lib/src/service-provider/verification');
+    (verifyDocument as jest.MockedFunction<typeof verifyDocument>).mockResolvedValue({
       verified: true,
       presentationResult: mockPresentation,
-      credentialResults: [{verified: true}],
-      error: {}
+      credentialResults: [{ verified: true }],
+      error: {},
     });
     const response = await request(app.default).post('/presentation/verify').send({ vp_token });
     expect(response.status).toBe(200);
-    expect(response.body).toStrictEqual({valid: true});
+    expect(response.body).toStrictEqual({ verified: true });
   });
 
   it('should respond with status 400 if no token is found', async () => {
@@ -75,15 +82,16 @@ describe('POST /presentation/verify', () => {
     expect(response.status).toBe(400);
   });
 
-  it('should respond with status 500 if the verification failed', async () => {
-    (verifyDocument as jest.MockedFunction<typeof verifyDocument>).mockResolvedValue({ 
+  it('should respond with status 400 if the verification failed', async () => {
+    const { verifyDocument } = await import('../../lib/src/service-provider/verification');
+    (verifyDocument as jest.MockedFunction<typeof verifyDocument>).mockResolvedValue({
       verified: false,
       presentationResult: mockPresentation,
-      credentialResults: [{verified: false}],
-      error: new TypeError()
+      credentialResults: [{ verified: false }],
+      error: new TypeError(),
     });
     const response = await request(app.default).post('/presentation/verify').send({ vp_token });
-    expect(response.status).toBe(500);
-    expect(response.body).toStrictEqual({valid: false});
+    expect(response.status).toBe(400);
+    expect(response.body).toStrictEqual({ verified: false });
   });
 });

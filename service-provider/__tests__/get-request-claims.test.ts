@@ -44,11 +44,22 @@ jest.unstable_mockModule('fs', () => ({
   },
 }));
 
-const app = await import('../src/index');
-const { server } = await import('../src');
+let app = await import('../src/index');
+let { server } = await import('../src');
 
+const restartServer = async () => {
+  await server.close();
+  jest.resetModules();
+  jest.clearAllMocks();
+  app = await import('../src/index');
+  ({ server } = await import('../src'));
+};
 
 describe('GET /request-claims/:filename', () => {
+  beforeEach(async () => {
+    await restartServer();
+  });
+
   afterEach(async () => {
     await server.close();
   });
