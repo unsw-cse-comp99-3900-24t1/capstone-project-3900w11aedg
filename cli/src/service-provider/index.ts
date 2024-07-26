@@ -3,7 +3,8 @@
 import { Command } from 'commander';
 import generateKeyPair from '../../../lib/src/key.js';
 import { saveData } from '../../../lib/src/data.js';
-import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
+import { saveQRCode } from '../../../lib/src/qr.js';
+import QRCode from 'qrcode';
 import path from 'path';
 import config from './cli.config.json' assert { type: 'json' };
 import uploadDIDDocument from '../../../lib/src/generate-did.js';
@@ -38,7 +39,7 @@ program
         'utf8',
       );
       const url = await generateQRCodeUrl(backendRoute, rootDir, JSON.parse(claims), didURL, keyPairURL);
-      const qr = await urlToQRCode(url);
+      const qr = await QRCode.toDataURL(url);
       await saveQRCode(qr, rootDir + '/qr-code.png');
       console.log('QR Code generated.');
     } catch (err) {

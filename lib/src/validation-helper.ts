@@ -1,17 +1,9 @@
-import { Resolver } from 'did-resolver';
-import { getResolver } from 'web-did-resolver';
 import claimsSchema from './schema.js';
 import js from 'json-schema-library';
 import { _checkCredential } from '@digitalbazaar/vc';
 import base64url from 'base64-url';
 
 const { Draft07 } = js;
-
-export async function isValidDID(did: string): Promise<boolean> {
-  const resolver = new Resolver(getResolver());
-  const didDoc = await resolver.resolve(did);
-  return didDoc.didResolutionMetadata.error === 'notFound';
-}
 
 export function isValidClaim(claims: object): boolean {
   if (Object.keys(claims).length === 0) return false;
@@ -42,8 +34,7 @@ export function areValidCredentials(credentials: Array<object>): boolean {
 export function decodeToken(token: string): object | null {
   try {
     const dataString = base64url.decode(token);
-    const dataObject = JSON.parse(dataString);
-    return dataObject;
+    return JSON.parse(dataString);
   } catch {
     return null;
   }

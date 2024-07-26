@@ -8,10 +8,11 @@ import generateKeyPair from '../../../lib/src/key.js';
 import uploadDIDDocument from '../../../lib/src/generate-did.js';
 import { signCredential } from '../../../lib/src/issuer/signing.js';
 import config from './cli.config.json' assert { type: 'json' };
-import { saveQRCode, urlToQRCode } from '../../../lib/src/qr.js';
+import { saveQRCode } from '../../../lib/src/qr.js';
 import { fileURLToPath } from 'url';
 import { getProjectRoot } from '../../../lib/src/find.js';
 import { DIDDocument } from 'did-resolver';
+import QRCode from 'qrcode';
 
 const rootDir = path.resolve(config.rootDir);
 const backendUrl = config.backendRoute;
@@ -54,7 +55,7 @@ program
   .description('Create a QR Code')
   .action(async () => {
     try {
-      const qr = await urlToQRCode(backendUrl);
+      const qr = await QRCode.toDataURL(backendUrl);
       await saveQRCode(qr, rootDir + '/qr-code.png');
       console.log('QR code created');
     } catch (err) {

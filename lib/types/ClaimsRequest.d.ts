@@ -1,5 +1,5 @@
 export type ClaimsRequest = {
-  query: [ClaimsQuery]
+  query: ClaimsQuery[]
 };
 
 export type ClaimsQuery = {
@@ -11,23 +11,23 @@ export type ClaimsQuery = {
 
 export type Claims = {
   id: string,
-  input_descriptors: [InputDescriptor]
+  input_descriptors: InputDescriptor[]
 };
- 
+
 export type InputDescriptor = {
   id: string,
   format: {
     ldp_vc: {
-      proof_type: [string]
+      proof_type: string[]
     }
   },
   constraints: {
-    fields: [Field]
+    fields: Field[]
   }
 };
 
 export type Field = {
-  path: [string],
+  path: string[],
   filter?: {
     type: string,
     pattern: string

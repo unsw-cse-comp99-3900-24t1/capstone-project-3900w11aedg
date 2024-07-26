@@ -8,10 +8,11 @@ import cors from 'cors';
 import fs from 'fs';
 import { signCredential } from '../../lib/src/issuer/signing.js';
 import { fileURLToPath } from 'url';
-import { saveQRCode, urlToQRCode } from '../../lib/src/qr.js';
+import { saveQRCode } from '../../lib/src/qr.js';
 import { v4 as uuidv4 } from 'uuid';
 import issuerMetadata from '../meta-data.json' assert { type: 'json' };
 import { getProjectRoot } from '../../lib/src/find.js';
+import QRCode from 'qrcode';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -49,7 +50,7 @@ app.get('/', (_req: Request, res: Response) => {
 // Metadata URL as QR Code
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.post('/generate/qr-code', cors(internalUse), async (_req: Request, res: Response) => {
-  const qrCode = await urlToQRCode(`http://localhost:${port}/.well-known/openid-credential-issuer`);
+  const qrCode = await QRCode.toDataURL(`http://localhost:${port}/.well-known/openid-credential-issuer`);
   await saveQRCode(qrCode, path.join(__basedir, 'metadata.png'));
   res.status(200).send({ qrCode });
 });
@@ -133,10 +134,10 @@ app.post('/credential/offer', async (req: Request, res: Response) => {
 async function _signCredential(credential_identifier: string) {
   const credential = fs.readFileSync(
     __basedir + '/credentials/' + credential_identifier + '.json',
-    'utf8'
+    'utf8',
   );
   const credentialJSON = JSON.parse(credential);
-  credentialJSON["issuanceDate"] = new Date().toISOString();
+  credentialJSON['issuanceDate'] = new Date().toISOString();
   const { keyPair } = await loadData(didURL, keyPairURL);
 
   return await signCredential(credentialJSON, keyPair);
