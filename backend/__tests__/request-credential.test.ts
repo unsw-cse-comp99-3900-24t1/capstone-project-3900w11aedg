@@ -123,11 +123,15 @@ const mockMetadata = {
   'credential_endpoint': 'http://localhost:3210/credential/offer',
 };
 
-let app = await import('../src/index');
-let { server } = await import('../src');
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let app: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let server: any;
 
 const restartServer = async () => {
-  await server.close();
+  if (server) {
+    await server.close();
+  }
   jest.resetModules();
   jest.clearAllMocks();
   if (!jest.isEnvironmentTornDown()) {
