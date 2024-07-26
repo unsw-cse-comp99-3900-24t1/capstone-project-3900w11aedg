@@ -146,7 +146,9 @@ describe('POST /issuer/poll', () => {
   });
 
   afterEach(async () => {
-    await server.close();
+    if (server) {
+      await server.close();
+    }
   });
 
   it('No issuer URL passed in', async () => {
