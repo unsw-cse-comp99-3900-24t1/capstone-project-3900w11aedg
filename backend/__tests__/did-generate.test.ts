@@ -16,8 +16,10 @@ jest.unstable_mockModule('../../lib/src/data', () => ({
   saveData: jest.fn(),
 }));
 
-let app = await import('../src/index');
-let { server } = await import('../src');
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let app: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let server: any;
 
 const fakeKeyPair = {
   keyPair: {
@@ -27,7 +29,9 @@ const fakeKeyPair = {
 };
 
 const restartServer = async () => {
-  await server.close();
+  if (server) {
+    await server.close();
+  }
   jest.resetModules();
   jest.clearAllMocks();
   app = await import('../src/index');
@@ -40,7 +44,9 @@ describe('POST /generate/did', () => {
   });
 
   afterEach(async () => {
-    await server.close();
+    if (server) {
+      await server.close();
+    }
   });
 
   it('Should create DID', async () => {

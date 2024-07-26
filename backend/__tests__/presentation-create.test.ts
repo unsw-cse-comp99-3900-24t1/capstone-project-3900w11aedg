@@ -60,11 +60,15 @@ const mockPresentation = {
   'id': uuidv4(),
 };
 
-let app = await import('../src/index');
-let { server } = await import('../src');
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let app: any;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let server: any;
 
 const restartServer = async () => {
-  await server.close();
+  if (server) {
+    await server.close();
+  }
   jest.resetModules();
   jest.clearAllMocks();
   app = await import('../src/index');
@@ -77,7 +81,9 @@ describe('POST /presentation/create', () => {
   });
 
   afterEach(async () => {
-    await server.close();
+    if (server) {
+      await server.close();
+    }
   });
 
   it('Credentials or serviceProviderUrl is missing', async () => {
