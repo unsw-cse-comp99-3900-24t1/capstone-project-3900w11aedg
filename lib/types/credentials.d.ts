@@ -1,17 +1,27 @@
+export type UnsignedCredential = {
+  '@context': string[] | string,
+  type: string[] | string,
+  issuer: string,
+  issuanceDate: string,
+  credentialSubject: {
+    [key: string]: object | string;
+  },
+}
+
 export type VerifiablePresentation = {
-  '@context': [string],
-  type: [string],
-  verifiableCredential: [VerifiableCredential],
+  '@context': string[] | string,
+  type: string[] | string,
+  verifiableCredential: VerifiableCredential[],
   id: string
 }
 
 export type VerifiableCredential = {
-  '@context': [string],
-  type: [string],
+  '@context': string[] | string,
+  type: string[] | string,
   issuer: string,
   issuanceDate: string,
   credentialSubject: {
-    [key: string]: object;
+    [key: string]: object | string;
   },
   proof: Proof
 }
@@ -19,7 +29,7 @@ export type VerifiableCredential = {
 export type Proof = {
   type: string,
   verificationMethod: string,
-  cryptoSuite: string,
+  cryptosuite: string,
   proofPurpose: string,
   proofValue: string
 }
