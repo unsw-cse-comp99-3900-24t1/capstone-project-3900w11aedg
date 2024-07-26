@@ -54,13 +54,12 @@ app.post('/presentation/verify', async (req: Request, res: Response) => {
   try {
     const result = await verifyDocument(presentation, true);
     if (result.verified) {
-      res.status(200).send({ valid: true });
+      res.status(200).send({ verified: true });
     } else {
-      console.log(result.error);
-      res.status(500).send({ valid: false });
+      res.status(400).send({ verified: false });
     }
   } catch (err) {
-    res.status(500).send({ valid: false, err });
+    res.status(500).send({ verified: false, err });
   }
 });
 

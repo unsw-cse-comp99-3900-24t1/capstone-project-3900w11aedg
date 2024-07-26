@@ -28,6 +28,11 @@ jobs:
         working-directory: backend
         run: npm run lint
 
+      - name: Install libraries dependencies
+        working-directory: service-provider
+        run: npm install --prefix ../lib
+
+
       - name: Run Jest tests for backend
         working-directory: backend
         run: npm test
