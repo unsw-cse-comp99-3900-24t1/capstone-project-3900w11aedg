@@ -129,8 +129,7 @@ app.post('/credential/offer', async (req: Request, res: Response) => {
     const signedCredential = await _signCredential(credential_identifier);
     res.status(200).send({ credential: signedCredential });
   } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
+    res.status(500).send(error);
   }
 });
 
@@ -141,9 +140,6 @@ async function _signCredential(credential_identifier: string) {
   );
   const credentialJSON = JSON.parse(credential);
   credentialJSON['issuanceDate'] = new Date().toISOString();
-  credentialJSON['expirationDate'] = new Date(
-    new Date().setFullYear(new Date().getFullYear() + 1)
-  ).toISOString();
   const { keyPair } = await loadData(didURL, keyPairURL);
 
   return await signCredential(credentialJSON, keyPair);
