@@ -38,7 +38,7 @@ function ScanScreen({ navigation }: Props): JSX.Element {
         }
       } else {
         Alert.alert('Error', 'Please scan a valid QR code from a service provider or issuer.');
-        throw Error('Invalid QR code');
+        throw new Error('Invalid QR code');
       }
     } catch (error) {
       console.log(error);

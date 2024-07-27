@@ -7,7 +7,7 @@ import { saveQRCode } from '../../../lib/src/qr.js';
 import QRCode from 'qrcode';
 import path from 'path';
 import config from './cli.config.json' assert { type: 'json' };
-import uploadDIDDocument from '../../../lib/src/generate-did.js';
+import uploadDIDDocument from '../../../lib/src/upload-did-document.js';
 import { verifyDocument } from '../../../lib/src/service-provider/verification.js';
 import fs from 'fs';
 import { generateQRCodeUrl } from '../../../lib/src/service-provider/request-claims.js';
