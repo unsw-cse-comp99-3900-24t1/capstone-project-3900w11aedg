@@ -26,7 +26,7 @@ const IdentityCardList: React.FC = () => {
         const keys = JSON.parse(keysString ?? '[]');
         const dataPromises = keys.map(async (key, index) => {
           try {
-            const credentials = await Keychain.getGenericPassword({ key });
+            const credentials = await Keychain.getGenericPassword({ service: key });
             if (credentials) {
               const credentialsData = JSON.parse(credentials.password);
               const credentialSubject = credentialsData.credentialSubject;
@@ -40,7 +40,7 @@ const IdentityCardList: React.FC = () => {
                 credType: credentialSubject.degree,
                 credName: 'jamie boss',
                 creationDate: credentialsData.issuanceDate,
-                expiryDate: credentialsData.issuanceDate,
+                expiryDate: credentialsData.expirationDate,
               };
             } else {
               console.log(`No data found for key ${key}`);
@@ -59,13 +59,19 @@ const IdentityCardList: React.FC = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [cards]);
 
+  const offset = 10 * 60 * 60 * 1000;
   return (
     <View className="flex flex-row flex-wrap justify-center">
       {cards.map((card) => (
         <View key={card.id} className="m-2">
-          <IdentityCard card={card} />
+          <IdentityCard
+            card={card}
+            isExpired={
+              new Date(card.expiryDate) < new Date(new Date().getTime() + offset) ? true : false
+            }
+          />
         </View>
       ))}
     </View>

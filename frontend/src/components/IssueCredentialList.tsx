@@ -25,7 +25,9 @@ function IssueCredentialList({ issuerMetadata }: Props): JSX.Element {
       const keys = JSON.parse((await AsyncStorage.getItem('keys')) ?? '[]');
       keys.push(selectedCredential);
       AsyncStorage.setItem('keys', JSON.stringify(keys));
-      Keychain.setGenericPassword(selectedCredential, JSON.stringify(response.data));
+      Keychain.setGenericPassword(selectedCredential, JSON.stringify(response.data), {
+        service: selectedCredential,
+      });
       setModalVisible(true);
     } catch (error) {
       Alert.alert('Sorry!', "We're having trouble processing this right now.");
