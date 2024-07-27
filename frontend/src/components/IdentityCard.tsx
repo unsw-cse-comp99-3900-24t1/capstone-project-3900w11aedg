@@ -3,6 +3,7 @@ import { Image, View, Text, Pressable } from 'react-native';
 import FlipCard from 'react-native-flip-card';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+import ExpiryStatusLabel from './ExpiryStatusLabel';
 
 interface IProps {
   card: {
@@ -17,18 +18,22 @@ interface IProps {
   };
 }
 
-const IdentityCard: React.FC<IProps> = ({ card, isExpired }) => {
+const IdentityCard: React.FC<IProps> = ({ card }) => {
   const navigation = useNavigation();
 
   const handleCardPress = () => {
     navigation.navigate('View', { card });
   };
 
-  const gradientColour = isExpired ? ['#606665', '#C1CCCA'] : ['#1F2A29', '#527E78'];
+  const offset = 10 * 60 * 60 * 1000;
+  const isExpired = new Date(card.expiryDate) < new Date(new Date().getTime() + offset);
+
+  const gradientColour = isExpired ? ['#606665', '#606665'] : ['#1F2A29', '#527E78'];
+  const formattedExpiryDate = new Date(card.expiryDate).toDateString().toString();
 
   return (
     <FlipCard>
-      <LinearGradient colors={gradientColour} className="rounded-md overflow-hidden">
+      <LinearGradient colors={gradientColour} className="rounded-md">
         <View className="h-40 w-80 rounded-md">
           <View className="flex-1 flex-row justify-between p-4">
             <Text className="text-lg text-white font-bold mb-2">{card.name}</Text>
@@ -41,8 +46,14 @@ const IdentityCard: React.FC<IProps> = ({ card, isExpired }) => {
             </View>
           </View>
           <Pressable onPress={handleCardPress}>
-            <View className="h-20 pl-5">
-              <Text className="text-white">{card.type}</Text>
+            <View className="p-4">
+              <Text className="text-white font-bold ">{card.type}</Text>
+              <View className="flex-row justify-between items-center">
+                <Text className="text-white">
+                  Expiry <Text className="font-bold">{formattedExpiryDate}</Text>
+                </Text>
+                <ExpiryStatusLabel isExpired={isExpired} />
+              </View>
             </View>
           </Pressable>
         </View>
