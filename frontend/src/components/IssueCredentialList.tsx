@@ -24,11 +24,12 @@ function IssueCredentialList({ issuerMetadata }: Props): JSX.Element {
       });
       const keys = JSON.parse((await AsyncStorage.getItem('keys')) ?? '[]');
       keys.push(selectedCredential);
-      await AsyncStorage.setItem('keys', JSON.stringify(keys));
-      await Keychain.setGenericPassword(selectedCredential, JSON.stringify(response.data));
+      AsyncStorage.setItem('keys', JSON.stringify(keys));
+      Keychain.setGenericPassword(selectedCredential, JSON.stringify(response.data));
       setModalVisible(true);
     } catch (error) {
       Alert.alert('Sorry!', "We're having trouble processing this right now.");
+      console.log(error);
     }
   };
 

@@ -2,18 +2,11 @@ import React from 'react';
 import { Image, View, Text, Pressable } from 'react-native';
 import FlipCard from 'react-native-flip-card';
 import { useNavigation } from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
+import { Card } from '../config/types';
 
 interface IProps {
-  card: {
-    name: string;
-    type: string;
-    credIssuedBy: string;
-    credNumber: string;
-    credType: string;
-    credName: string;
-    creationDate: string;
-    expiryDate: string;
-  };
+  card: Card;
 }
 
 const IdentityCard: React.FC<IProps> = ({ card }) => {
@@ -22,27 +15,31 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
   const handleCardPress = () => {
     navigation.navigate('View', { card });
   };
+  const isExpired = new Date(card.expiryDate) < new Date(new Date(card.expiryDate));
+  const gradientColour = isExpired ? ['#606665', '#C1CCCA'] : ['#1F2A29', '#527E78'];
 
   return (
     <FlipCard>
-      <View className="h-40 w-80 bg-card-green rounded-md">
-        <View className="flex-1 flex-row justify-between p-4">
-          <Text className="text-lg font-bold mb-2">{card.name}</Text>
-          <View className="w-7 h-7">
-            <Image
-              source={require('../assets/fliparrow.png')}
-              className="w-full h-full"
-              resizeMode="contain"
-            />
+      <LinearGradient colors={gradientColour} className="rounded-md overflow-hidden">
+        <View className="h-40 w-80 rounded-md">
+          <View className="flex-1 flex-row justify-between p-4">
+            <Text className="text-lg text-white font-bold mb-2">{card.name}</Text>
+            <View className="w-7 h-7">
+              <Image
+                source={require('../assets/fliparrow.png')}
+                className="w-full h-full"
+                resizeMode="contain"
+              />
+            </View>
           </View>
+          <Pressable onPress={handleCardPress}>
+            <View className="h-20 pl-5">
+              <Text className="text-white">{card.type}</Text>
+            </View>
+          </Pressable>
         </View>
-        <Pressable onPress={handleCardPress}>
-          <View className="h-20 pl-5">
-            <Text className="text-white">{card.type}</Text>
-          </View>
-        </Pressable>
-      </View>
-      <View className="h-40 w-80 bg-card-grey rounded-md">
+      </LinearGradient>
+      <View className="h-40 w-80 bg-card-dark-green rounded-md">
         <View className="flex-1 flex-row justify-between p-4">
           <Text className="text-lg font-bold mb-2">{card.name}</Text>
           <View className="w-7">
