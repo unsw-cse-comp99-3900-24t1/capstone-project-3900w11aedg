@@ -1,8 +1,10 @@
+import { ClaimsRequest } from '../../../lib/types/ClaimsRequest';
+
 export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
   Scan: undefined;
-  Present: { requestData?: string };
+  Present: { requestData?: ClaimsRequest };
   Issue: { issuerMetadata?: keyof { [key: string]: IssuerMetadata } };
   View: undefined; // plz type view
 };

@@ -18,10 +18,9 @@ function ScanScreen({ navigation }: Props): JSX.Element {
   const onRead = async (route: string) => {
     try {
       if (route.match('request-claims')) {
-        console.log(route);
         const response = await axios.get(route);
         if (response.data) {
-          navigation.navigate('Present', { requestData: JSON.stringify(response.data) });
+          navigation.navigate('Present', { requestData: response.data });
         } else {
           Alert.alert(
             'Service Provider Error',
