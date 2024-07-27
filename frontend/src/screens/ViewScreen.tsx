@@ -4,6 +4,8 @@ import { useRoute, RouteProp } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import LinearGradient from 'react-native-linear-gradient';
+import ExpiryStatusLabel from '../components/ExpiryStatusLabel';
 
 type RootStackParamList = {
   ViewScreen: {
@@ -37,23 +39,38 @@ const ViewScreen: React.FC = () => {
     navigation.navigate('Home', { card });
   };
 
+  const offset = 10 * 60 * 60 * 1000;
+  const isExpired = new Date(card.expiryDate) < new Date(new Date().getTime() + offset);
+
+  const gradientColour = isExpired ? ['#606665', '#606665'] : ['#1F2A29', '#527E78'];
+  const formattedExpiryDate = new Date(card.expiryDate).toDateString().toString();
+
   return (
     <View className="w-[100%] flex-1 bg-white dark:bg-dark-green">
       <Header />
       <View className="px-12 py-5">
-        <Pressable onPress={handleButtonPress} className="w-[20%] bg-theme-gold p-1.5 rounded-3xl ">
-          <Text className="font-medium text-black text-center">Done</Text>
+        <Pressable onPress={handleButtonPress} className="w-[27%] bg-theme-gold p-2 rounded-3xl ">
+          <Text className="font-medium text-black text-center text-base">Done</Text>
         </Pressable>
       </View>
       <View className="h-[65%] flex items-center space-y-5">
-        <View className="h-40 w-[75%] bg-card-green rounded-2xl">
-          <View className="flex-1 flex-row justify-between p-4">
-            <Text className="text-lg font-bold mb-2">{card.name}</Text>
+        <LinearGradient colors={gradientColour} className="rounded-2xl">
+          <View className="h-40 w-[80%] rounded-md overflow-hidden p-4">
+            <View className="flex-row justify-between">
+              <Text className="text-xl text-white font-bold p-4">{card.name}</Text>
+            </View>
+            <View className="flex-1 p-4 justify-end">
+              <Text className="text-white font-bold text-base">{card.type}</Text>
+              <View className="flex-row justify-between items-center">
+                <Text className="text-white text-base">
+                  Expiry: <Text className="font-bold">{formattedExpiryDate}</Text>
+                </Text>
+                <ExpiryStatusLabel isExpired={isExpired} />
+              </View>
+            </View>
           </View>
-          <View className="h-20 pl-5">
-            <Text className="text-white">{card.type}</Text>
-          </View>
-        </View>
+        </LinearGradient>
+
         <View className="w-[90%] bg-card-view-grey rounded-2xl space-y-5 p-5">
           <View className="p-3 bg-popup-grey rounded-lg justify-around">
             <Text className="text-white font-bold">Pin to Wallet</Text>
