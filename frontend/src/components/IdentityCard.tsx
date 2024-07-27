@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import { Card } from '../config/types';
 import ExpiryStatusLabel from './ExpiryStatusLabel';
+import { formatDate } from '../helper/data.ts';
 
 interface IProps {
   card: Card;
@@ -18,7 +19,7 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
   };
   const isExpired = new Date(card.expiryDate) < new Date(new Date(card.expiryDate));
   const gradientColour = isExpired ? ['#606665', '#C1CCCA'] : ['#1F2A29', '#527E78'];
-  const formattedExpiryDate = new Date(card.expiryDate).toDateString().toString();
+  const formattedExpiryDate = formatDate(card.expiryDate);
 
   return (
     <FlipCard>

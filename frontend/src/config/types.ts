@@ -95,6 +95,6 @@ export type Card = {
   credNumber: string;
   credType: string;
   credName: string;
-  creationDate: string;
+  issuanceDate: string;
   expiryDate: string;
 };

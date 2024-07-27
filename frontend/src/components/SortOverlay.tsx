@@ -2,31 +2,59 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Pressable, Modal } from 'react-native';
 import { Card } from '../config/types';
 import sortFunction from '../helper/sorting';
+import fetchData from '../helper/data.ts';
 
 type Props = {
-  cards: Card[];
   setCards: (cards: Card[]) => void;
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
   setSortText: (text: string) => void;
 };
 
-const SortOverlay = ({ cards, setCards, modalVisible, setModalVisible, setSortText }: Props) => {
-  const [sort, setSort] = useState(() => sortFunction(cards, 'creationDate'));
+const SortOverlay = ({ setCards, modalVisible, setModalVisible, setSortText }: Props) => {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [reverse, setReverse] = useState(false);
 
-  const handleClose = () => {
-    handleSort();
+  const handleClose = async () => {
+    await handleSort();
     setModalVisible(false);
   };
 
-  const handleSort = () => {
-    setSortText(selectedValue === null ? 'Sort' : selectedValue);
+  const handleSort = async () => {
+    const cards = await fetchData();
     if (selectedValue === null) {
+      setSortText('Sort');
+      const sortedCards = sortFunction(cards, 'issuanceDate');
+      setCards(sortedCards);
       return;
     }
-    setSort(() => sortFunction(cards, selectedValue as keyof Card));
-    setCards(sort);
+    let val = selectedValue;
+    if (selectedValue?.endsWith('R')) {
+      val = selectedValue.slice(0, -1);
+    }
+    setSortText(val);
+    switch (val) {
+      case 'Name':
+        val = 'name';
+        break;
+      case 'Issued by':
+        val = 'credIssuedBy';
+        break;
+      case 'Type':
+        val = 'credType';
+        break;
+      case 'Issuance Date':
+        val = 'issuanceDate';
+        break;
+      case 'Expiration Date':
+        val = 'expiryDate';
+        break;
+      default:
+        val = 'name';
+        break;
+    }
+    const sortedCards = sortFunction(cards, val as keyof Card, reverse);
+    setCards(sortedCards);
   };
 
   return (
@@ -48,6 +76,16 @@ const SortOverlay = ({ cards, setCards, modalVisible, setModalVisible, setSortTe
               selected={selectedValue === 'Name'}
               onSelect={() => {
                 setSelectedValue('Name');
+                setReverse(false);
+              }}
+            />
+            <RadioButton
+              label="Name (Z -> A)"
+              value="name"
+              selected={selectedValue === 'NameR'}
+              onSelect={() => {
+                setSelectedValue('NameR');
+                setReverse(true);
               }}
             />
             <RadioButton
@@ -56,30 +94,52 @@ const SortOverlay = ({ cards, setCards, modalVisible, setModalVisible, setSortTe
               selected={selectedValue === 'Issued by'}
               onSelect={() => {
                 setSelectedValue('Issued by');
+                setReverse(false);
               }}
             />
             <RadioButton
-              label="Type (A -> Z)"
+              label="Type"
               value="Type"
               selected={selectedValue === 'Type'}
               onSelect={() => {
                 setSelectedValue('Type');
+                setReverse(false);
               }}
             />
             <RadioButton
-              label="Creation Date (newest -> oldest)"
-              value="Creation Date"
-              selected={selectedValue === 'Creation Date'}
+              label="Issuance Date (oldest -> newest)"
+              value="Issuance Date"
+              selected={selectedValue === 'Creation DateR'}
               onSelect={() => {
-                setSelectedValue('Creation Date');
+                setSelectedValue('Creation DateR');
+                setReverse(true);
               }}
             />
             <RadioButton
-              label="Expiry Date (newest -> oldest)"
+              label="Issuance Date (newest -> oldest)"
+              value="Issuance Date"
+              selected={selectedValue === 'Issuance Date'}
+              onSelect={() => {
+                setSelectedValue('Issuance Date');
+                setReverse(false);
+              }}
+            />
+            <RadioButton
+              label="Expiry Date (closest -> latest)"
+              value="Expiry Date"
+              selected={selectedValue === 'Expiration DateR'}
+              onSelect={() => {
+                setSelectedValue('Expiration DateR');
+                setReverse(true);
+              }}
+            />
+            <RadioButton
+              label="Expiry Date (latest -> closest)"
               value="Expiry Date"
               selected={selectedValue === 'Expiration Date'}
               onSelect={() => {
                 setSelectedValue('Expiration Date');
+                setReverse(false);
               }}
             />
             <View // eslint-disable-next-line react-native/no-inline-styles

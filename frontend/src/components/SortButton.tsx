@@ -4,11 +4,10 @@ import { Card } from '../config/types.ts';
 import SortOverlay from './SortOverlay.tsx';
 
 type Props = {
-  cards: Card[];
   setCards: (cards: Card[]) => void;
 };
 
-const SortButton = ({ cards, setCards }: Props) => {
+const SortButton = ({ setCards }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [sortText, setSortText] = useState('Sort');
   return (
@@ -49,7 +48,6 @@ const SortButton = ({ cards, setCards }: Props) => {
         )}
       </TouchableOpacity>
       <SortOverlay
-        cards={cards}
         setCards={setCards}
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}

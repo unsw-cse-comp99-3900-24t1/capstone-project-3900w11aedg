@@ -1,10 +1,7 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const sortFunction = <T extends { [key: string]: any }>(
-  data: T[],
-  key: keyof T,
-  isAscending = true
-): T[] => {
-  return data.sort((a, b) => {
+import { Card } from '../config/types.ts';
+
+const sortFunction = (data: Card[], key: keyof Card, isAscending = true): Card[] => {
+  return [...data].sort((a, b) => {
     if (!a[key] || !b[key]) {
       return -1;
     }

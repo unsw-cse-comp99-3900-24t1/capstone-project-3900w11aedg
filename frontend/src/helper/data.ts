@@ -1,7 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Keychain from 'react-native-keychain';
+import { Card } from '../config/types.ts';
 
-const formatDate = (dateString: string) => {
+export const formatDate = (dateString: string) => {
   const date = new Date(dateString);
   const options = {
     year: 'numeric',
@@ -11,7 +12,7 @@ const formatDate = (dateString: string) => {
   return date.toLocaleDateString('en-US', options as never);
 };
 
-const fetchData = async () => {
+const fetchData = async (): Promise<Card[]> => {
   const keysString = await AsyncStorage.getItem('keys');
   const keys = JSON.parse(keysString ?? '[]');
   const dataPromises = keys.map(async (key: string, index: number) => {
@@ -33,8 +34,8 @@ const fetchData = async () => {
         credIssuedBy: credentialsData.issuer,
         credType: credentialSubjectArray[1],
         credName: credentialSubjectArray[0],
-        creationDate: formatDate(credentialsData.issuanceDate),
-        expiryDate: formatDate(credentialsData.expirationDate),
+        issuanceDate: credentialsData.issuanceDate,
+        expiryDate: credentialsData.expirationDate,
       };
     } else {
       console.log(`No data found for key ${key}`);
