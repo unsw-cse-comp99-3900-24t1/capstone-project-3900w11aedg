@@ -23,10 +23,12 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
   return (
     <FlipCard>
       <LinearGradient colors={gradientColour} className="rounded-md">
-        <View className="h-40 w-80 rounded-md">
-          <View className="flex-1 flex-row justify-between p-4">
-            <Text className="text-lg text-white font-bold mb-2">{card.name}</Text>
-            <View className="w-7 h-7">
+        <View className="h-40 w-80 rounded-md overflow-hidden">
+          <View className="flex-row justify-between">
+            <Pressable onPress={handleCardPress} className="flex-1">
+              <Text className="text-xl text-white font-bold p-4">{card.name}</Text>
+            </Pressable>
+            <View className="w-12 h-14 p-1">
               <Image
                 source={require('../assets/fliparrow.png')}
                 className="w-full h-full"
@@ -34,12 +36,12 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
               />
             </View>
           </View>
-          <Pressable onPress={handleCardPress}>
-            <View className="p-4">
-              <Text className="text-white font-bold ">{card.type}</Text>
+          <Pressable onPress={handleCardPress} className="flex-1">
+            <View className="flex-1 p-4 justify-end">
+              <Text className="text-white font-bold text-base">{card.type}</Text>
               <View className="flex-row justify-between items-center">
-                <Text className="text-white">
-                  Expiry <Text className="font-bold">{formattedExpiryDate}</Text>
+                <Text className="text-white text-base">
+                  Expiry: <Text className="font-bold">{formattedExpiryDate}</Text>
                 </Text>
                 <ExpiryStatusLabel isExpired={isExpired} />
               </View>
@@ -47,33 +49,36 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
           </Pressable>
         </View>
       </LinearGradient>
-      <View className="h-40 w-80 bg-card-dark-green rounded-md">
-        <View className="flex-1 flex-row justify-between p-4">
-          <Text className="text-lg font-bold mb-2">{card.name}</Text>
-          <View className="w-7">
-            <Image
-              source={require('../assets/fliparrow.png')}
-              className="w-full h-full"
-              resizeMode="contain"
-            />
+
+      <LinearGradient colors={gradientColour} className="rounded-md">
+        <View className="h-40 w-80 rounded-md overflow-hidden">
+          <View className="flex-row justify-between">
+            <Pressable onPress={handleCardPress} className="flex-1">
+              <Text className="text-xl text-white font-bold p-4">{card.name}</Text>
+            </Pressable>
+            <View className="w-12 h-14 p-1">
+              <Image
+                source={require('../assets/fliparrow.png')}
+                className="w-full h-full"
+                resizeMode="contain"
+              />
+            </View>
           </View>
+          <Text className="pl-4 text-white">{card.credIssuedBy}</Text>
+          <Pressable onPress={handleCardPress} className="p-2">
+            <View className="flex-row justify-between">
+              <View className="ml-2">
+                <Text />
+                <Text className="text-white">Type</Text>
+              </View>
+              <View className="overflow-hidden">
+                <Text className="text-white font-bold">{card.credName}</Text>
+                <Text className="text-white font-bold">{card.credType}</Text>
+              </View>
+            </View>
+          </Pressable>
         </View>
-        <Text className="pl-4">{card.credIssuedBy}</Text>
-        <Pressable onPress={handleCardPress}>
-          <View className="flex-row pt-1 px-10 justify-around">
-            <View>
-              <Text>Name</Text>
-              <Text> No.</Text>
-              <Text>Type</Text>
-            </View>
-            <View>
-              <Text>{card.credName}</Text>
-              <Text>{card.credNumber}</Text>
-              <Text>{card.credType}</Text>
-            </View>
-          </View>
-        </Pressable>
-      </View>
+      </LinearGradient>
     </FlipCard>
   );
 };
