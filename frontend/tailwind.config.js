@@ -12,6 +12,7 @@ module.exports = {
         'popup-grey': '#444343',
         'text-grey': '#F2F2F2',
         'blurred-grey': '#9B9B9B',
+
         'green-gradient': {
           100: '#0A1B34',
           200: '#0C372A',
