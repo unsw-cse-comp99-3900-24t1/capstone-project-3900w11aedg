@@ -21,6 +21,8 @@ module.exports = {
         'card-grey': '#6C7272',
         'card-view-grey': '#8F9595',
         'dark-grey': '#444343',
+        'valid-green': '#3CC639',
+        'invalid-red': '#FA3636',
       },
     },
   },
