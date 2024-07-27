@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import morgan from 'morgan';
-import uploadDIDDocument from '../../lib/src/generate-did.js';
+import uploadDIDDocument from '../../lib/src/upload-did-document.js';
 import generateKeyPair from '../../lib/src/key.js';
 import { loadData, saveData } from '../../lib/src/data.js';
 import path from 'path';
@@ -56,10 +56,10 @@ app.post('/generate/did', cors(internalUse), async (_req: Request, res: Response
   }
 });
 
-app.post('/presentation/create', async (req: Request, res: Response) => {
+app.post('/presentation/create', cors(internalUse), async (req: Request, res: Response) => {
   const { credentials, serviceProviderUrl, claimsToKeep } = req.body;
   if (!credentials || !serviceProviderUrl) {
-    res.status(400).send('Missing claim or service provider URL');
+    res.status(400).send('Missing credentials or service provider URL');
     return;
   } else if (!areValidCredentials(credentials) || !isValidUrl(serviceProviderUrl)) {
     res.status(400).send('Invalid credentials format or URL');
@@ -74,8 +74,14 @@ app.post('/presentation/create', async (req: Request, res: Response) => {
   try {
     const presentation = await deriveAndCreatePresentation(credentials, claimsToKeep);
     const vp_token = base64url.encode(JSON.stringify(presentation));
-    await axios.post(serviceProviderUrl, { vp_token });
-    res.status(200).send('Presentation sent successfully.');
+    const outcome = await axios.post(serviceProviderUrl, { vp_token });
+    if (outcome.status === 200) {
+      res.status(200).send({ verified: true });
+    } else if (outcome.status === 400) {
+      res.status(400).send({ verified: false });
+    } else {
+      res.status(500).send('Error sending presentation to service provider');
+    }
   } catch (err) {
     res.status(500).send('Error deriving and creating presentation: ' + err);
   }
@@ -103,43 +109,55 @@ app.post('/issuer/poll', cors(internalUse), async (req: Request, res: Response) 
 
 // Requests the credential selected from the options returned by /issuer/poll
 app.post('/credential/request', cors(internalUse), async (req: Request, res: Response) => {
-  const { credential_identifier, authorization_endpoint, credential_endpoint } = req.body;
+  const {
+    credential_identifier: credentialIdentifier,
+    authorization_endpoint: authorizationEndpoint,
+    credential_endpoint: credentialEndpoint,
+  } = req.body;
+
+  if (!credentialIdentifier || !authorizationEndpoint || !credentialEndpoint) {
+    res.status(400).send('Missing credential identifier, authorization endpoint, or credential endpoint');
+    return;
+  }
 
   const { did } = await loadData(didURL, keyPairURL);
 
-  const authorization_request = {
+  const authorizationRequest = {
     response_type: 'code',
     client_id: did,
     authorization_details: {
       type: 'openid_credential',
-      credential_configuration_id: credential_identifier,
+      credential_configuration_id: credentialIdentifier,
     },
   };
 
   let auth_code: string;
   try {
-    const response = await axios.post(authorization_endpoint, authorization_request);
+    const response = await axios.post(authorizationEndpoint, authorizationRequest);
     auth_code = response.data.code;
   } catch (error) {
-    res.status(500).send(`Error authorising credential request at ${authorization_endpoint}`);
+    res.status(500).send(`Error authorising credential request at ${authorizationEndpoint}`);
     return;
   }
 
-  const credential_request = {
+  const credentialRequest = {
     auth_code: auth_code,
-    credential_identifier: credential_identifier,
+    credential_identifier: credentialIdentifier,
   };
 
   try {
-    const response = await axios.post(credential_endpoint, credential_request);
+    const response = await axios.post(credentialEndpoint, credentialRequest);
     const signedCredential = response.data.credential;
     res.status(200).json(signedCredential);
   } catch (error) {
-    res.status(500).send(`Error receiving credential request at ${credential_endpoint}`);
+    res.status(500).send(`Error receiving credential request at ${credentialEndpoint}`);
   }
 });
 
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+
+export default app;
+export { server };

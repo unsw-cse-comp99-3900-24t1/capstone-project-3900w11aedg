@@ -19,14 +19,7 @@
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1"
     },
-    "transform": {
-      "^.+\\.tsx?$": [
-        "ts-jest",
-        {
-          "useESM": true
-        }
-      ]
-    }
+    "transform": {}
   },
   "keywords": [],
   "author": "",
@@ -49,6 +42,7 @@
     "json-schema-library": "^9.3.5",
     "klona": "^2.0.6",
     "morgan": "^1.10.0",
+    "supertest": "^7.0.0",
     "typescript": "^5.5.3",
     "uuid": "^10.0.0",
     "web-did-resolver": "^2.0.27"
@@ -60,6 +54,7 @@
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
     "@types/morgan": "^1.9.9",
+    "@types/supertest": "^6.0.2",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",

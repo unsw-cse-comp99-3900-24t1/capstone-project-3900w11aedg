@@ -1,5 +1,5 @@
-import { ScrollView, Text, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { Alert, ScrollView, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import IdentityCardList from '../components/IdentityCardList';
@@ -7,22 +7,15 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 function HomeScreen(): JSX.Element {
-  const [did, setDID] = useState<string | null>(null);
-  console.log(did);
-
   const fetchDid = async () => {
     const storedDid = await AsyncStorage.getItem('did');
-    if (storedDid) {
-      setDID(storedDid);
-    } else {
+    if (!storedDid) {
       try {
         const response = await axios.post('http://localhost:3000/generate/did', {});
         const newDid = response.data.did;
         await AsyncStorage.setItem('did', newDid);
-        setDID(newDid);
-        console.log(newDid);
       } catch (error) {
-        console.log(error);
+        Alert.alert('No DID found');
       }
     }
   };

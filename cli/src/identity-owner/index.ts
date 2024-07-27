@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 import { getProjectRoot } from '../../../lib/src/find.js';
 import config from './cli.config.json' assert { type: 'json' };
 import generateKeyPair from '../../../lib/src/key.js';
-import uploadDIDDocument from '../../../lib/src/generate-did.js';
+import uploadDIDDocument from '../../../lib/src/upload-did-document.js';
 import { saveData } from '../../../lib/src/data.js';
 import { DIDDocument } from 'did-resolver';
 
