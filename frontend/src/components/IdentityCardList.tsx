@@ -9,7 +9,6 @@ interface Card {
   name: string;
   type: string;
   credIssuedBy: string;
-  credNumber: string;
   credType: string;
   credName: string;
   creationDate: string;
@@ -18,6 +17,16 @@ interface Card {
 
 const IdentityCardList: React.FC = () => {
   const [cards, setCards] = useState<Card[]>([]);
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    return date.toLocaleDateString('en-US', options);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,18 +38,16 @@ const IdentityCardList: React.FC = () => {
             const credentials = await Keychain.getGenericPassword({ service: key });
             if (credentials) {
               const credentialsData = JSON.parse(credentials.password);
-              const credentialSubject = credentialsData.credentialSubject;
-
+              const credentialSubjectArray = Object.values();
               return {
                 id: index + 1,
                 name: key,
-                type: credentialsData.type,
+                type: credentialsData.type[0],
                 credIssuedBy: credentialsData.issuer,
-                credNumber: '34839',
-                credType: credentialSubject.degree,
-                credName: 'jamie boss',
-                creationDate: credentialsData.issuanceDate,
-                expiryDate: credentialsData.expirationDate,
+                credType: credentialSubjectArray[1],
+                credName: credentialSubjectArray[0],
+                creationDate: formatDate(credentialsData.issuanceDate),
+                expiryDate: formatDate(credentialsData.expirationDate),
               };
             } else {
               console.log(`No data found for key ${key}`);
@@ -59,7 +66,7 @@ const IdentityCardList: React.FC = () => {
       }
     };
     fetchData();
-  }, [cards]);
+  }, []);
 
   return (
     <View className="flex flex-row flex-wrap justify-center">
