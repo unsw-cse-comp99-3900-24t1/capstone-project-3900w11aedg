@@ -34,7 +34,7 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
         <View style={styles.minHeight} className="w-80 rounded-md">
           <View className="flex-row justify-between">
             <Pressable onPress={handleCardPress} className="flex-1">
-              <Text className="text-xl text-white font-bold p-4">{card.name}</Text>
+              <Text className="text-2xl text-white font-bold p-4">{card.name}</Text>
             </Pressable>
             <View className="w-12 h-14 p-2 mr-4">
               <Image
@@ -46,9 +46,9 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
           </View>
           <Pressable onPress={handleCardPress} className="flex-1">
             <View className="flex-1 p-4 justify-end">
-              <Text className="text-white font-bold text-base">{card.type}</Text>
+              <Text className="text-white font-bold text-lg">{card.type}</Text>
               <View className="flex-row justify-between items-center">
-                <Text className="text-white text-base">
+                <Text className="text-white text-lg">
                   Expiry: <Text className="font-bold">{formattedExpiryDate}</Text>
                 </Text>
                 <ExpiryStatusLabel isExpired={isExpired} />
@@ -62,7 +62,7 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
         <View style={styles.minHeight} className="w-80 pb-6 rounded-md overflow-hidden">
           <View className="flex-row justify-between">
             <Pressable onPress={handleCardPress} className="flex-1">
-              <Text className="text-xl text-white font-bold p-4">{card.name}</Text>
+              <Text className="text-2xl text-white font-bold p-4">{card.name}</Text>
             </Pressable>
             <View className="w-12 h-14 p-2 mr-4">
               <Image
@@ -80,8 +80,8 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
             <View className="flex flex-col content-center">
               {Object.keys(card.claims).map((key, index) => (
                 <View className="flex flex-row flex-wrap content-center" key={index}>
-                  <Text className="font-bold text-white">{normaliseKey(key)}: </Text>
-                  <Text className="text-white">{card.claims[key]}</Text>
+                  <Text className="font-bold text-md text-white">{normaliseKey(key)}: </Text>
+                  <Text className="text-white text-md">{card.claims[key]}</Text>
                 </View>
               ))}
             </View>
