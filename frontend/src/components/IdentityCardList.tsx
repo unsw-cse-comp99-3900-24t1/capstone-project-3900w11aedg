@@ -35,19 +35,10 @@ const IdentityCardList: React.FC = () => {
         const keys = JSON.parse(keysString ?? '[]');
         const dataPromises = keys.map(async (key, index) => {
           try {
-            const credentials = await Keychain.getGenericPassword({ key });
+            const credentials = await Keychain.getGenericPassword({ service: key });
             if (credentials) {
               const credentialsData = JSON.parse(credentials.password);
-              const credentialSubject = credentialsData.credentialSubject;
-              console.log(credentialsData);
-              console.log(credentialSubject);
-              console.log(typeof credentialsData.type);
-              const credentialSubjectArray = [];
-              let i = 0;
-              Object.keys(credentialSubject).forEach((subjectKey) => {
-                credentialSubjectArray[i] = credentialSubject[subjectKey];
-                i++;
-              });
+              const credentialSubjectArray = Object.values();
               return {
                 id: index + 1,
                 name: key,
