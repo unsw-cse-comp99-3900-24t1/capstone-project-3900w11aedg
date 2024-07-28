@@ -64,14 +64,11 @@ export type CredentialConfig = {
 };
 
 export type VerifiableCredential = {
-  '@context': string[];
+  '@context': string[] | string;
   id?: string;
-  type: string[];
-  name?: string;
-  description?: string;
+  type: string[] | string;
   issuer: string;
-  validFrom?: string;
-  validUntil?: string;
+  name?: string;
   credentialStatus?: {
     id?: string;
     type: string;
@@ -83,8 +80,20 @@ export type VerifiableCredential = {
     id: string;
     type: string;
   }[];
-  // sus
-  credentialSubject: object;
+  issuanceDate: string;
+  expirationDate?: string;
+  credentialSubject: {
+    [key: string]: object | string;
+  };
+  proof: Proof;
+};
+
+export type Proof = {
+  type: string;
+  verificationMethod: string;
+  cryptosuite: string;
+  proofPurpose: string;
+  proofValue: string;
 };
 
 export type Card = {
@@ -93,8 +102,7 @@ export type Card = {
   type: string;
   credIssuedBy: string;
   credNumber: string;
-  credType: string;
-  credName: string;
+  claims: { [key: string]: string };
   issuanceDate: string;
   expiryDate: string;
 };

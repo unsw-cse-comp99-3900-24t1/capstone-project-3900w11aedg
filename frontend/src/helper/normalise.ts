@@ -1,0 +1,38 @@
+import { Card, VerifiableCredential } from '../config/types.ts';
+
+const normaliseCredential = (index: number, name: string, credential: string): Card => {
+  const JSONCredential = JSON.parse(credential) as VerifiableCredential;
+  const types = JSONCredential.type;
+  if (types.length === 0 || types[0] !== 'VerifiableCredential') {
+    throw new Error('Credential type is invalid');
+  }
+  let type = (types.length > 1 ? types[1] : types[0]) as string;
+  // Change type in PascalCase to Pascal Case
+  type = type.replace(/([A-Z])/g, ' $1').trim();
+  // Remove all text following an _ character
+  if (name.includes('_')) {
+    name = name.split('_')[0] as string;
+  }
+  name = name.replace(/([A-Z])/g, ' $1').trim();
+
+  return {
+    id: index + 1,
+    name,
+    type,
+    credIssuedBy: JSONCredential.issuer,
+    claims: JSONCredential.credentialSubject,
+    issuanceDate: JSONCredential.issuanceDate,
+    expiryDate: JSONCredential.expirationDate || '',
+  } as Card;
+};
+
+export const normaliseKey = (key: string): string => {
+  key = key.replace(/([A-Z])/g, ' $1');
+  return key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();
+};
+
+export const normaliseURL = (url: string): string => {
+  return url.replace(/(^\w+:|^)\/\//, '');
+};
+
+export default normaliseCredential;

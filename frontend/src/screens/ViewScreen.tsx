@@ -8,6 +8,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import ExpiryStatusLabel from '../components/ExpiryStatusLabel';
 import { formatDate } from '../helper/data.ts';
 import { Card } from '../config/types.ts';
+import { normaliseURL } from '../helper/normalise.ts';
 
 type RootStackParamList = {
   ViewScreen: {
@@ -54,7 +55,7 @@ const ViewScreen: React.FC = () => {
             <View className="flex-1 p-4 justify-end">
               <Text className="text-white font-bold text-base">{card.type}</Text>
               <View className="flex-row justify-between items-center">
-                <Text className="text-white text-base">
+                <Text className="text-white text-base mr-4">
                   Expiry: <Text className="font-bold">{formattedExpiryDate}</Text>
                 </Text>
                 <ExpiryStatusLabel isExpired={isExpired} />
@@ -74,7 +75,7 @@ const ViewScreen: React.FC = () => {
               <Text className="text-white font-medium">Expiry</Text>
             </View>
             <View>
-              <Text className="text-grey">{card.credIssuedBy}</Text>
+              <Text className="text-grey">{normaliseURL(card.credIssuedBy)}</Text>
               <Text className="text-grey">{formatDate(card.issuanceDate)}</Text>
               <Text className="text-grey">{formatDate(card.expiryDate)}</Text>
             </View>
