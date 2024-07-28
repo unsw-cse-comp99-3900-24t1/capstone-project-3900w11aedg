@@ -1,7 +1,11 @@
 import React from 'react';
 import { Image, View, Text } from 'react-native';
 
-const ExpiryStatusLabel: React.FC = ({ isExpired }) => {
+type Props = {
+  isExpired: boolean;
+};
+
+const ExpiryStatusLabel = ({ isExpired }: Props) => {
   const source = isExpired
     ? require('../assets/white_cross.png')
     : require('../assets/white_tick.png');

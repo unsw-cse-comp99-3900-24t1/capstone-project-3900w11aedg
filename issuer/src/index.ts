@@ -50,7 +50,9 @@ app.get('/', (_req: Request, res: Response) => {
 // Metadata URL as QR Code
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.post('/generate/qr-code', cors(internalUse), async (_req: Request, res: Response) => {
-  const qrCode = await QRCode.toDataURL(`http://localhost:${port}/.well-known/openid-credential-issuer`);
+  const qrCode = await QRCode.toDataURL(
+    `http://localhost:${port}/.well-known/openid-credential-issuer`
+  );
   await saveQRCode(qrCode, path.join(__basedir, 'metadata.png'));
   res.status(200).send({ qrCode });
 });
@@ -127,14 +129,14 @@ app.post('/credential/offer', async (req: Request, res: Response) => {
     const signedCredential = await _signCredential(credential_identifier);
     res.status(200).send({ credential: signedCredential });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(500).send(error);
   }
 });
 
 async function _signCredential(credential_identifier: string) {
   const credential = fs.readFileSync(
     __basedir + '/credentials/' + credential_identifier + '.json',
-    'utf8',
+    'utf8'
   );
   const credentialJSON = JSON.parse(credential);
   credentialJSON['issuanceDate'] = new Date().toISOString();

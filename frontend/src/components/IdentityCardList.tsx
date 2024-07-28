@@ -1,73 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as Keychain from 'react-native-keychain';
 import IdentityCard from './IdentityCard';
+import { Card } from '../config/types';
 
-interface Card {
-  id: number;
-  name: string;
-  type: string;
-  credIssuedBy: string;
-  credType: string;
-  credName: string;
-  creationDate: string;
-  expiryDate: string;
-}
+type Props = {
+  cards: Card[];
+};
 
-const IdentityCardList: React.FC = () => {
-  const [cards, setCards] = useState<Card[]>([]);
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    };
-    return date.toLocaleDateString('en-US', options);
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const keysString = await AsyncStorage.getItem('keys');
-        const keys = JSON.parse(keysString ?? '[]');
-        const dataPromises = keys.map(async (key, index) => {
-          try {
-            const credentials = await Keychain.getGenericPassword({ service: key });
-            if (credentials) {
-              const credentialsData = JSON.parse(credentials.password);
-              const credentialSubjectArray = Object.values();
-              return {
-                id: index + 1,
-                name: key,
-                type: credentialsData.type[0],
-                credIssuedBy: credentialsData.issuer,
-                credType: credentialSubjectArray[1],
-                credName: credentialSubjectArray[0],
-                creationDate: formatDate(credentialsData.issuanceDate),
-                expiryDate: formatDate(credentialsData.expirationDate),
-              };
-            } else {
-              console.log(`No data found for key ${key}`);
-              return null;
-            }
-          } catch (error) {
-            console.error(`Failed to retrieve data for key ${key}:`, error);
-            return null;
-          }
-        });
-        const data = await Promise.all(dataPromises);
-        const validData = data.filter((item) => item !== null);
-        setCards(validData);
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-      }
-    };
-    fetchData();
-  }, []);
-
+const IdentityCardList = ({ cards }: Props) => {
   return (
     <View className="flex flex-row flex-wrap justify-center">
       {cards.map((card) => (

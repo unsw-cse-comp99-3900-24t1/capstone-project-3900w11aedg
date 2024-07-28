@@ -6,20 +6,12 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import LinearGradient from 'react-native-linear-gradient';
 import ExpiryStatusLabel from '../components/ExpiryStatusLabel';
+import { formatDate } from '../helper/data.ts';
+import { Card } from '../config/types.ts';
 
 type RootStackParamList = {
   ViewScreen: {
-    card: {
-      id: number;
-      creationDate: string;
-      expiryDate: string;
-      name: string;
-      type: string;
-      credIssuedBy: string;
-      credNumber: string;
-      credType: string;
-      credName: string;
-    };
+    card: Card;
   };
 };
 
@@ -78,13 +70,13 @@ const ViewScreen: React.FC = () => {
           <View className="w-[100%] bg-popup-grey rounded-lg flex-row p-3 space-x-5 rounded-2xl">
             <View>
               <Text className="text-white font-medium">Issued By</Text>
-              <Text className="text-white font-medium">Created</Text>
+              <Text className="text-white font-medium">Issued at</Text>
               <Text className="text-white font-medium">Expiry</Text>
             </View>
             <View>
               <Text className="text-grey">{card.credIssuedBy}</Text>
-              <Text className="text-grey">{card.creationDate}</Text>
-              <Text className="text-grey">{card.expiryDate}</Text>
+              <Text className="text-grey">{formatDate(card.issuanceDate)}</Text>
+              <Text className="text-grey">{formatDate(card.expiryDate)}</Text>
             </View>
           </View>
           <Modal

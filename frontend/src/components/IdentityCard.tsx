@@ -3,18 +3,12 @@ import { Image, View, Text, Pressable } from 'react-native';
 import FlipCard from 'react-native-flip-card';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+import { Card } from '../config/types';
 import ExpiryStatusLabel from './ExpiryStatusLabel';
+import { formatDate } from '../helper/data.ts';
 
 interface IProps {
-  card: {
-    name: string;
-    type: string;
-    credIssuedBy: string;
-    credType: string;
-    credName: string;
-    creationDate: string;
-    expiryDate: string;
-  };
+  card: Card;
 }
 
 const IdentityCard: React.FC<IProps> = ({ card }) => {
@@ -23,12 +17,9 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
   const handleCardPress = () => {
     navigation.navigate('View', { card });
   };
-
-  const offset = 10 * 60 * 60 * 1000;
-  const isExpired = new Date(card.expiryDate) < new Date(new Date().getTime() + offset);
-
-  const gradientColour = isExpired ? ['#606665', '#606665'] : ['#1F2A29', '#527E78'];
-  const formattedExpiryDate = new Date(card.expiryDate).toDateString().toString();
+  const isExpired = new Date(card.expiryDate) < new Date(new Date(card.expiryDate));
+  const gradientColour = isExpired ? ['#606665', '#C1CCCA'] : ['#1F2A29', '#527E78'];
+  const formattedExpiryDate = formatDate(card.expiryDate);
 
   return (
     <FlipCard>

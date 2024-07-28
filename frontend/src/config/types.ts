@@ -86,3 +86,15 @@ export type VerifiableCredential = {
   // sus
   credentialSubject: object;
 };
+
+export type Card = {
+  id: number;
+  name: string;
+  type: string;
+  credIssuedBy: string;
+  credNumber: string;
+  credType: string;
+  credName: string;
+  issuanceDate: string;
+  expiryDate: string;
+};

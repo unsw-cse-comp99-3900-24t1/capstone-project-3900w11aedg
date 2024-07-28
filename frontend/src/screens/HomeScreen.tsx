@@ -1,15 +1,19 @@
 import { Alert, ScrollView, Text, View } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import IdentityCardList from '../components/IdentityCardList';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import SortButton from '../components/SortButton.tsx';
+import { Card } from '../config/types.ts';
+import fetchData from '../helper/data.ts';
 
 function HomeScreen(): JSX.Element {
-  const fetchDid = async () => {
-    const storedDid = await AsyncStorage.getItem('did');
-    if (!storedDid) {
+  const [cards, setCards] = useState<Card[]>([]);
+  const fetchDID = async () => {
+    const did = await AsyncStorage.getItem('did');
+    if (!did) {
       try {
         const response = await axios.post('http://localhost:3000/generate/did', {});
         const newDid = response.data.did;
@@ -22,20 +26,31 @@ function HomeScreen(): JSX.Element {
 
   useEffect(() => {
     try {
-      fetchDid();
+      fetchDID();
     } catch (error) {
       console.error(error);
     }
   }, []);
 
+  useEffect(() => {
+    fetchData()
+      .then((data) => {
+        setCards(data);
+      })
+      .catch((error) => {
+        console.error('Failed to fetch data:', error);
+      });
+  }, []);
+
   return (
-    <View className="flex flex-col h-[100%] w-[100%] bg-white dark:bg-dark-green">
+    <View className="flex flex-col h-full w-full bg-white dark:bg-dark-green">
       <Header />
-      <ScrollView>
-        <Text className="text-[28px] p-[10] px-[30] font-bold text-text-grey dark:text-white">
-          Credentials
-        </Text>
-        <IdentityCardList />
+      <View className="w-4/5 flex flex-row justify-between mx-auto">
+        <Text className="text-xl font-bold dark:text-white">Credentials</Text>
+        <SortButton setCards={setCards} />
+      </View>
+      <ScrollView className="w-full">
+        <IdentityCardList cards={cards} />
       </ScrollView>
       <Footer />
     </View>
