@@ -6,13 +6,17 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Card } from '../config/types';
 import ExpiryStatusLabel from './ExpiryStatusLabel';
 import { formatDate } from '../helper/data.ts';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../config/types';
 
 interface IProps {
   card: Card;
 }
 
+type ViewScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'View'>;
+
 const IdentityCard: React.FC<IProps> = ({ card }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ViewScreenNavigationProp>();
 
   const handleCardPress = () => {
     navigation.navigate('View', { card });

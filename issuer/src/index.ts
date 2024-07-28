@@ -140,6 +140,7 @@ async function _signCredential(credential_identifier: string) {
   );
   const credentialJSON = JSON.parse(credential);
   credentialJSON['issuanceDate'] = new Date().toISOString();
+  credentialJSON['expirationDate'] = new Date(new Date().setFullYear(new Date().getFullYear() + 10)).toISOString();
   const { keyPair } = await loadData(didURL, keyPairURL);
 
   return await signCredential(credentialJSON, keyPair);

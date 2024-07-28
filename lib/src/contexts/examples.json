@@ -48,6 +48,7 @@
       "verifier": {"@id": "ex:verifier", "@type": "@id"},
       "currentStatus": "ex:currentStatus",
       "statusReason": "ex:statusReason",
-      "prescription": "ex:prescription"
+      "prescription": "ex:prescription",
+      "description": "schema:description"
     }]
   }
