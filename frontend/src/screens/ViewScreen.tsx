@@ -9,6 +9,8 @@ import { formatDate } from '../helper/data.ts';
 import { normaliseURL } from '../helper/normalise.ts';
 import { RootStackParamList } from '../config/types.ts';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Keychain from 'react-native-keychain';
 
 type ViewScreenRouteProp = RouteProp<RootStackParamList, 'View'>;
 type ViewScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'View'>;
@@ -23,16 +25,23 @@ const ViewScreen: React.FC = () => {
     navigation.navigate('Home');
   };
 
-  const handleRemoveConfirmation = () => {
+  const handleRemoveConfirmation = async (key: string) => {
+    try {
+      await Keychain.resetGenericPassword({ service: key });
+      const keysString = await AsyncStorage.getItem('keys');
+      const keys = JSON.parse(keysString ?? '[]');
+      const updatedKeys = keys.filter((storedKey: string) => storedKey !== key);
+      await AsyncStorage.setItem('keys', JSON.stringify(updatedKeys));
+    } catch (error) {
+      console.log('Failed to remove credentials:');
+    }
     navigation.navigate('Home');
   };
 
   const offset = 10 * 60 * 60 * 1000;
   const isExpired = new Date(card.expiryDate) < new Date(new Date().getTime() + offset);
-
   const gradientColour = isExpired ? ['#606665', '#606665'] : ['#1F2A29', '#527E78'];
   const formattedExpiryDate = new Date(card.expiryDate).toDateString().toString();
-
   return (
     <View className="w-[100%] flex-1 bg-white dark:bg-dark-green">
       <Header />
@@ -94,7 +103,7 @@ const ViewScreen: React.FC = () => {
                   </Pressable>
                   <Pressable
                     onPress={() => {
-                      handleRemoveConfirmation();
+                      handleRemoveConfirmation(card.originalName);
                       setModalVisible(false);
                     }}
                   >

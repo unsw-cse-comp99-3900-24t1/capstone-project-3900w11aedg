@@ -2,7 +2,6 @@ import React from 'react';
 import { View } from 'react-native';
 import IdentityCard from './IdentityCard';
 import { Card } from '../config/types';
-
 type Props = {
   cards: Card[];
 };
