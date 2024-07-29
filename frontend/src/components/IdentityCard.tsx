@@ -6,18 +6,24 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Card } from '../config/types';
 import ExpiryStatusLabel from './ExpiryStatusLabel';
 import { formatDate } from '../helper/data.ts';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../config/types';
 
 interface IProps {
   card: Card;
 }
 
+type ViewScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'View'>;
+
 const IdentityCard: React.FC<IProps> = ({ card }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<ViewScreenNavigationProp>();
 
   const handleCardPress = () => {
     navigation.navigate('View', { card });
   };
-  const isExpired = new Date(card.expiryDate) < new Date(new Date(card.expiryDate));
+
+  const offset = 10 * 60 * 60 * 1000;
+  const isExpired = new Date(card.expiryDate) < new Date(new Date().getTime() + offset);
   const gradientColour = isExpired ? ['#606665', '#C1CCCA'] : ['#1F2A29', '#527E78'];
   const formattedExpiryDate = formatDate(card.expiryDate);
 

@@ -29,7 +29,8 @@ const fetchData = async (): Promise<Card[]> => {
       });
       return {
         id: index + 1,
-        name: key,
+        name: credentialsData.name,
+        description: credentialsData.description,
         type: credentialsData.type[0],
         credIssuedBy: credentialsData.issuer,
         credType: credentialSubjectArray[1],
