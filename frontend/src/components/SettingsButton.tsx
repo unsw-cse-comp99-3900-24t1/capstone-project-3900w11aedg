@@ -27,7 +27,7 @@ const SettingsButton = ({
             resizeMode="contain"
             className="h-[15px] w-[15px] my-3.5 ml-4"
           />
-          <Text className="ml-3 mt-2.5 text-base">{text}</Text>
+          <Text className="ml-3 text-white mt-2.5 text-base">{text}</Text>
           <Image
             source={secondImageSource}
             resizeMode="contain"
