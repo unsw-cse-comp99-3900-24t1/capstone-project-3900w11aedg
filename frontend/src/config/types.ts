@@ -108,4 +108,5 @@ export type Card = {
   claims: { [key: string]: string };
   issuanceDate: string;
   expiryDate: string;
+  originalName: string;
 };
