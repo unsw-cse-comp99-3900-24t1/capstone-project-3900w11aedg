@@ -27,5 +27,16 @@ module.exports = {
         'invalid-red': '#FA3636',
       },
     },
+    minHeight: {
+      0: '0px',
+      '1/4': '25%',
+      '1/2': '50%',
+      '3/4': '75%',
+      full: '100%',
+      20: '5rem', // Example: 20 tailwind units
+      40: '10rem', // Example: 40 tailwind units
+      60: '60px', // Example: 60 tailwind units
+      80: '20rem', // Example: 80 tailwind units
+    },
   },
 };

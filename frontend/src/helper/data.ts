@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Keychain from 'react-native-keychain';
 import { Card } from '../config/types.ts';
+import normaliseCredential from './normalise.ts';
 
 export const formatDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -18,26 +19,7 @@ const fetchData = async (): Promise<Card[]> => {
   const dataPromises = keys.map(async (key: string, index: number) => {
     const credentials = await Keychain.getGenericPassword({ service: key });
     if (credentials) {
-      const credentialsData = JSON.parse(credentials.password);
-      const credentialSubject = credentialsData.credentialSubject;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const credentialSubjectArray: any[] = [];
-      let i = 0;
-      Object.keys(credentialSubject).forEach((subjectKey) => {
-        credentialSubjectArray[i] = credentialSubject[subjectKey];
-        i++;
-      });
-      return {
-        id: index + 1,
-        name: credentialsData.name,
-        description: credentialsData.description,
-        type: credentialsData.type[0],
-        credIssuedBy: credentialsData.issuer,
-        credType: credentialSubjectArray[1],
-        credName: credentialSubjectArray[0],
-        issuanceDate: credentialsData.issuanceDate,
-        expiryDate: credentialsData.expirationDate,
-      };
+      return normaliseCredential(index, key, credentials.password);
     } else {
       console.log(`No data found for key ${key}`);
       return null;

@@ -76,7 +76,7 @@ const SortOverlay = ({ setCards, modalVisible, setModalVisible, setSortText }: P
               selected={selectedValue === 'Name'}
               onSelect={() => {
                 setSelectedValue('Name');
-                setReverse(false);
+                setReverse(true);
               }}
             />
             <RadioButton
@@ -85,7 +85,7 @@ const SortOverlay = ({ setCards, modalVisible, setModalVisible, setSortText }: P
               selected={selectedValue === 'NameR'}
               onSelect={() => {
                 setSelectedValue('NameR');
-                setReverse(true);
+                setReverse(false);
               }}
             />
             <RadioButton

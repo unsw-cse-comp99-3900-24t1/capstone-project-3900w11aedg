@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import LinearGradient from 'react-native-linear-gradient';
 import ExpiryStatusLabel from '../components/ExpiryStatusLabel';
 import { formatDate } from '../helper/data.ts';
+import { normaliseURL } from '../helper/normalise.ts';
 import { RootStackParamList } from '../config/types.ts';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
@@ -49,7 +50,7 @@ const ViewScreen: React.FC = () => {
             <View className="flex-1 p-4 justify-end">
               <Text className="text-white font-bold text-base">{card.type}</Text>
               <View className="flex-row justify-between items-center">
-                <Text className="text-white text-base">
+                <Text className="text-white text-base mr-4">
                   Expiry: <Text className="font-bold">{formattedExpiryDate}</Text>
                 </Text>
                 <ExpiryStatusLabel isExpired={isExpired} />
@@ -62,14 +63,14 @@ const ViewScreen: React.FC = () => {
           <View className="p-3 bg-popup-grey rounded-lg justify-around">
             <Text className="text-white font-bold">Pin to Wallet</Text>
           </View>
-          <View className="w-[100%] bg-popup-grey rounded-lg flex-row p-3 space-x-5 rounded-2xl">
+          <View className="w-[100%] bg-popup-grey flex-row p-3 space-x-5 rounded-2xl">
             <View>
-              <Text className="text-white font-medium">Issued By</Text>
+              <Text className="text-white font-medium">Issued by</Text>
               <Text className="text-white font-medium">Issued at</Text>
               <Text className="text-white font-medium">Expiry</Text>
             </View>
             <View>
-              <Text className="text-grey">{card.credIssuedBy}</Text>
+              <Text className="text-grey">{normaliseURL(card.credIssuedBy)}</Text>
               <Text className="text-grey">{formatDate(card.issuanceDate)}</Text>
               <Text className="text-grey">{formatDate(card.expiryDate)}</Text>
             </View>

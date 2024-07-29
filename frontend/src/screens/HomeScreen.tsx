@@ -56,7 +56,7 @@ function HomeScreen(): JSX.Element {
     <View className="flex flex-col h-full w-full bg-white dark:bg-dark-green">
       <Header />
       <View className="w-4/5 flex flex-row justify-between mx-auto">
-        <Text className="text-xl font-bold dark:text-white">Credentials</Text>
+        <Text className="text-3xl font-bold dark:text-white">Credentials</Text>
         <SortButton setCards={setCards} />
       </View>
       <View className="w-4/5 mx-auto my-2 flex flex-row items-center border border-gray-300 rounded dark:bg-white dark:border-dark-gray h-[40px]">
