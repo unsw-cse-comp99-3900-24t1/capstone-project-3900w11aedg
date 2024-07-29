@@ -1,35 +1,30 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, Modal } from 'react-native';
-import { useRoute, RouteProp } from '@react-navigation/native';
-import { useNavigation } from '@react-navigation/native';
+import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import LinearGradient from 'react-native-linear-gradient';
 import ExpiryStatusLabel from '../components/ExpiryStatusLabel';
 import { formatDate } from '../helper/data.ts';
-import { Card } from '../config/types.ts';
 import { normaliseURL } from '../helper/normalise.ts';
+import { RootStackParamList } from '../config/types.ts';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-type RootStackParamList = {
-  ViewScreen: {
-    card: Card;
-  };
-};
-
-type ViewScreenRouteProp = RouteProp<RootStackParamList, 'ViewScreen'>;
+type ViewScreenRouteProp = RouteProp<RootStackParamList, 'View'>;
+type ViewScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'View'>;
 
 const ViewScreen: React.FC = () => {
   const route = useRoute<ViewScreenRouteProp>();
   const { card } = route.params;
-  const navigation = useNavigation();
+  const navigation = useNavigation<ViewScreenNavigationProp>();
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleButtonPress = () => {
-    navigation.navigate('Home', { card });
+    navigation.navigate('Home');
   };
 
   const handleRemoveConfirmation = () => {
-    navigation.navigate('Home', { card });
+    navigation.navigate('Home');
   };
 
   const offset = 10 * 60 * 60 * 1000;

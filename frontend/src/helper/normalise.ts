@@ -19,6 +19,7 @@ const normaliseCredential = (index: number, name: string, credential: string): C
     id: index + 1,
     name,
     type,
+    description: JSONCredential.description || '',
     credIssuedBy: JSONCredential.issuer,
     claims: JSONCredential.credentialSubject,
     issuanceDate: JSONCredential.issuanceDate,
@@ -28,7 +29,6 @@ const normaliseCredential = (index: number, name: string, credential: string): C
 
 export const normaliseKey = (key: string): string => {
   key = key.replace(/([A-Z])/g, ' $1');
-  // Get first word of key
   if (key.includes(' ')) key = key.split(' ')[0] as string;
   return key.charAt(0).toUpperCase() + key.slice(1);
 };

@@ -1,4 +1,4 @@
-import { Alert, ScrollView, Text, View } from 'react-native';
+import { Alert, ScrollView, Text, View, TextInput, Image } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -11,6 +11,8 @@ import fetchData from '../helper/data.ts';
 
 function HomeScreen(): JSX.Element {
   const [cards, setCards] = useState<Card[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredCards, setFilteredCards] = useState<Card[]>([]);
   const fetchDID = async () => {
     const did = await AsyncStorage.getItem('did');
     if (!did) {
@@ -36,21 +38,39 @@ function HomeScreen(): JSX.Element {
     fetchData()
       .then((data) => {
         setCards(data);
+        setFilteredCards(data);
       })
       .catch((error) => {
         console.error('Failed to fetch data:', error);
       });
   }, []);
 
+  useEffect(() => {
+    const newFilteredCards = cards.filter((card) =>
+      card.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredCards(newFilteredCards);
+  }, [searchQuery, cards]);
+
   return (
     <View className="flex flex-col h-full w-full bg-white dark:bg-dark-green">
       <Header />
       <View className="w-4/5 flex flex-row justify-between mx-auto">
-        <Text className="text-2xl font-bold dark:text-white">Credentials</Text>
+        <Text className="text-3xl font-bold dark:text-white">Credentials</Text>
         <SortButton setCards={setCards} />
       </View>
+      <View className="w-4/5 mx-auto my-2 flex flex-row items-center border border-gray-300 rounded dark:bg-white dark:border-dark-gray h-[40px]">
+        <Image source={require('../assets/search.png')} className="ml-2.5 mr-1.5" />
+        <TextInput
+          className="flex-1 dark:text-black text-base pt-0 pb-0"
+          placeholder="Search by credential name..."
+          placeholderTextColor="#888"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+      </View>
       <ScrollView className="w-full">
-        <IdentityCardList cards={cards} />
+        <IdentityCardList cards={searchQuery ? filteredCards : cards} />
       </ScrollView>
       <Footer />
     </View>

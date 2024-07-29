@@ -4,7 +4,7 @@ export type RootStackParamList = {
   Scan: undefined;
   Present: { requestData?: string };
   Issue: { issuerMetadata?: keyof { [key: string]: IssuerMetadata } };
-  View: undefined; // plz type view
+  View: { card: Card }; // plz type view
 };
 
 export type IssuerMetadata = {
@@ -68,6 +68,7 @@ export type VerifiableCredential = {
   id?: string;
   type: string[] | string;
   issuer: string;
+  description?: string;
   name?: string;
   credentialStatus?: {
     id?: string;
@@ -99,6 +100,7 @@ export type Proof = {
 export type Card = {
   id: number;
   name: string;
+  description: string;
   type: string;
   credIssuedBy: string;
   credNumber: string;
