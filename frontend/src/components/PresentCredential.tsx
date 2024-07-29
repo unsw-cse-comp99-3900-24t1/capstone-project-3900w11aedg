@@ -7,9 +7,10 @@ import ClaimCheckbox from './ClaimCheckbox';
 
 type Props = {
   credential: Card;
+  addClaims: (claim: string, isAdding: boolean) => void;
 };
 
-function PresentCredential({ credential }: Props): JSX.Element {
+function PresentCredential({ credential, addClaims }: Props): JSX.Element {
   const [open, setOpen] = React.useState(false);
   const icon = open
     ? require('../assets/upwards_arrow.png')
@@ -49,7 +50,7 @@ function PresentCredential({ credential }: Props): JSX.Element {
                   <Text className="text-white text-lg font-medium">{key}</Text>
                   <Text>{claim}</Text>
                 </View>
-                <ClaimCheckbox />
+                <ClaimCheckbox claim={key} addClaims={addClaims} />
               </View>
             ))}
           </View>

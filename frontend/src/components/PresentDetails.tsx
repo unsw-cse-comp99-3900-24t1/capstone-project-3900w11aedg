@@ -1,6 +1,6 @@
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
-import { ClaimsRequest } from '../config/types';
+import { ClaimsRequest, VerifiableCredential } from '../config/types';
 import PresentCredentialList from '../components/PresentCredentialList';
 import SubmitClaimsButton from './SubmitClaimsButton';
 import { useNavigation } from '@react-navigation/native';
@@ -13,9 +13,31 @@ type Props = {
 type NavProps = NativeStackNavigationProp<RootStackParamList>;
 
 function PresentDetails({ claimsRequest }: Props): JSX.Element {
-  // const [chosenClaims, setChosenClaims] = React.useState([]);
-  // Set all valid credentials here too (pass to details, pass to list which sets cred)
+  const [chosenClaims, setChosenClaims] = React.useState<string[]>([]);
+  const [validCredentials, setValidCredentials] = React.useState<VerifiableCredential[]>([]);
   const navigation = useNavigation<NavProps>();
+
+  const updateChosenClaims = React.useCallback(
+    (newClaim: string, addingClaim: boolean) => {
+      if (!chosenClaims.includes(newClaim) && !addingClaim) {
+        return;
+      }
+      setChosenClaims((prevClaims) => {
+        if (addingClaim) {
+          return [...prevClaims, newClaim];
+        } else {
+          const index = prevClaims.indexOf(newClaim);
+          if (index > -1) {
+            const newClaims = [...prevClaims];
+            newClaims.splice(index, 1);
+            return newClaims;
+          }
+          return prevClaims;
+        }
+      });
+    },
+    [chosenClaims]
+  );
 
   return (
     <View className="flex h-[73%]">
@@ -31,7 +53,11 @@ function PresentDetails({ claimsRequest }: Props): JSX.Element {
             {`\u2022 ${inputDescriptor.id}`}
           </Text>
         ))}
-        <PresentCredentialList claimsRequest={claimsRequest} />
+        <PresentCredentialList
+          claimsRequest={claimsRequest}
+          setCredentialsRequest={setValidCredentials}
+          addClaims={updateChosenClaims}
+        />
       </ScrollView>
       <View className="flex flex-row justify-between px-[5%]">
         <TouchableOpacity className="bg-button-grey w-[35%] p-[5px] rounded-[5px]">
@@ -42,7 +68,11 @@ function PresentDetails({ claimsRequest }: Props): JSX.Element {
             Cancel
           </Text>
         </TouchableOpacity>
-        <SubmitClaimsButton />
+        <SubmitClaimsButton
+          claimsRequest={claimsRequest}
+          claims={chosenClaims}
+          credentials={validCredentials}
+        />
       </View>
     </View>
   );

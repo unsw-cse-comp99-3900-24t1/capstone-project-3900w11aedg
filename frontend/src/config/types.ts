@@ -6,6 +6,7 @@ export type RootStackParamList = {
   Present: { requestData?: ClaimsRequest };
   Issue: { issuerMetadata?: keyof { [key: string]: IssuerMetadata } };
   View: { card: Card };
+  Verified: { success: boolean };
 };
 
 export type IssuerMetadata = {

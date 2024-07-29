@@ -9,7 +9,6 @@ import { formatDate } from '../helper/data.ts';
 import { normaliseURL } from '../helper/normalise.ts';
 import { RootStackParamList } from '../config/types.ts';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Keychain from 'react-native-keychain';
 
 type ViewScreenRouteProp = RouteProp<RootStackParamList, 'View'>;
@@ -28,10 +27,6 @@ const ViewScreen: React.FC = () => {
   const handleRemoveConfirmation = async (key: string) => {
     try {
       await Keychain.resetGenericPassword({ service: key });
-      const keysString = await AsyncStorage.getItem('keys');
-      const keys = JSON.parse(keysString ?? '[]');
-      const updatedKeys = keys.filter((storedKey: string) => storedKey !== key);
-      await AsyncStorage.setItem('keys', JSON.stringify(updatedKeys));
     } catch (error) {
       console.log('Failed to remove credentials:');
     }

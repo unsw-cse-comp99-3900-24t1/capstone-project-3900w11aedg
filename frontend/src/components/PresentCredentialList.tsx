@@ -2,16 +2,22 @@ import { View } from 'react-native';
 import React from 'react';
 import * as Keychain from 'react-native-keychain';
 import { JSONPath } from 'jsonpath-plus';
-import { Card, ClaimsRequest, Field } from '../config/types';
+import { Card, ClaimsRequest, Field, VerifiableCredential } from '../config/types';
 import PresentCredential from './PresentCredential';
 import normaliseCredential from '../helper/normalise';
 
 type Props = {
   claimsRequest: ClaimsRequest;
+  setCredentialsRequest: (credentialsRequest: VerifiableCredential[]) => void;
+  addClaims: (claim: string, isAdding: boolean) => void;
 };
 
 // Different claim queries have different places to post to
-function PresentCredentialList({ claimsRequest }: Props): JSX.Element {
+function PresentCredentialList({
+  claimsRequest,
+  setCredentialsRequest,
+  addClaims,
+}: Props): JSX.Element {
   const [credentials, setCredentials] = React.useState<Card[]>([]);
 
   React.useEffect(() => {
@@ -31,7 +37,7 @@ function PresentCredentialList({ claimsRequest }: Props): JSX.Element {
         const credentialPromises = keys.map(async (key, index) => {
           const credential = await Keychain.getGenericPassword({ service: key });
           if (credential) {
-            const JSONCredential = JSON.parse(credential.password);
+            const JSONCredential: VerifiableCredential = JSON.parse(credential.password);
             const isValidCredential = requiredFields.every((field) => {
               const results = JSONPath({ path: field.path[0]!, json: JSONCredential });
               if (!results.length) {
@@ -39,7 +45,7 @@ function PresentCredentialList({ claimsRequest }: Props): JSX.Element {
               }
               if (field.filter) {
                 const { pattern } = field.filter;
-                return results.some((result) => {
+                return results.some((result: string) => {
                   if (Array.isArray(result)) {
                     return result.some((item) => new RegExp(pattern).test(String(item)));
                   }
@@ -50,24 +56,40 @@ function PresentCredentialList({ claimsRequest }: Props): JSX.Element {
             });
 
             if (isValidCredential) {
-              return normaliseCredential(index, key, credential.password);
+              return {
+                verifiableCredential: JSONCredential,
+                cardCredential: normaliseCredential(index, key, credential.password),
+              };
             }
           }
           return null;
         });
         const validCredentials = await Promise.all(credentialPromises);
-        setCredentials(validCredentials.filter(Boolean) as Card[]);
+        const offset = 10 * 60 * 60 * 1000;
+        setCredentials(
+          validCredentials.map((cred) => cred?.cardCredential).filter(Boolean) as Card[]
+        );
+        setCredentialsRequest(
+          validCredentials
+            .filter(
+              (cred) =>
+                new Date(cred?.cardCredential.expiryDate as string) >
+                new Date(new Date().getTime() + offset)
+            )
+            .map((cred) => cred?.verifiableCredential)
+            .filter(Boolean) as VerifiableCredential[]
+        );
       } catch (error) {
         console.log(error);
       }
     };
     getCredentials();
-  }, [claimsRequest.query]);
+  }, [claimsRequest.query, setCredentialsRequest]);
 
   return (
     <View>
       {credentials.map((credential, index) => (
-        <PresentCredential key={index} credential={credential} />
+        <PresentCredential key={index} credential={credential} addClaims={addClaims} />
       ))}
     </View>
   );

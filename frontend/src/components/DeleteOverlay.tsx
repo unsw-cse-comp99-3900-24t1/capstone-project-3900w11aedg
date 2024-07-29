@@ -31,12 +31,11 @@ const DeleteOverlay = ({ modalVisible, setModalVisible }: Props) => {
         throw new Error('Could not delete account. Please try again later.');
       }
       await AsyncStorage.removeItem('did');
-      const keys = JSON.parse((await AsyncStorage.getItem('keys')) ?? '[]');
+      const keys = await Keychain.getAllGenericPasswordServices();
       const deletedKeys = keys.map((key: string) =>
         Keychain.resetGenericPassword({ service: key })
       );
       await Promise.all(deletedKeys);
-      await AsyncStorage.removeItem('keys');
       setModalVisible(false);
       Alert.alert(
         'Success',
