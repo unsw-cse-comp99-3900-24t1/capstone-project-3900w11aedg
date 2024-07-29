@@ -9,6 +9,7 @@ import ScanScreen from './screens/ScanScreen';
 import PresentScreen from './screens/PresentScreen';
 import IssuanceScreen from './screens/IssuanceScreen';
 import ViewScreen from './screens/ViewScreen';
+import SettingsScreen from './screens/SettingsScreen.tsx';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -23,6 +24,11 @@ function App(): JSX.Element {
           <Stack.Screen name="Present" component={PresentScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Issue" component={IssuanceScreen} options={{ headerShown: false }} />
           <Stack.Screen name="View" component={ViewScreen} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

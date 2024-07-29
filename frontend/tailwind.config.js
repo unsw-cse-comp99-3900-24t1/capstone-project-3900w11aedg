@@ -25,6 +25,7 @@ module.exports = {
         'card-dark-green': '#385450',
         'valid-green': '#3CC639',
         'invalid-red': '#FA3636',
+        'settings-grey': '#414141',
       },
     },
     minHeight: {
