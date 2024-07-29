@@ -1,15 +1,21 @@
-import { Alert, ScrollView, Text, View } from 'react-native';
-import React, { useEffect } from 'react';
+import { Alert, ScrollView, Text, View, TextInput, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import IdentityCardList from '../components/IdentityCardList';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import SortButton from '../components/SortButton.tsx';
+import { Card } from '../config/types.ts';
+import fetchData from '../helper/data.ts';
 
 function HomeScreen(): JSX.Element {
-  const fetchDid = async () => {
-    const storedDid = await AsyncStorage.getItem('did');
-    if (!storedDid) {
+  const [cards, setCards] = useState<Card[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredCards, setFilteredCards] = useState<Card[]>([]);
+  const fetchDID = async () => {
+    const did = await AsyncStorage.getItem('did');
+    if (!did) {
       try {
         const response = await axios.post('http://localhost:3000/generate/did', {});
         const newDid = response.data.did;
@@ -22,20 +28,49 @@ function HomeScreen(): JSX.Element {
 
   useEffect(() => {
     try {
-      fetchDid();
+      fetchDID();
     } catch (error) {
       console.error(error);
     }
   }, []);
 
+  useEffect(() => {
+    fetchData()
+      .then((data) => {
+        setCards(data);
+        setFilteredCards(data);
+      })
+      .catch((error) => {
+        console.error('Failed to fetch data:', error);
+      });
+  }, []);
+
+  useEffect(() => {
+    const newFilteredCards = cards.filter((card) =>
+      card.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredCards(newFilteredCards);
+  }, [searchQuery, cards]);
+
   return (
-    <View className="flex flex-col h-[100%] w-[100%] bg-white dark:bg-dark-green">
+    <View className="flex flex-col h-full w-full bg-white dark:bg-dark-green">
       <Header />
-      <ScrollView>
-        <Text className="text-[28px] p-[10] px-[30] font-bold text-text-grey dark:text-white">
-          Credentials
-        </Text>
-        <IdentityCardList />
+      <View className="w-4/5 flex flex-row justify-between mx-auto">
+        <Text className="text-3xl font-bold dark:text-white">Credentials</Text>
+        <SortButton setCards={setCards} />
+      </View>
+      <View className="w-4/5 mx-auto my-2 flex flex-row items-center border border-gray-300 rounded dark:bg-white dark:border-dark-gray h-[40px]">
+        <Image source={require('../assets/search.png')} className="ml-2.5 mr-1.5" />
+        <TextInput
+          className="flex-1 dark:text-black text-base pt-0 pb-0"
+          placeholder="Search by credential name..."
+          placeholderTextColor="#888"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+        />
+      </View>
+      <ScrollView className="w-full">
+        <IdentityCardList cards={searchQuery ? filteredCards : cards} />
       </ScrollView>
       <Footer />
     </View>

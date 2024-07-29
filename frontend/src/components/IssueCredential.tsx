@@ -4,6 +4,7 @@ import * as Keychain from 'react-native-keychain';
 import { CredentialConfig } from '../config/types';
 import addIcon from '../assets/add_icon.png';
 import addedIcon from '../assets/green_added_icon.png';
+import { normaliseKey } from '../helper/normalise.ts';
 
 type Props = {
   credentialOffer: CredentialConfig;
@@ -53,7 +54,7 @@ function IssueCredential({
         <Text className={`text-xl ${isSelected ? 'text-black dark:text-white' : ''}`}>
           {credentialOffer?.display && credentialOffer.display[0]
             ? credentialOffer.display[0].name
-            : backupName}
+            : normaliseKey(backupName)}
         </Text>
       </View>
     </TouchableHighlight>

@@ -92,7 +92,7 @@ app.post('/issuer/poll', cors(internalUse), async (req: Request, res: Response) 
   const { issuerUrl } = req.body;
 
   if (!issuerUrl) {
-    res.status(400).send('Must provide target Issuer\'s URL');
+    res.status(400).send("Must provide target Issuer's URL");
     return;
   }
 
@@ -100,9 +100,7 @@ app.post('/issuer/poll', cors(internalUse), async (req: Request, res: Response) 
     const response = await axios.get(issuerUrl);
     res.status(200).json(response.data);
   } catch (error) {
-    res
-      .status(500)
-      .send(`Error fetching issuer metadata at ${issuerUrl}`);
+    res.status(500).send(`Error fetching issuer metadata at ${issuerUrl}`);
     return;
   }
 });
@@ -116,11 +114,19 @@ app.post('/credential/request', cors(internalUse), async (req: Request, res: Res
   } = req.body;
 
   if (!credentialIdentifier || !authorizationEndpoint || !credentialEndpoint) {
-    res.status(400).send('Missing credential identifier, authorization endpoint, or credential endpoint');
+    res
+      .status(400)
+      .send('Missing credential identifier, authorization endpoint, or credential endpoint');
     return;
   }
 
-  const { did } = await loadData(didURL, keyPairURL);
+  let did;
+  try {
+    ({ did } = await loadData(didURL, keyPairURL));
+  } catch (error) {
+    res.status(500).send('Error loading DID');
+    return;
+  }
 
   const authorizationRequest = {
     response_type: 'code',
@@ -153,7 +159,6 @@ app.post('/credential/request', cors(internalUse), async (req: Request, res: Res
     res.status(500).send(`Error receiving credential request at ${credentialEndpoint}`);
   }
 });
-
 
 const server = app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

@@ -6,7 +6,7 @@ export type RootStackParamList = {
   Scan: undefined;
   Present: { requestData?: ClaimsRequest };
   Issue: { issuerMetadata?: keyof { [key: string]: IssuerMetadata } };
-  View: undefined; // plz type view
+  View: { card: Card }; // plz type view
 };
 
 export type IssuerMetadata = {
@@ -63,4 +63,50 @@ export type CredentialConfig = {
     };
     text_color?: string;
   }[];
+};
+
+export type VerifiableCredential = {
+  '@context': string[] | string;
+  id?: string;
+  type: string[] | string;
+  issuer: string;
+  description?: string;
+  name?: string;
+  credentialStatus?: {
+    id?: string;
+    type: string;
+    statusPurpose?: string;
+    statusListIndex?: string;
+    statusListCredential?: string;
+  };
+  credentialSchema?: {
+    id: string;
+    type: string;
+  }[];
+  issuanceDate: string;
+  expirationDate?: string;
+  credentialSubject: {
+    [key: string]: object | string;
+  };
+  proof: Proof;
+};
+
+export type Proof = {
+  type: string;
+  verificationMethod: string;
+  cryptosuite: string;
+  proofPurpose: string;
+  proofValue: string;
+};
+
+export type Card = {
+  id: number;
+  name: string;
+  description: string;
+  type: string;
+  credIssuedBy: string;
+  credNumber: string;
+  claims: { [key: string]: string };
+  issuanceDate: string;
+  expiryDate: string;
 };
