@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Keychain from 'react-native-keychain';
 import IdentityCard from './IdentityCard';
 
@@ -22,8 +21,7 @@ const IdentityCardList: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const keysString = await AsyncStorage.getItem('keys');
-        const keys = JSON.parse(keysString ?? '[]');
+        const keys = await Keychain.getAllGenericPasswordServices();
         const dataPromises = keys.map(async (key, index) => {
           try {
             const credentials = await Keychain.getGenericPassword({ service: key });

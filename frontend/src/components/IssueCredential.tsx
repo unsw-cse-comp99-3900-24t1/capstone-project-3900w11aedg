@@ -1,7 +1,7 @@
 import { View, TouchableHighlight, Text, Image } from 'react-native';
 import React from 'react';
+import * as Keychain from 'react-native-keychain';
 import { CredentialConfig } from '../config/types';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import addIcon from '../assets/add_icon.png';
 import addedIcon from '../assets/green_added_icon.png';
 
@@ -22,8 +22,8 @@ function IssueCredential({
   const [icon, setIcon] = React.useState(addIcon);
 
   const checkCredentialAdded = async () => {
-    const keys = await AsyncStorage.getItem('keys');
-    if (keys && JSON.stringify(keys).includes(backupName)) {
+    const keys = await Keychain.getAllGenericPasswordServices();
+    if (keys && keys.includes(backupName)) {
       setDisabled(true);
       setIcon(addedIcon);
     }

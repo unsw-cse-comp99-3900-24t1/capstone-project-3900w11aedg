@@ -22,6 +22,7 @@
     "buffer": "^6.0.3",
     "cross-env": "^7.0.3",
     "jpeg-js": "^0.4.4",
+    "jsonpath-plus": "^9.0.0",
     "jsqr": "^1.4.0",
     "nativewind": "^2.0.11",
     "pngjs": "^7.0.0",
