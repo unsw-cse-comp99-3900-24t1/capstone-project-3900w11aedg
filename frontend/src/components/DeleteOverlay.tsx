@@ -57,7 +57,7 @@ const DeleteOverlay = ({ modalVisible, setModalVisible }: Props) => {
         <View className="bg-settings-grey w-90 h-200 rounded-2xl">
           <View className={'flex flex-col'} />
           <Text className="text-2xl my-2 mx-auto text-center font-bold pt-4 px-4 pb-4">
-            Do you wish to permanently remove your account?
+            Do you wish to permanently delete your account?
           </Text>
           <Text className={'text-base pt-2 px-4 pb-6'}>
             All identifiers and credentials you own will be invalidated and removed.
