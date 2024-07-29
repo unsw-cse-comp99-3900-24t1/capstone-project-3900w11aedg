@@ -56,10 +56,10 @@ const DeleteOverlay = ({ modalVisible, setModalVisible }: Props) => {
       >
         <View className="bg-settings-grey w-90 h-200 rounded-2xl">
           <View className={'flex flex-col'} />
-          <Text className="text-2xl my-2 mx-auto text-center font-bold pt-4 px-4 pb-4">
+          <Text className="text-2xl my-2 mx-auto text-white text-center font-bold pt-4 px-4 pb-4">
             Do you wish to permanently delete your account?
           </Text>
-          <Text className={'text-base pt-2 px-4 pb-6'}>
+          <Text className={'text-base text-white pt-2 px-4 pb-6'}>
             All identifiers and credentials you own will be invalidated and removed.
           </Text>
           <View className="flex flex-row mx-4 mb-4 ">
@@ -67,13 +67,13 @@ const DeleteOverlay = ({ modalVisible, setModalVisible }: Props) => {
               onPress={handleClose}
               className="flex-1 bg-blurred-grey rounded-md mr-2 text-center"
             >
-              <Text className="mx-auto font-bold text-base py-2">Cancel</Text>
+              <Text className="mx-auto font-bold text-white text-base py-2">Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleDelete}
               className="flex-1 bg-red-500 rounded-md text-center"
             >
-              <Text className="mx-auto font-bold text-base py-2">Delete Account</Text>
+              <Text className="mx-auto font-bold text-white text-base py-2">Delete Account</Text>
             </TouchableOpacity>
           </View>
         </View>
