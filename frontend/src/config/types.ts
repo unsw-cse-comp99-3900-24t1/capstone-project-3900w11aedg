@@ -1,6 +1,7 @@
 export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
+  Settings: undefined;
   Scan: undefined;
   Present: { requestData?: string };
   Issue: { issuerMetadata?: keyof { [key: string]: IssuerMetadata } };
