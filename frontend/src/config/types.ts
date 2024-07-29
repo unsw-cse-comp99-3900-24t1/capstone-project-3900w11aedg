@@ -1,6 +1,7 @@
 export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
+  Settings: undefined;
   Scan: undefined;
   Present: { requestData?: ClaimsRequest };
   Issue: { issuerMetadata?: keyof { [key: string]: IssuerMetadata } };
@@ -106,6 +107,7 @@ export type Card = {
   claims: { [key: string]: string };
   issuanceDate: string;
   expiryDate: string;
+  originalName: string;
 };
 
 // ClaimsRequest

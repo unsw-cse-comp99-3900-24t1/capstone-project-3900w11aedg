@@ -42,6 +42,7 @@ function Footer(): JSX.Element {
       </TouchableOpacity>
       <TouchableOpacity
         className="basis-[20%] flex items-center gap-1"
+        onPress={() => navigation.navigate('Settings')}
         disabled={route.name === 'Settings'}
       >
         <Image

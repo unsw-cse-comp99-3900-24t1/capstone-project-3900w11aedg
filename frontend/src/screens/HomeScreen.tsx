@@ -8,6 +8,7 @@ import Footer from '../components/Footer';
 import SortButton from '../components/SortButton.tsx';
 import { Card } from '../config/types.ts';
 import fetchData from '../helper/data.ts';
+import { useFocusEffect } from '@react-navigation/native';
 
 function HomeScreen(): JSX.Element {
   const [cards, setCards] = useState<Card[]>([]);
@@ -34,16 +35,18 @@ function HomeScreen(): JSX.Element {
     }
   }, []);
 
-  useEffect(() => {
-    fetchData()
-      .then((data) => {
-        setCards(data);
-        setFilteredCards(data);
-      })
-      .catch((error) => {
-        console.error('Failed to fetch data:', error);
-      });
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData()
+        .then((data) => {
+          setCards(data);
+          setFilteredCards(data);
+        })
+        .catch((error) => {
+          console.error('Failed to fetch data:', error);
+        });
+    }, [])
+  );
 
   useEffect(() => {
     const newFilteredCards = cards.filter((card) =>

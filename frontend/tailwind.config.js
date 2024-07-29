@@ -23,6 +23,7 @@ module.exports = {
           100: '#8F9594',
           200: '#575959',
         },
+        'settings-grey': '#414141',
       },
     },
     minHeight: {

@@ -7,6 +7,7 @@ import generateKeyPair from '../../lib/src/key.js';
 import { loadData, saveData } from '../../lib/src/data.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import fs from 'fs';
 import { deriveAndCreatePresentation } from '../../lib/src/backend/presentations.js';
 import axios from 'axios';
 import { getProjectRoot } from '../../lib/src/find.js';
@@ -53,6 +54,20 @@ app.post('/generate/did', cors(internalUse), async (_req: Request, res: Response
     res.status(200).send({ did });
   } catch (error) {
     res.status(500).send(error);
+  }
+});
+
+app.delete('/delete/did', cors(internalUse), async (_req: Request, res: Response) => {
+  try {
+    if (!fs.existsSync(didURL) || !fs.existsSync(keyPairURL)) {
+      res.status(404).send('No DID found');
+      return;
+    }
+    fs.unlinkSync(didURL);
+    fs.unlinkSync(keyPairURL);
+    res.status(200).send('DID deleted');
+  } catch (error) {
+    res.status(500).send('Error deleting DID');
   }
 });
 
