@@ -30,11 +30,14 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
 
   return (
     <FlipCard>
-      <LinearGradient colors={gradientColour} className="rounded-md">
+      <LinearGradient colors={gradientColour} className="rounded-xl">
         <View style={styles.minHeight} className="w-80 rounded-md">
           <View className="flex-row justify-between">
             <Pressable onPress={handleCardPress} className="flex-1">
-              <Text className="text-2xl text-white font-bold p-4">{card.name}</Text>
+              <Text className="text-2xl text-white font-bold pt-4 px-4">{card.name}</Text>
+              <Text className="text-md text-white px-4 pb-6">
+                {Object.keys(card.claims).length} claims
+              </Text>
             </Pressable>
             <View className="w-12 h-14 p-2 mr-4">
               <Image
@@ -58,11 +61,11 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
         </View>
       </LinearGradient>
 
-      <LinearGradient colors={gradientColour} className="rounded-md">
-        <View style={styles.minHeight} className="w-80 pb-6 rounded-md overflow-hidden">
+      <LinearGradient colors={gradientColour} className="rounded-xl">
+        <View style={styles.minHeight} className="w-80 pb-6 mx-auto rounded-md overflow-hidden">
           <View className="flex-row justify-between">
             <Pressable onPress={handleCardPress} className="flex-1">
-              <Text className="text-2xl text-white font-bold p-4">{card.name}</Text>
+              <Text className="text-2xl text-white font-bold px-4 pb-0 pt-4">{card.name}</Text>
             </Pressable>
             <View className="w-12 h-14 p-2 mr-4">
               <Image
@@ -72,15 +75,15 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
               />
             </View>
           </View>
-          <Pressable onPress={handleCardPress} className="mx-auto px-4 pt-2">
-            <View className="flex flex-row">
-              <Text className="font-bold text-white">Issued by: </Text>
-              <Text className="text-white">{normaliseURL(card.credIssuedBy)}</Text>
+          <Pressable onPress={handleCardPress} className="mx-auto px-2 pt-2">
+            <View className="mb-2 flex flex-row">
+              <Text className="font-bold text-base text-white">Issued by: </Text>
+              <Text className="text-white text-base">{normaliseURL(card.credIssuedBy)}</Text>
             </View>
             <View className="flex flex-col content-center">
               {Object.keys(card.claims).map((key, index) => (
-                <View className="flex flex-row flex-wrap content-center" key={index}>
-                  <Text className="font-bold text-md text-white">{normaliseKey(key)}: </Text>
+                <View className="content-center" key={index}>
+                  <Text className="text-white font-bold text-base">{normaliseKey(key)}</Text>
                   <Text className="text-white text-md">{card.claims[key]}</Text>
                 </View>
               ))}

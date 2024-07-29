@@ -28,7 +28,9 @@ const normaliseCredential = (index: number, name: string, credential: string): C
 
 export const normaliseKey = (key: string): string => {
   key = key.replace(/([A-Z])/g, ' $1');
-  return key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();
+  // Get first word of key
+  if (key.includes(' ')) key = key.split(' ')[0] as string;
+  return key.charAt(0).toUpperCase() + key.slice(1);
 };
 
 export const normaliseURL = (url: string): string => {

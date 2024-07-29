@@ -68,9 +68,9 @@ const ViewScreen: React.FC = () => {
           <View className="p-3 bg-popup-grey rounded-lg justify-around">
             <Text className="text-white font-bold">Pin to Wallet</Text>
           </View>
-          <View className="w-[100%] bg-popup-grey rounded-lg flex-row p-3 space-x-5 rounded-2xl">
+          <View className="w-[100%] bg-popup-grey flex-row p-3 space-x-5 rounded-2xl">
             <View>
-              <Text className="text-white font-medium">Issued By</Text>
+              <Text className="text-white font-medium">Issued by</Text>
               <Text className="text-white font-medium">Issued at</Text>
               <Text className="text-white font-medium">Expiry</Text>
             </View>

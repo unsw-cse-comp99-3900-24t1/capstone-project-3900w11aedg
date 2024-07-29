@@ -46,7 +46,7 @@ function HomeScreen(): JSX.Element {
     <View className="flex flex-col h-full w-full bg-white dark:bg-dark-green">
       <Header />
       <View className="w-4/5 flex flex-row justify-between mx-auto">
-        <Text className="text-xl font-bold dark:text-white">Credentials</Text>
+        <Text className="text-2xl font-bold dark:text-white">Credentials</Text>
         <SortButton setCards={setCards} />
       </View>
       <ScrollView className="w-full">
