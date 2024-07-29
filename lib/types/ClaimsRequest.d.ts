@@ -1,5 +1,5 @@
 export type ClaimsRequest = {
-  query: ClaimsQuery[]
+  query: ClaimsQuery
 };
 
 export type ClaimsQuery = {

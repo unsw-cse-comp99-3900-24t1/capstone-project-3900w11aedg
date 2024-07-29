@@ -1,12 +1,10 @@
-import { ClaimsRequest } from '../../../lib/types/ClaimsRequest';
-
 export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
   Scan: undefined;
   Present: { requestData?: ClaimsRequest };
   Issue: { issuerMetadata?: keyof { [key: string]: IssuerMetadata } };
-  View: { card: Card }; // plz type view
+  View: { card: Card };
 };
 
 export type IssuerMetadata = {
@@ -24,7 +22,6 @@ export type IssuerMetadata = {
   };
   credential_identifiers_supported?: boolean;
   signed_metadata?: string;
-  // Our one uses, currently just an object, should be an array of objects
   display?: {
     name?: string;
     locale?: string;
@@ -109,4 +106,41 @@ export type Card = {
   claims: { [key: string]: string };
   issuanceDate: string;
   expiryDate: string;
+};
+
+// ClaimsRequest
+export type ClaimsRequest = {
+  query: ClaimsQuery;
+};
+
+export type ClaimsQuery = {
+  domain: string;
+  did: string;
+  claims: Claims;
+  url: string;
+};
+
+export type Claims = {
+  id: string;
+  input_descriptors: InputDescriptor[];
+};
+
+export type InputDescriptor = {
+  id: string;
+  format?: {
+    ldp_vc: {
+      proof_type: string[];
+    };
+  };
+  constraints: {
+    fields: Field[];
+  };
+};
+
+export type Field = {
+  path: string[];
+  filter?: {
+    type: string;
+    pattern: string;
+  };
 };

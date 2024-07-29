@@ -47,13 +47,12 @@ export const constructRequest = (domain: string, claims: Claims, serviceProvider
   const presentationURL = `https://${domain}/claims/verify`;
 
   return {
-    query: [
+    query: 
       {
         domain,
         did: serviceProviderDID,
         claims,
         url: presentationURL,
       },
-    ],
   };
 };
