@@ -12,6 +12,11 @@ export const formatDate = (dateString: string) => {
   return date.toLocaleDateString('en-US', options as never);
 };
 
+export const formatTime = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleTimeString();
+};
+
 const fetchData = async (): Promise<Card[]> => {
   const keys = await Keychain.getAllGenericPasswordServices();
   const dataPromises = keys.map(async (key: string) => {

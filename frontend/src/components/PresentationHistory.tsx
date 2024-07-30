@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Text, View, Image, TouchableOpacity } from 'react-native';
-import { VerifiablePresentation } from '../config/types';
-import HistoryDropdown from "./HistoryDropdown";
+import { SuccessfulPresentation } from '../config/types';
+import HistoryDropdown from './HistoryDropdown';
 
 interface PresentationHistoryProps {
-  presentation: VerifiablePresentation;
+  presentation: SuccessfulPresentation;
 }
 
 const PresentationHistory: React.FC<PresentationHistoryProps> = ({ presentation }) => {
@@ -18,22 +18,21 @@ const PresentationHistory: React.FC<PresentationHistoryProps> = ({ presentation 
       <View className="p-1">
         <TouchableOpacity onPress={() => setDropdownVisible(!dropdownVisible)}>
           <View className="flex-row justify-between items-center mb-1">
-            <Text className="text-white text-xl font-bold">Atlassian</Text>
-            <Text className="text-white text-xl">replace</Text>
+            <Text className="text-white text-xl font-bold">{presentation.serviceProvider}</Text>
           </View>
           <View className="flex-row justify-between items-center mb-1">
-            <Text className="text-gray-400 text-base">30/07/2024</Text>
+            <Text className="text-gray-400 text-base">{presentation.date}</Text>
             <Image
               source={source}
               resizeMode="contain"
               className="h-[13px] w-[13px]"
-              tintColor='grey'
+              tintColor="grey"
             />
           </View>
         </TouchableOpacity>
       </View>
       <View className="pb-2">
-        {dropdownVisible && <HistoryDropdown/>}
+        {dropdownVisible && <HistoryDropdown claims={presentation.claims} />}
       </View>
     </View>
   );

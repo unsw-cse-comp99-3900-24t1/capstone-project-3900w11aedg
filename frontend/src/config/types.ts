@@ -113,7 +113,7 @@ export type Card = {
   type: string;
   credIssuedBy: string;
   credNumber: string;
-  claims: Claims;
+  claims: { [key: string]: string };
   issuanceDate: string;
   expiryDate: string;
   originalName: string;
@@ -156,4 +156,8 @@ export type Field = {
   };
 };
 
-export type Claims = { [key: string]: string };
+export type SuccessfulPresentation = {
+  serviceProvider: string;
+  date: string;
+  claims: [string: string][];
+};
