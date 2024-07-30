@@ -10,6 +10,7 @@ import PresentScreen from './screens/PresentScreen';
 import IssuanceScreen from './screens/IssuanceScreen';
 import ViewScreen from './screens/ViewScreen';
 import SettingsScreen from './screens/SettingsScreen.tsx';
+import HistoryScreen from './screens/HistoryScreen.tsx';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -29,6 +30,7 @@ function App(): JSX.Element {
             component={SettingsScreen}
             options={{ headerShown: false }}
           />
+          <Stack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>

@@ -3,6 +3,7 @@ export type RootStackParamList = {
   Home: undefined;
   Settings: undefined;
   Scan: undefined;
+  History: undefined;
   Present: { requestData?: string };
   Issue: { issuerMetadata?: keyof { [key: string]: IssuerMetadata } };
   View: { card: Card }; // plz type view
@@ -64,6 +65,13 @@ export type CredentialConfig = {
   }[];
 };
 
+export type VerifiablePresentation = {
+  '@context': string[] | string;
+  type: string[] | string;
+  verifiableCredential: VerifiableCredential[];
+  id: string;
+};
+
 export type VerifiableCredential = {
   '@context': string[] | string;
   id?: string;
@@ -105,7 +113,9 @@ export type Card = {
   type: string;
   credIssuedBy: string;
   credNumber: string;
-  claims: { [key: string]: string };
+  claims: Claims;
   issuanceDate: string;
   expiryDate: string;
 };
+
+export type Claims = { [key: string]: string };
