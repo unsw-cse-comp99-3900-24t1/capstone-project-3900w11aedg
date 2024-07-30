@@ -41,10 +41,7 @@ function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.
       const response = await axios.post('http://localhost:3000/presentation/create', body);
       navigation.navigate('Verified', { success: response.data.verified });
     } catch (error) {
-      if (error instanceof AxiosError && error.response?.status === 500) {
-        navigation.navigate('Verified', { success: false });
-      }
-      console.log(error);
+      navigation.navigate('Verified', { success: false });
     }
   };
   return (

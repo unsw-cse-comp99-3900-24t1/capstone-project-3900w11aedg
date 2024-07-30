@@ -82,6 +82,11 @@ app.post('/presentation/create', cors(internalUse), async (req: Request, res: Re
     return;
   }
 
+  if (credentials.length === 0) {
+    res.status(400).send('No credentials provided');
+    return;
+  }
+
   try {
     const presentation = await deriveAndCreatePresentation(credentials, claimsToKeep);
     const vp_token = base64url.encode(JSON.stringify(presentation));

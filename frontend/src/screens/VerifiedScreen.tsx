@@ -36,7 +36,7 @@ function VerifiedScreen({ route, navigation }: Props): JSX.Element {
           </Text>
         </TouchableOpacity>
         <View className="flex flex-col items-center px-[7%] pt-[10%]">
-          <Text className="text-black dark:text-white text-2xl font-medium text-center">
+          <Text className="text-black dark:text-white mb-6 text-2xl font-medium text-center">
             {success
               ? 'Thank you! Your credentials have been verified'
               : 'Unfortunately, your credentials did not meet the requirements.'}

@@ -31,7 +31,7 @@ export type IssuerMetadata = {
       uri: string;
       alt_text?: string;
     };
-  }[];
+  };
   credential_configurations_supported: {
     [credential_id: string]: CredentialConfig;
   };

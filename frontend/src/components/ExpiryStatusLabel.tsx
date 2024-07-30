@@ -12,7 +12,7 @@ const ExpiryStatusLabel = ({ isExpired }: Props) => {
 
   return (
     <View
-      className={`mx-1 px-1.5 pt-0.5 pb-0.5 rounded-xl flex-row items-center w-auto ${
+      className={`px-2 py-0.5 rounded-xl flex-row items-center w-auto ${
         isExpired ? 'bg-invalid-red' : 'bg-valid-green'
       }`}
     >

@@ -5,11 +5,10 @@ type Props = {
   claim: string;
   addClaims: (claim: string, isAdding: boolean, id: string) => void;
   id: string;
-  claimsObject: { [key: string]: Set<string> };
 };
 
-function ClaimCheckbox({ claim, addClaims, id, claimsObject }: Props): JSX.Element {
-  const [selected, setSelected] = React.useState(claimsObject[id] && claimsObject[id].has(claim));
+function ClaimCheckbox({ claim, addClaims, id }: Props): JSX.Element {
+  const [selected, setSelected] = React.useState(false);
 
   const checkbox = selected
     ? require('../assets/selected_checkbox.png')

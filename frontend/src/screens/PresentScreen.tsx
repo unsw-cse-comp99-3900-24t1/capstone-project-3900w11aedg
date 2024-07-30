@@ -25,7 +25,7 @@ export default function PresentScreen({ route, navigation }: Props): JSX.Element
         >
           <Text className="text-black text-lg font-medium text-center">Back</Text>
         </TouchableOpacity>
-        <Text className="text-black dark:text-white text-3xl font-medium mt-[5px]">
+        <Text className="text-black dark:text-white text-3xl font-medium mt-[10px]">
           {requestData?.query
             ? 'Select which credential detail to present'
             : "Your service provider's request was invalid."}

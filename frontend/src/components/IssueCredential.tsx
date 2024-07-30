@@ -40,7 +40,7 @@ function IssueCredential({
 
   return (
     <TouchableHighlight
-      className={`self-center w-[90%] border-[1px] rounded-[5px] p-[15px] mt-[10px] border-black dark:border-white
+      className={`self-center w-fit border-[1px] rounded-[5px] p-[15px] mt-[10px] border-black dark:border-white
         ${isSelected ? 'border-[2px] border-theme-gold' : ''}`}
       onPress={onSelect}
       disabled={disabled}

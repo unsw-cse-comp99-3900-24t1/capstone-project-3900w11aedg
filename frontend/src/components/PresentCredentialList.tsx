@@ -10,7 +10,6 @@ type Props = {
   claimsRequest: ClaimsRequest;
   setCredentialsRequest: (credentialsRequest: VerifiableCredential[]) => void;
   addClaims: (claim: string, isAdding: boolean, id: string) => void;
-  claimsObject: { [key: string]: Set<string> };
 };
 
 // Different claim queries have different places to post to
@@ -18,7 +17,6 @@ function PresentCredentialList({
   claimsRequest,
   setCredentialsRequest,
   addClaims,
-  claimsObject,
 }: Props): JSX.Element {
   const [credentials, setCredentials] = React.useState<Card[]>([]);
 
@@ -93,12 +91,7 @@ function PresentCredentialList({
   return (
     <View>
       {credentials.map((credential, index) => (
-        <PresentCredential
-          claimsObject={claimsObject}
-          key={index}
-          credential={credential}
-          addClaims={addClaims}
-        />
+        <PresentCredential key={index} credential={credential} addClaims={addClaims} />
       ))}
     </View>
   );

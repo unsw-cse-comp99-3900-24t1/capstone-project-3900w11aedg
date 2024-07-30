@@ -40,7 +40,7 @@ function PresentDetails({ claimsRequest }: Props): JSX.Element {
 
   return (
     <View className="flex h-[73%]">
-      <ScrollView className="px-[5%] mt-[15px] flex">
+      <ScrollView className="px-[5%] mt-[15px] flex space-y-5">
         <Text className="text-black dark:text-white text-lg">
           The Service Provider is requesting to verify your:
         </Text>
@@ -54,26 +54,25 @@ function PresentDetails({ claimsRequest }: Props): JSX.Element {
         ))}
         <PresentCredentialList
           claimsRequest={claimsRequest}
-          claimsObject={chosenClaims}
           setCredentialsRequest={setValidCredentials}
           addClaims={updateChosenClaims}
         />
+        <View className="flex flex-row justify-between px-5 pb-10">
+          <TouchableOpacity className="bg-button-grey w-[35%] p-[5px] rounded-[5px]">
+            <Text
+              className="text-black text-lg font-medium text-center"
+              onPress={() => navigation.navigate('Home')}
+            >
+              Cancel
+            </Text>
+          </TouchableOpacity>
+          <SubmitClaimsButton
+            claimsRequest={claimsRequest}
+            claims={chosenClaims}
+            credentials={validCredentials}
+          />
+        </View>
       </ScrollView>
-      <View className="flex flex-row justify-between px-[5%]">
-        <TouchableOpacity className="bg-button-grey w-[35%] p-[5px] rounded-[5px]">
-          <Text
-            className="text-black text-lg font-medium text-center"
-            onPress={() => navigation.navigate('Home')}
-          >
-            Cancel
-          </Text>
-        </TouchableOpacity>
-        <SubmitClaimsButton
-          claimsRequest={claimsRequest}
-          claims={chosenClaims}
-          credentials={validCredentials}
-        />
-      </View>
     </View>
   );
 }

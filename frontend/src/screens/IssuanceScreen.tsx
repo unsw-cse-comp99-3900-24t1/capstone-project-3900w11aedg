@@ -25,7 +25,7 @@ export default function IssuanceScreen({ route, navigation }: Props): JSX.Elemen
         >
           <Text className="text-black text-lg font-medium text-center">Back</Text>
         </TouchableOpacity>
-        <Text className="mt-[8%] font-medium text-3xl text-text-grey dark:text-white">
+        <Text className="mt-[8%] font-medium text-3xl text-text-grey pb-6 pl-4 dark:text-white">
           Add a credential
         </Text>
         {issuerMetadata ? (

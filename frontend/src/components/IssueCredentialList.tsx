@@ -1,4 +1,4 @@
-import { ScrollView, View, TouchableOpacity, Text, Alert } from 'react-native';
+import { ScrollView, View, TouchableOpacity, Text, Alert, Image } from 'react-native';
 import React from 'react';
 import { IssuerMetadata, VerifiableCredential } from '../config/types';
 import IssueCredential from './IssueCredential';
@@ -34,9 +34,11 @@ function IssueCredentialList({ issuerMetadata }: Props): JSX.Element {
     }
   };
 
+  const displayImageURL = issuerMetadata.display?.logo?.uri;
+
   return (
-    <View className="flex flex-col h-[60%]">
-      <ScrollView>
+    <View className="flex flex-col h-[70%]">
+      <ScrollView className="mb-4">
         {Object.entries(issuerMetadata.credential_configurations_supported).map(([key, offer]) => (
           <IssueCredential
             key={key}
@@ -48,7 +50,13 @@ function IssueCredentialList({ issuerMetadata }: Props): JSX.Element {
         ))}
       </ScrollView>
 
-      <View>
+      <View className="">
+        <Text className={'pb-4 text-xl font-bold text-center'}>Issuer</Text>
+        <Image
+          source={{ uri: displayImageURL }}
+          className="w-[40%] h-[40%] self-center"
+          resizeMode="contain"
+        />
         <TouchableOpacity
           className={`w-[35%] bg-theme-gold py-[3px] rounded-[8px] self-center mt-[30px] ${
             selectedCredential === '' ? 'opacity-30' : ''
