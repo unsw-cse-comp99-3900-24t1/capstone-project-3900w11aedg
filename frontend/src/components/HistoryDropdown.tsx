@@ -15,7 +15,7 @@ const HistoryDropdown: React.FC<HistoryDropdownProps> = ({ claims }) => {
         (key += 1),
         <View key={key}>
           <Text className="text-white text-base">
-            <Text className="font-bold">{normaliseKey(claim[0])}</Text>
+            <Text className="font-bold">{normaliseKey(claim[0])} </Text>
             - {claim[1]}
           </Text>
         </View>

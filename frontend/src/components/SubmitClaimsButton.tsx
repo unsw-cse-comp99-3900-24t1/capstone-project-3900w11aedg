@@ -72,7 +72,7 @@ function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.
       let claimsList = [];
       claimsList = claimsList.concat(Object.entries(claims)
         .map(([identifier, claim]) => mapClaimValues(identifier, Array.from(claim), credentials))).flat();
-      await saveSuccessfulPresentations(claimsRequest.query.domain, claimsList);
+      await saveSuccessfulPresentations(claimsRequest.query.claims.id, claimsList);
 
     } catch (error) {
       if (
