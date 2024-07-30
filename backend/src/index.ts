@@ -74,7 +74,7 @@ app.delete('/delete/did', cors(internalUse), async (_req: Request, res: Response
 
 app.post('/presentation/create', cors(internalUse), async (req: Request, res: Response) => {
   const { credentials, serviceProviderUrl, claimsToKeep } = req.body;
-  if (credentials.length === 0 || !serviceProviderUrl) {
+  if (!credentials || credentials.length === 0 || !serviceProviderUrl) {
     res.status(400).send('Missing credentials or service provider URL');
     return;
   } else if (!areValidCredentials(credentials) || !isValidUrl(serviceProviderUrl)) {
