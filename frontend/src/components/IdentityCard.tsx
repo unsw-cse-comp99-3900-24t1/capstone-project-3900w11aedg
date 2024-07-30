@@ -47,60 +47,86 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
   return (
     <FlipCard>
       <LinearGradient colors={usedGradient} className="rounded-xl text-text-black dark:text-white">
-        <View className="w-80 min-h-[225px] rounded-md">
+        <View className="w-80 min-h-[200px] rounded-md">
           <View className="flex-row justify-between">
             <Pressable onPress={handleCardPress} className="flex-1">
-              <Text className="text-2xl font-bold pt-4 px-4 pb-1 text-text-black dark:text-white">
+              <Text
+                className={`text-2xl font-bold ${
+                  isExpired ? 'text-white dark:text-text-black' : 'text-text-black dark:text-white'
+                } pt-4 px-6 pb-1`}
+              >
                 {card.name}
               </Text>
-              <Text className="text-base px-4 pb-6 text-text-black dark:text-white">
-                {Object.keys(card.claims).length} claims
-              </Text>
             </Pressable>
-            <View className="w-10 h-10 p-2 mt-3 mr-10 flex flex-row gap-x-1">
-              <PinButton card={card} />
+            <View className="w-10 h-10 p-2 mt-3 mr-12 flex flex-row gap-x-2">
+              <PinButton isExpired={isExpired} card={card} />
               <Image
                 source={require('../assets/fliparrow.png')}
                 className="w-full h-full"
+                tintColor={isExpired ? 'black' : 'white'}
                 resizeMode="contain"
               />
             </View>
           </View>
-          <Pressable onPress={handleCardPress} className="flex-1">
-            <View className="flex-1 p-4 justify-end">
-              <View className="flex-row justify-between items-center">
-                <Text className=" font-bold text-xl text-text-black dark:text-white">
-                  {card.type}
-                </Text>
-                <ExpiryStatusLabel isExpired={isExpired} />
-              </View>
+          <Pressable onPress={handleCardPress} className="flex-1 flex flex-row">
+            <Text
+              className={`text-lg flex-1 ${
+                isExpired ? 'text-white dark:text-text-black' : 'text-text-black dark:text-white'
+              } mt-auto mx-6 pb-4`}
+            >
+              {Object.keys(card.claims).length} claims
+            </Text>
+            <View
+              className={`pb-4 ${isExpired ? 'w-[90px]' : 'w-[70px]'} ml-auto mx-6 justify-end`}
+            >
+              <ExpiryStatusLabel isExpired={isExpired} />
             </View>
           </Pressable>
         </View>
       </LinearGradient>
 
       <LinearGradient colors={usedGradient} className="rounded-xl  text-text-black dark:text-white">
-        <View className="min-h-[225px] w-80 pb-6 mx-auto rounded-md overflow-hidden">
+        <View className="min-h-[200px] w-80 pb-6 mx-auto rounded-md overflow-hidden">
           <View className="flex-row justify-between">
             <Pressable onPress={handleCardPress} className="flex-1">
-              <Text className="text-2xl font-bold px-4 pb-0 pt-4 text-text-black dark:text-white">
+              <Text
+                className={`text-2xl font-bold ${
+                  isExpired ? 'text-white dark:text-text-black' : 'text-text-black dark:text-white'
+                } px-6 pb-0 pt-4`}
+              >
                 {card.name}
               </Text>
             </Pressable>
-            <View className="w-10 h-10 p-2 mt-3 mr-10 flex flex-row gap-x-1">
-              <PinButton card={card} />
+            <View className="w-10 h-10 p-2 mt-3 mr-12 flex flex-row gap-x-2">
+              <PinButton isExpired={isExpired} card={card} />
               <Image
                 source={require('../assets/fliparrow.png')}
                 className="w-full h-full scale-x-[-1]"
                 resizeMode="contain"
+                tintColor={isExpired ? 'black' : 'white'}
               />
             </View>
           </View>
           <Pressable className="mt-auto" onPress={handleCardPress}>
-            <Text className="text-lg mx-2 px-4 text-text-black dark:text-white font-bold">
+            <Text
+              className={`text-xl mx-2 px-4 ${
+                isExpired ? 'text-white dark:text-text-black' : 'text-text-black dark:text-white'
+              } font-bold`}
+            >
+              {card.type}
+            </Text>
+            <Text
+              className={`text-lg mx-2 px-4 ${
+                isExpired ? 'text-white dark:text-text-black' : 'text-text-black dark:text-white'
+              } font-bold`}
+            >
               Issue Date: <Text className="font-normal">{formattedIssueDate}</Text>
             </Text>
-            <Text className="text-lg mx-2 mt-auto font-bold text-text-black dark:text-white px-4">
+            <Text
+              className={`text-lg mx-2 px-4 ${
+                isExpired ? 'text-white dark:text-text-black' : 'text-text-black dark:text-white'
+              } font-bold`}
+            >
               Expiry Date: <Text className="font-normal">{formattedExpiryDate}</Text>
             </Text>
           </Pressable>

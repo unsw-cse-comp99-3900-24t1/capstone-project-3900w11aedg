@@ -48,27 +48,22 @@ function PresentDetails({ claimsRequest }: Props): JSX.Element {
   };
 
   return (
-    <View className="flex h-[73%]">
-      <ScrollView className="px-[5%] mt-[15px] flex">
-        <Text className="text-black dark:text-white text-lg">
-          The Service Provider is requesting to verify your:
+    <View className="flex w-80 flex-col mx-auto space-y-5">
+      <Text className="text-black dark:text-white text-lg">
+        The Service Provider is requesting to verify your:
+      </Text>
+      {claimsRequest.query.claims.input_descriptors.map((inputDescriptor) => (
+        <Text className="text-black dark:text-white ml-[5px] text-lg" key={`${inputDescriptor.id}`}>
+          {`\u2022 ${inputDescriptor.id}`}
         </Text>
-        {claimsRequest.query.claims.input_descriptors.map((inputDescriptor) => (
-          <Text
-            className="text-black dark:text-white ml-[5px] text-lg"
-            key={`${inputDescriptor.id}`}
-          >
-            {`\u2022 ${inputDescriptor.id}`}
-          </Text>
-        ))}
-        <PresentCredentialList
-          claimsRequest={claimsRequest}
-          claimsObject={chosenClaims}
-          chooseCredential={chooseCredential}
-          chosenCredentials={chosenCredentials}
-          addClaims={updateChosenClaims}
-        />
-      </ScrollView>
+      ))}
+      <PresentCredentialList
+        claimsRequest={claimsRequest}
+        claimsObject={chosenClaims}
+        chooseCredential={chooseCredential}
+        chosenCredentials={chosenCredentials}
+        addClaims={updateChosenClaims}
+      />
       <View className="flex flex-row justify-between px-[5%]">
         <TouchableOpacity className="bg-button-grey w-[35%] p-[5px] rounded-[5px]">
           <Text

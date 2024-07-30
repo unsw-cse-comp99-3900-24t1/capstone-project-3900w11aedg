@@ -34,11 +34,14 @@ program
   .description('Create a QR Code')
   .action(async () => {
     try {
-      const claims = fs.readFileSync(
-        rootDir + '/claims/claims-data.json',
-        'utf8',
+      const claims = fs.readFileSync(rootDir + '/claims/claims-data.json', 'utf8');
+      const url = await generateQRCodeUrl(
+        backendRoute,
+        rootDir,
+        JSON.parse(claims),
+        didURL,
+        keyPairURL
       );
-      const url = await generateQRCodeUrl(backendRoute, rootDir, JSON.parse(claims), didURL, keyPairURL);
       const qr = await QRCode.toDataURL(url);
       await saveQRCode(qr, rootDir + '/qr-code.png');
       console.log('QR Code generated.');
@@ -69,10 +72,10 @@ program
   .action(async (credential: object) => {
     const signedCredential = fs.readFileSync(
       __basedir + '/signed-credentials/signed-' + credential + '.json',
-      'utf8',
+      'utf8'
     );
     try {
-      const derivedCredential = await deriveCredential(JSON.parse(signedCredential));
+      const derivedCredential = await deriveCredential(JSON.parse(signedCredential), {});
       if (!derivedCredential) {
         throw new Error('Error deriving the credential.');
       }
@@ -90,12 +93,14 @@ program
 
 program
   .command('verify-presentation <presentationId>')
-  .description('Verify a presentation with required credentials and optional selectedClaims, in format: verify-presentation credential1,credential2 claim1,claim2')
+  .description(
+    'Verify a presentation with required credentials and optional selectedClaims, in format: verify-presentation credential1,credential2 claim1,claim2'
+  )
   .action(async (presentationId: string) => {
     try {
-      const presentation = JSON.parse(fs.readFileSync(
-        __basedir + '/presentations/' + presentationId + '.json',
-        'utf8'));
+      const presentation = JSON.parse(
+        fs.readFileSync(__basedir + '/presentations/' + presentationId + '.json', 'utf8')
+      );
       const results = await verifyDocument(presentation, true);
       if (results.verified) {
         console.log('The presentation is verified.');

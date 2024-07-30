@@ -34,7 +34,7 @@ program
     const { did, keyPair } = await loadData(didURL, keyPairURL);
     const credentialRead = fs.readFileSync(
       rootDir + '/credentials/' + credential + '.json',
-      'utf8',
+      'utf8'
     );
     const credentialJSON = JSON.parse(credentialRead);
     credentialJSON.issuer = did;
@@ -45,7 +45,7 @@ program
     }
     fs.writeFileSync(
       path + `/signed-${credential}.json`,
-      JSON.stringify(signedCredential, null, 2),
+      JSON.stringify(signedCredential, null, 2)
     );
     console.log(`Signed credential: ${JSON.stringify(signedCredential, null, 2)}`);
   });
@@ -78,5 +78,22 @@ program
       console.error('Error creating key pair', err);
     }
   });
-
+program
+  .command('add-expiry-date <credential> <minutes>')
+  .description('Add expiry date to credential')
+  .action(async (credential: string, minutes: number) => {
+    const credentialRead = fs.readFileSync(
+      rootDir + '/credentials/' + credential + '.json',
+      'utf8'
+    );
+    const credentialJSON = JSON.parse(credentialRead);
+    const date = new Date();
+    date.setMinutes(date.getMinutes() + minutes);
+    credentialJSON.expirationDate = date.toISOString();
+    fs.writeFileSync(
+      rootDir + '/credentials/' + credential + '.json',
+      JSON.stringify(credentialJSON, null, 2)
+    );
+    console.log(`Expiry date added to credential: ${credential}`);
+  });
 program.parse(process.argv);

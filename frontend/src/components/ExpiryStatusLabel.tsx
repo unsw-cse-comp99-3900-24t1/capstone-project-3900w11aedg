@@ -17,7 +17,7 @@ const ExpiryStatusLabel = ({ isExpired }: Props) => {
       }`}
     >
       <Image source={source} resizeMode="contain" className="h-[13px] w-[13px] mr-1" />
-      <Text className="text-white text-md">{isExpired ? 'Expired' : 'Valid'}</Text>
+      <Text className="text-white text-base">{isExpired ? 'Expired' : 'Valid'}</Text>
     </View>
   );
 };

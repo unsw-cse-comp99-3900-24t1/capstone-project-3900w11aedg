@@ -78,23 +78,23 @@ const ViewScreen: React.FC = () => {
             colors={usedGradient}
             className="rounded-2xl text-text-black dark:text-white"
           >
-            <View className="h-60 w-80 rounded-md overflow-hidden p-4">
+            <View className="min-h-[200px] w-80 rounded-md overflow-hidden p-4">
               <Text className="text-2xl text-text-black dark:text-white font-bold p-4">
                 {card.name}
               </Text>
               {card.description && card.description.length > 0 && (
-                <Text className="text-base text-text-black dark:text-white px-4">
+                <Text className="text-base text-text-black dark:text-white my-2 px-4">
                   {card.description}
                 </Text>
               )}
-              <View className="flex-1 p-4 justify-end">
+              <View className="flex-1 px-2 py-4 justify-end">
                 <Text className="pb-1 text-text-black dark:text-white  font-bold text-xl">
                   {card.type}
                 </Text>
                 <View className="flex-row justify-between items-center">
-                  <Text className="text-text-black dark:text-white  text-lg mr-4">
+                  <Text className="text-text-black dark:text-white  text-lg mr-2">
                     Expiry:
-                    <Text className="text-text-black dark:text-grey text-base font-bold">
+                    <Text className="text-text-black dark:text-white text-md font-bold">
                       {' ' + formattedExpiryDate}
                     </Text>
                   </Text>
@@ -108,6 +108,7 @@ const ViewScreen: React.FC = () => {
             <View className="p-3 bg-view-light dark:bg-popup-grey rounded-lg justify-around">
               <PinButton
                 card={card}
+                isExpired={isExpired}
                 additionalElements={
                   <Text className="text-text-black dark:text-white font-bold ml-1">
                     Pin to Wallet

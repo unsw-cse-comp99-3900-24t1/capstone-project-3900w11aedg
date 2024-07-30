@@ -52,9 +52,9 @@ function PresentCredential({
         }`}
       >
         <View className="flex flex-row justify-between min-h-[110px] w-80 rounded-md p-[15px]">
-          <TouchableOpacity onPress={handleSelection}>
+          <TouchableOpacity disabled={isExpired} onPress={handleSelection}>
             <Text className="text-white text-2xl mb-4 font-medium">{credential.name}</Text>
-            <View className="mt-auto w-[75px]">
+            <View className={`mt-auto ${isExpired ? 'w-[90px]' : 'w-[75px]'}`}>
               <ExpiryStatusLabel isExpired={isExpired} />
             </View>
           </TouchableOpacity>

@@ -6,9 +6,10 @@ import PinOverlay from './PinOverlay.tsx';
 type Props = {
   card: Card;
   additionalElements?: JSX.Element;
+  isExpired: boolean;
 };
 
-const PinButton = ({ card, additionalElements }: Props) => {
+const PinButton = ({ card, additionalElements, isExpired }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -17,6 +18,7 @@ const PinButton = ({ card, additionalElements }: Props) => {
         source={card.pinned ? require('../assets/pinned.png') : require('../assets/pin.png')}
         className="w-5 h-5"
         resizeMode="contain"
+        tintColor={isExpired ? 'black' : 'white'}
       />
       <PinOverlay card={card} modalVisible={modalVisible} setModalVisible={setModalVisible} />
       <View>{additionalElements}</View>
