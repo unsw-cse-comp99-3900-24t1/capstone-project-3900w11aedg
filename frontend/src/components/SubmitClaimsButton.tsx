@@ -23,12 +23,6 @@ function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.
   const navigation = useNavigation<NavProps>();
   const handleSubmission = async () => {
     try {
-      credentials = credentials.filter((credential) => {
-        if (!credential.identifier) {
-          return false;
-        }
-        return Object.keys(claims).includes(credential.identifier);
-      });
       const body: RequestBody = {
         credentials,
         serviceProviderUrl: claimsRequest.query.url,
@@ -41,7 +35,10 @@ function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.
       const response = await axios.post('http://localhost:3000/presentation/create', body);
       navigation.navigate('Verified', { success: response.data.verified });
     } catch (error) {
-      if (error instanceof AxiosError && error.response?.status === 500) {
+      if (
+        (error instanceof AxiosError && error.response?.status === 500) ||
+        (error instanceof AxiosError && error.response?.status === 400)
+      ) {
         navigation.navigate('Verified', { success: false });
       }
       console.log(error);

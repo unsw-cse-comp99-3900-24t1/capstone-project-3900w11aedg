@@ -15,7 +15,7 @@ type NavProps = NativeStackNavigationProp<RootStackParamList>;
 
 function PresentDetails({ claimsRequest }: Props): JSX.Element {
   const [chosenClaims, setChosenClaims] = React.useState<{ [key: string]: Set<string> }>({});
-  const [validCredentials, setValidCredentials] = React.useState<VerifiableCredential[]>([]);
+  const [chosenCredentials, setChosenCredentials] = React.useState<VerifiableCredential[]>([]);
   const navigation = useNavigation<NavProps>();
 
   const updateChosenClaims = React.useCallback(
@@ -38,6 +38,15 @@ function PresentDetails({ claimsRequest }: Props): JSX.Element {
     []
   );
 
+  const chooseCredential = async (credential: VerifiableCredential) => {
+    setChosenCredentials((prevCredentials) => {
+      if (prevCredentials.includes(credential)) {
+        return prevCredentials.filter((cred: VerifiableCredential) => cred !== credential);
+      }
+      return [...prevCredentials, credential];
+    });
+  };
+
   return (
     <View className="flex h-[73%]">
       <ScrollView className="px-[5%] mt-[15px] flex">
@@ -55,7 +64,8 @@ function PresentDetails({ claimsRequest }: Props): JSX.Element {
         <PresentCredentialList
           claimsRequest={claimsRequest}
           claimsObject={chosenClaims}
-          setCredentialsRequest={setValidCredentials}
+          chooseCredential={chooseCredential}
+          chosenCredentials={chosenCredentials}
           addClaims={updateChosenClaims}
         />
       </ScrollView>
@@ -71,7 +81,7 @@ function PresentDetails({ claimsRequest }: Props): JSX.Element {
         <SubmitClaimsButton
           claimsRequest={claimsRequest}
           claims={chosenClaims}
-          credentials={validCredentials}
+          credentials={chosenCredentials}
         />
       </View>
     </View>
