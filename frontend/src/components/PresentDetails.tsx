@@ -1,4 +1,4 @@
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { ClaimsRequest, VerifiableCredential } from '../config/types';
 import PresentCredentialList from '../components/PresentCredentialList';

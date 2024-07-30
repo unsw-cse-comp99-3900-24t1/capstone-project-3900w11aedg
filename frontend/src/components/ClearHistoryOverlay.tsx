@@ -1,8 +1,10 @@
+import React from 'react';
 import OverlayComponent from './OverlayComponent';
 
 type Props = {
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
+  handleDelete: () => void;
 };
 
 const ClearHistoryOverlay = ({ modalVisible, setModalVisible, handleDelete }: Props) => {
