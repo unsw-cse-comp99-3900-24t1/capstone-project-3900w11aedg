@@ -42,6 +42,7 @@ function PresentCredentialList({
             const JSONCredential: VerifiableCredential & { identifier: string } = JSON.parse(
               credential.password
             );
+            delete JSONCredential.pinned;
             const isValidCredential = requiredFields.every((field) => {
               const results = JSONPath({ path: field.path[0]!, json: JSONCredential });
               if (!results.length) {

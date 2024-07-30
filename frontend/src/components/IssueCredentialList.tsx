@@ -24,9 +24,13 @@ function IssueCredentialList({ issuerMetadata }: Props): JSX.Element {
       const credential = response.data.credential as VerifiableCredential & { identifier?: string };
       credential.identifier = response.data.identifier;
 
-      await Keychain.setGenericPassword(selectedCredential, JSON.stringify(credential), {
-        service: selectedCredential,
-      });
+      await Keychain.setGenericPassword(
+        selectedCredential,
+        JSON.stringify({ ...credential, pinned: null }),
+        {
+          service: selectedCredential,
+        }
+      );
       setModalVisible(true);
     } catch (error) {
       Alert.alert('Sorry!', "We're having trouble processing this right now.");
