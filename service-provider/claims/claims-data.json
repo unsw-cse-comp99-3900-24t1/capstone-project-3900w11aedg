@@ -2,7 +2,7 @@
   "id": "vp token example",
   "input_descriptors": [
     {
-      "id": "id card credential",
+      "id": "Alumni Credential",
       "format": {
         "ldp_vc": {
           "proof_type": [
@@ -17,9 +17,14 @@
               "$.type"
             ],
             "filter": {
-              "type": "string",
-              "pattern": "IDCardCredential"
+              "type": "array",
+              "pattern": "AlumniCredential"
             }
+          },
+          {
+            "path": [
+              "$.credentialSubject.alumniOf"
+            ]
           }
         ]
       }

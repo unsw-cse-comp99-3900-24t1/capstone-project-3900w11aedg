@@ -144,10 +144,10 @@ describe('Request claims', () => {
 
       expect(typeof result).toBe('object');
       expect(result).toHaveProperty('query');
-      expect(result.query[0]).toHaveProperty('domain');
-      expect(result.query[0]).toHaveProperty('did');
-      expect(result.query[0]).toHaveProperty('claims');
-      expect(result.query[0]).toHaveProperty('url');
+      expect(result.query).toHaveProperty('domain');
+      expect(result.query).toHaveProperty('did');
+      expect(result.query).toHaveProperty('claims');
+      expect(result.query).toHaveProperty('url');
     });
   });
 

@@ -44,16 +44,15 @@ export const requestClaims = async (
 };
 
 export const constructRequest = (domain: string, claims: Claims, serviceProviderDID: string): ClaimsRequest => {
-  const presentationURL = `https://${domain}/claims/verify`;
+  const presentationURL = `http://${domain}/presentation/verify`;
 
   return {
-    query: [
+    query: 
       {
         domain,
         did: serviceProviderDID,
         claims,
         url: presentationURL,
       },
-    ],
   };
 };
