@@ -1,6 +1,6 @@
 import { ScrollView, View, TouchableOpacity, Text, Alert } from 'react-native';
 import React from 'react';
-import { IssuerMetadata } from '../config/types';
+import { IssuerMetadata, VerifiableCredential } from '../config/types';
 import IssueCredential from './IssueCredential';
 import axios from 'axios';
 import AddedCredPopup from './AddedCredPopup';
@@ -21,6 +21,9 @@ function IssueCredentialList({ issuerMetadata }: Props): JSX.Element {
         authorization_endpoint: issuerMetadata.authorization_endpoint,
         credential_endpoint: issuerMetadata.credential_endpoint,
       });
+      const credential = response.data.credential as VerifiableCredential & { identifier?: string };
+      credential.identifier = response.data.identifier;
+
       await Keychain.setGenericPassword(
         selectedCredential,
         JSON.stringify({ ...response.data, pinned: null }),

@@ -9,7 +9,8 @@ import normaliseCredential from '../helper/normalise';
 type Props = {
   claimsRequest: ClaimsRequest;
   setCredentialsRequest: (credentialsRequest: VerifiableCredential[]) => void;
-  addClaims: (claim: string, isAdding: boolean) => void;
+  addClaims: (claim: string, isAdding: boolean, id: string) => void;
+  claimsObject: { [key: string]: Set<string> };
 };
 
 // Different claim queries have different places to post to
@@ -17,6 +18,7 @@ function PresentCredentialList({
   claimsRequest,
   setCredentialsRequest,
   addClaims,
+  claimsObject,
 }: Props): JSX.Element {
   const [credentials, setCredentials] = React.useState<Card[]>([]);
 
@@ -34,10 +36,12 @@ function PresentCredentialList({
 
       try {
         const keys = await Keychain.getAllGenericPasswordServices();
-        const credentialPromises = keys.map(async (key, index) => {
+        const credentialPromises = keys.map(async (key) => {
           const credential = await Keychain.getGenericPassword({ service: key });
           if (credential) {
-            const JSONCredential: VerifiableCredential = JSON.parse(credential.password);
+            const JSONCredential: VerifiableCredential & { identifier: string } = JSON.parse(
+              credential.password
+            );
             const isValidCredential = requiredFields.every((field) => {
               const results = JSONPath({ path: field.path[0]!, json: JSONCredential });
               if (!results.length) {
@@ -58,7 +62,7 @@ function PresentCredentialList({
             if (isValidCredential) {
               return {
                 verifiableCredential: JSONCredential,
-                cardCredential: normaliseCredential(index, key, credential.password),
+                cardCredential: normaliseCredential(key, credential.password),
               };
             }
           }
@@ -89,7 +93,12 @@ function PresentCredentialList({
   return (
     <View>
       {credentials.map((credential, index) => (
-        <PresentCredential key={index} credential={credential} addClaims={addClaims} />
+        <PresentCredential
+          claimsObject={claimsObject}
+          key={index}
+          credential={credential}
+          addClaims={addClaims}
+        />
       ))}
     </View>
   );

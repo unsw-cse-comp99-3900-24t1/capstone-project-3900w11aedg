@@ -14,10 +14,10 @@ export const formatDate = (dateString: string) => {
 
 const fetchData = async (): Promise<Card[]> => {
   const keys = await Keychain.getAllGenericPasswordServices();
-  const dataPromises = keys.map(async (key: string, index: number) => {
+  const dataPromises = keys.map(async (key: string) => {
     const credentials = await Keychain.getGenericPassword({ service: key });
     if (credentials) {
-      return normaliseCredential(index, key, credentials.password);
+      return normaliseCredential(key, credentials.password);
     } else {
       console.log(`No data found for key ${key}`);
       return null;

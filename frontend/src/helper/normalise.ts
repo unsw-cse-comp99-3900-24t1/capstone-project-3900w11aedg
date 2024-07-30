@@ -1,7 +1,6 @@
 import { Card, VerifiableCredential } from '../config/types.ts';
-
-const normaliseCredential = (index: number, name: string, credential: string): Card => {
-  const JSONCredential = JSON.parse(credential) as VerifiableCredential;
+const normaliseCredential = (name: string, credential: string): Card => {
+  const JSONCredential = JSON.parse(credential) as VerifiableCredential & { identifier: string };
   const types = JSONCredential.type;
   const originalName = name;
   if (types.length === 0 || types[0] !== 'VerifiableCredential') {
@@ -16,7 +15,7 @@ const normaliseCredential = (index: number, name: string, credential: string): C
   }
   name = name.replace(/([A-Z])/g, ' $1').trim();
   return {
-    id: index + 1,
+    id: JSONCredential.identifier,
     name,
     type,
     description: JSONCredential.description || '',

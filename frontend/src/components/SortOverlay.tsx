@@ -64,7 +64,7 @@ const SortOverlay = ({ setCards, modalVisible, setModalVisible, setSortText }: P
         onPress={handleClose}
       >
         <View className="absolute bottom-0 w-full">
-          <View className="bg-navbar-grey flex flex-col justify-between pt-4 px-4 rounded-t-2xl">
+          <View className="bg-view-light dark:bg-navbar-grey flex flex-col justify-between pt-4 px-4 rounded-t-2xl">
             <Text className="text-lg text-white font-bold mb-3">Sort by</Text>
             <View // eslint-disable-next-line react-native/no-inline-styles
               style={{ borderBottomColor: 'white', borderBottomWidth: StyleSheet.hairlineWidth }}

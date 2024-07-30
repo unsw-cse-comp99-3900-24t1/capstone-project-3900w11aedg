@@ -8,11 +8,13 @@ import DeleteOverlay from '../components/DeleteOverlay.tsx';
 const SettingsScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   return (
-    <View className="flex flex-col h-[100%] w-[100%] bg-white dark:bg-dark-green">
+    <View className="flex flex-col h-[100%] w-[100%] bg-light-cream dark:bg-dark-green">
       <Header />
-      <Text className="ml-10 text-white text-3xl font-bold">Settings</Text>
-      <Text className="ml-10 text-white mt-6 text-2xl">Account and Security</Text>
-      <View className="flex flex-col bg-settings-grey rounded-lg mt-4 mx-auto w-80">
+      <Text className="ml-10 text-text-black dark:text-white text-3xl font-bold">Settings</Text>
+      <Text className="ml-10 text-text-black dark:text-white mt-6 text-2xl">
+        Account and Security
+      </Text>
+      <View className="flex flex-col bg-view-light dark:bg-settings-grey rounded-lg mt-4 mx-auto w-80">
         <SettingsButton
           isFirst={true}
           imageSource={require('../assets/bin.png')}
@@ -30,8 +32,10 @@ const SettingsScreen = () => {
           secondImageSource={require('../assets/right-arrow.png')}
         />
       </View>
-      <Text className="ml-10 mt-6 text-2xl text-white">Preferences and History</Text>
-      <View className="flex flex-col bg-settings-grey rounded-lg mt-4 mx-auto w-80">
+      <Text className="ml-10 mt-6 text-2xl text-text-black dark:text-white">
+        Preferences and History
+      </Text>
+      <View className="flex flex-col bg-view-light dark:bg-settings-grey rounded-lg mt-4 mx-auto w-80">
         <SettingsButton
           isFirst={true}
           imageSource={require('../assets/clock.png')}
