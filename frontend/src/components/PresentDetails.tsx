@@ -10,33 +10,32 @@ import { RootStackParamList } from '../config/types';
 type Props = {
   claimsRequest: ClaimsRequest;
 };
+
 type NavProps = NativeStackNavigationProp<RootStackParamList>;
 
 function PresentDetails({ claimsRequest }: Props): JSX.Element {
-  const [chosenClaims, setChosenClaims] = React.useState<string[]>([]);
+  const [chosenClaims, setChosenClaims] = React.useState<{ [key: string]: Set<string> }>({});
   const [validCredentials, setValidCredentials] = React.useState<VerifiableCredential[]>([]);
   const navigation = useNavigation<NavProps>();
 
   const updateChosenClaims = React.useCallback(
-    (newClaim: string, addingClaim: boolean) => {
-      if (!chosenClaims.includes(newClaim) && !addingClaim) {
-        return;
-      }
+    (newClaim: string, addingClaim: boolean, id: string) => {
       setChosenClaims((prevClaims) => {
+        if (!Object.keys(prevClaims).includes(id)) {
+          prevClaims[id] = new Set<string>();
+        }
         if (addingClaim) {
-          return [...prevClaims, newClaim];
+          const copyClaims = { ...prevClaims };
+          (copyClaims[id] as Set<string>).add(newClaim);
+          return copyClaims;
         } else {
-          const index = prevClaims.indexOf(newClaim);
-          if (index > -1) {
-            const newClaims = [...prevClaims];
-            newClaims.splice(index, 1);
-            return newClaims;
-          }
-          return prevClaims;
+          const copyClaims = { ...prevClaims };
+          (copyClaims[id] as Set<string>).delete(newClaim);
+          return copyClaims;
         }
       });
     },
-    [chosenClaims]
+    []
   );
 
   return (
@@ -55,6 +54,7 @@ function PresentDetails({ claimsRequest }: Props): JSX.Element {
         ))}
         <PresentCredentialList
           claimsRequest={claimsRequest}
+          claimsObject={chosenClaims}
           setCredentialsRequest={setValidCredentials}
           addClaims={updateChosenClaims}
         />

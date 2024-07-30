@@ -7,10 +7,11 @@ import ClaimCheckbox from './ClaimCheckbox';
 
 type Props = {
   credential: Card;
-  addClaims: (claim: string, isAdding: boolean) => void;
+  addClaims: (claim: string, isAdding: boolean, id: string) => void;
+  claimsObject: { [key: string]: Set<string> };
 };
 
-function PresentCredential({ credential, addClaims }: Props): JSX.Element {
+function PresentCredential({ credential, addClaims, claimsObject }: Props): JSX.Element {
   const [open, setOpen] = React.useState(false);
   const icon = open
     ? require('../assets/upwards_arrow.png')
@@ -41,21 +42,26 @@ function PresentCredential({ credential, addClaims }: Props): JSX.Element {
           </TouchableOpacity>
         </View>
       </LinearGradient>
-      <View
-        className={`w-[90%] bg-dropdown-grey-100 p-[3%] rounded-b-md ${open ? 'block' : 'hidden'}`}
-      >
-        <View className="bg-dropdown-grey-200 rounded-md p-[3%]">
-          {Object.entries(credential.claims).map(([key, claim]) => (
-            <View key={key} className="flex flex-row justify-between">
-              <View className="w-[75%]">
-                <Text className="text-white text-lg font-medium">{key}</Text>
-                <Text>{claim}</Text>
+      {open && (
+        <View className="w-[90%] bg-dropdown-grey-100 p-[3%] rounded-b-md">
+          <View className="bg-dropdown-grey-200 rounded-md p-[3%]">
+            {Object.entries(credential.claims).map(([key, claim]) => (
+              <View key={key} className="flex flex-row justify-between">
+                <View className="w-[75%]">
+                  <Text className="text-white text-lg font-medium">{key}</Text>
+                  <Text>{claim}</Text>
+                </View>
+                <ClaimCheckbox
+                  claimsObject={claimsObject}
+                  id={credential.id}
+                  claim={key}
+                  addClaims={addClaims}
+                />
               </View>
-              <ClaimCheckbox claim={key} addClaims={addClaims} />
-            </View>
-          ))}
+            ))}
+          </View>
         </View>
-      </View>
+      )}
     </View>
   );
 }
