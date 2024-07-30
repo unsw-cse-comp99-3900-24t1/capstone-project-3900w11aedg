@@ -87,7 +87,6 @@ export type VerifiableCredential = {
   credentialSubject: {
     [key: string]: object | string;
   };
-  pinned: boolean;
   proof: Proof;
 };
 

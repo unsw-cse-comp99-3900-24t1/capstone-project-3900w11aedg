@@ -26,7 +26,7 @@ function IssueCredentialList({ issuerMetadata }: Props): JSX.Element {
 
       await Keychain.setGenericPassword(
         selectedCredential,
-        JSON.stringify({ ...response.data, pinned: null }),
+        JSON.stringify({ ...credential, pinned: null }),
         {
           service: selectedCredential,
         }
