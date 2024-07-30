@@ -8,18 +8,14 @@ import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   claimsRequest: ClaimsRequest;
-  claims: ClaimsObject;
-  credentials: VerifiableCredential[];
-};
-
-type ClaimsObject = {
-  [key: string]: string[];
+  claims: { [key: string]: Set<string> };
+  credentials: (VerifiableCredential & { identifier?: string })[];
 };
 
 type RequestBody = {
-  credentials: VerifiableCredential[];
+  credentials: (VerifiableCredential & { identifier?: string })[];
   serviceProviderUrl: string;
-  claimsToKeep?: ClaimsObject;
+  claimsToKeep?: { [key: string]: string[] };
 };
 type NavProps = NativeStackNavigationProp<RootStackParamList>;
 
@@ -27,11 +23,21 @@ function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.
   const navigation = useNavigation<NavProps>();
   const handleSubmission = async () => {
     try {
+      credentials = credentials.filter((credential) => {
+        if (!credential.identifier) {
+          return false;
+        }
+        return Object.keys(claims).includes(credential.identifier);
+      });
       const body: RequestBody = {
         credentials,
         serviceProviderUrl: claimsRequest.query.url,
       };
-      body.claimsToKeep = claims;
+      const claimsUpdated: { [key: string]: string[] } = {};
+      Object.keys(claims).forEach((key) => {
+        claimsUpdated[key] = Array.from(claims[key] as Set<string>);
+      });
+      body.claimsToKeep = claimsUpdated;
       const response = await axios.post('http://localhost:3000/presentation/create', body);
       navigation.navigate('Verified', { success: response.data.verified });
     } catch (error) {
