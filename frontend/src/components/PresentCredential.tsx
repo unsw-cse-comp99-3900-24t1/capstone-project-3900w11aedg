@@ -41,21 +41,21 @@ function PresentCredential({ credential, addClaims }: Props): JSX.Element {
           </TouchableOpacity>
         </View>
       </LinearGradient>
-      {open && (
-        <View className="w-[90%] bg-dropdown-grey-100 p-[3%] rounded-b-md">
-          <View className="bg-dropdown-grey-200 rounded-md p-[3%]">
-            {Object.entries(credential.claims).map(([key, claim]) => (
-              <View key={key} className="flex flex-row justify-between">
-                <View className="w-[75%]">
-                  <Text className="text-white text-lg font-medium">{key}</Text>
-                  <Text>{claim}</Text>
-                </View>
-                <ClaimCheckbox claim={key} addClaims={addClaims} />
+      <View
+        className={`w-[90%] bg-dropdown-grey-100 p-[3%] rounded-b-md ${open ? 'block' : 'hidden'}`}
+      >
+        <View className="bg-dropdown-grey-200 rounded-md p-[3%]">
+          {Object.entries(credential.claims).map(([key, claim]) => (
+            <View key={key} className="flex flex-row justify-between">
+              <View className="w-[75%]">
+                <Text className="text-white text-lg font-medium">{key}</Text>
+                <Text>{claim}</Text>
               </View>
-            ))}
-          </View>
+              <ClaimCheckbox claim={key} addClaims={addClaims} />
+            </View>
+          ))}
         </View>
-      )}
+      </View>
     </View>
   );
 }
