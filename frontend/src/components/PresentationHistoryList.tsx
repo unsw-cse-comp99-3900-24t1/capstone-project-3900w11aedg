@@ -14,7 +14,7 @@ const PresentationHistoryList = ({ presentations }: HistoryListProps) => {
     <View className="flex flex-col h-[60%]">
       <ScrollView>
         {presentations.map((presentation) => (
-          (key += 1)
+          (key += 1),
           <View key={key} className="m-2">
             <PresentationHistory presentation={presentation} />
             <View className="border-b border-gray-600" />

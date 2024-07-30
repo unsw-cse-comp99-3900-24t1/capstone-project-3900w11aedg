@@ -12,7 +12,7 @@ const HistoryDropdown: React.FC<HistoryDropdownProps> = ({ claims }) => {
     <View className="relative flex-col p-3 justify-end bg-gray-800 rounded-lg">
       <Text className="text-white text-lg">Claims presented:</Text>
       {claims.map((claim) => (
-        (key += 1)
+        (key += 1),
         <View key={key}>
           <Text className="text-white text-base">
             <Text className="font-bold">{normaliseKey(claim[0])}</Text>
