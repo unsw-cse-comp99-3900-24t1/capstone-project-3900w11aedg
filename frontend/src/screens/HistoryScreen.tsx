@@ -63,7 +63,7 @@ const HistoryScreen: React.FC = () => {
         </Text>
         {successfulPresentations.length ? (
           <View className="flex-1">
-            <PresentationHistoryList presentations={successfulPresentations}/>
+            <PresentationHistoryList presentations={successfulPresentations} />
             <View className="items-center justify-end p-4">
               <TouchableOpacity
                 className="bg-theme-gold px-3 pt-[1] pb-[1] rounded-[15px]"
@@ -78,7 +78,9 @@ const HistoryScreen: React.FC = () => {
               />
             </View>
           </View>
-        ) : <Text className="text-white text-xl m-2">No successful presentations to show.</Text>}
+        ) : (
+          <Text className="text-white text-xl m-2">No successful presentations to show.</Text>
+        )}
       </View>
       <Footer />
     </View>

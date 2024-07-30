@@ -44,7 +44,7 @@ const mapClaimValues = (
   credentials: VerifiableCredential & { identifier: string }
 ) => {
   const credentialSubject = Object.entries(
-    credentials.filter(credential => credential.identifier === identifier)[0].credentialSubject
+    credentials.filter((credential) => credential.identifier === identifier)[0].credentialSubject
   );
 
   return claims.reduce((acc, claim) => {
@@ -70,10 +70,14 @@ function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.
       navigation.navigate('Verified', { success: response.data.verified });
 
       let claimsList = [];
-      claimsList = claimsList.concat(Object.entries(claims)
-        .map(([identifier, claim]) => mapClaimValues(identifier, Array.from(claim), credentials))).flat();
+      claimsList = claimsList
+        .concat(
+          Object.entries(claims).map(([identifier, claim]) =>
+            mapClaimValues(identifier, Array.from(claim), credentials)
+          )
+        )
+        .flat();
       await saveSuccessfulPresentations(claimsRequest.query.claims.id, claimsList);
-
     } catch (error) {
       if (
         (error instanceof AxiosError && error.response?.status === 500) ||
