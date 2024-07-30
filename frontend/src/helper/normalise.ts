@@ -1,6 +1,6 @@
 import { Card, VerifiableCredential } from '../config/types.ts';
-
-const normaliseCredential = (index: number, name: string, credential: string): Card => {
+import uuid from 'react-native-uuid';
+const normaliseCredential = (name: string, credential: string): Card => {
   const JSONCredential = JSON.parse(credential) as VerifiableCredential;
   const types = JSONCredential.type;
   const originalName = name;
@@ -16,7 +16,7 @@ const normaliseCredential = (index: number, name: string, credential: string): C
   }
   name = name.replace(/([A-Z])/g, ' $1').trim();
   return {
-    id: index + 1,
+    id: uuid.v4(),
     name,
     type,
     description: JSONCredential.description || '',

@@ -8,13 +8,18 @@ import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   claimsRequest: ClaimsRequest;
-  claims: string[];
+  claims: ClaimsObject;
   credentials: VerifiableCredential[];
 };
+
+type ClaimsObject = {
+  [key: string]: string[];
+};
+
 type RequestBody = {
   credentials: VerifiableCredential[];
   serviceProviderUrl: string;
-  claimsToKeep?: string[];
+  claimsToKeep?: ClaimsObject;
 };
 type NavProps = NativeStackNavigationProp<RootStackParamList>;
 

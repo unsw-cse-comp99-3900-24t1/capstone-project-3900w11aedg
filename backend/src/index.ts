@@ -81,11 +81,6 @@ app.post('/presentation/create', cors(internalUse), async (req: Request, res: Re
     return;
   }
 
-  if (claimsToKeep && (!Array.isArray(claimsToKeep) || claimsToKeep.length == 0)) {
-    res.status(400).send('Invalid claims to keep format');
-    return;
-  }
-
   try {
     const presentation = await deriveAndCreatePresentation(credentials, claimsToKeep);
     const vp_token = base64url.encode(JSON.stringify(presentation));
@@ -98,6 +93,7 @@ app.post('/presentation/create', cors(internalUse), async (req: Request, res: Re
       res.status(500).send('Error sending presentation to service provider');
     }
   } catch (err) {
+    console.log(err);
     res.status(500).send('Error deriving and creating presentation: ' + err);
   }
 });

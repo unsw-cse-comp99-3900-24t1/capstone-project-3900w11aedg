@@ -10,27 +10,40 @@ import { RootStackParamList } from '../config/types';
 type Props = {
   claimsRequest: ClaimsRequest;
 };
+
+type ClaimsObject = {
+  [key: string]: string[];
+};
+
 type NavProps = NativeStackNavigationProp<RootStackParamList>;
 
 function PresentDetails({ claimsRequest }: Props): JSX.Element {
-  const [chosenClaims, setChosenClaims] = React.useState<string[]>([]);
+  const [chosenClaims, setChosenClaims] = React.useState<ClaimsObject>({} as ClaimsObject);
   const [validCredentials, setValidCredentials] = React.useState<VerifiableCredential[]>([]);
   const navigation = useNavigation<NavProps>();
 
   const updateChosenClaims = React.useCallback(
-    (newClaim: string, addingClaim: boolean) => {
-      if (!chosenClaims.includes(newClaim) && !addingClaim) {
-        return;
-      }
+    (newClaim: string, addingClaim: boolean, id: string) => {
       setChosenClaims((prevClaims) => {
+        if (!Object.keys(prevClaims).includes(id)) {
+          prevClaims[id] = [];
+        }
         if (addingClaim) {
-          return [...prevClaims, newClaim];
+          const copyClaims = { ...prevClaims };
+          if (!Object.keys(copyClaims).includes(id)) {
+            copyClaims[id] = [newClaim];
+            return copyClaims;
+          }
+          (copyClaims[id] as string[]).push(newClaim);
+          return copyClaims;
         } else {
-          const index = prevClaims.indexOf(newClaim);
-          if (index > -1) {
-            const newClaims = [...prevClaims];
-            newClaims.splice(index, 1);
-            return newClaims;
+          const copyClaims = { ...prevClaims };
+          const claimsAtId = copyClaims[id] as string[];
+          const claimIndex = claimsAtId.indexOf(newClaim);
+          if (claimIndex > -1) {
+            claimsAtId.splice(claimIndex, 1);
+            copyClaims[id] = claimsAtId;
+            return copyClaims;
           }
           return prevClaims;
         }
