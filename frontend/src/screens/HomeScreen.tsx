@@ -1,4 +1,4 @@
-import { Alert, ScrollView, Text, View, TextInput, Image } from 'react-native';
+import { Alert, ScrollView, Text, View, TextInput, Image, Appearance } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -26,6 +26,12 @@ function HomeScreen(): JSX.Element {
       }
     }
   };
+
+  const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
+
+  useEffect(() => {
+    setColorScheme(colorScheme);
+  }, [colorScheme]);
 
   useEffect(() => {
     try {
@@ -56,13 +62,13 @@ function HomeScreen(): JSX.Element {
   }, [searchQuery, cards]);
 
   return (
-    <View className="flex flex-col h-full w-full bg-white dark:bg-dark-green">
+    <View className="flex flex-col h-full w-full bg-light-cream text-text-black dark:text-white dark:bg-dark-green">
       <Header />
       <View className="w-4/5 flex flex-row justify-between mx-auto">
-        <Text className="text-3xl font-bold dark:text-white">Credentials</Text>
+        <Text className="text-3xl font-bold text-text-black dark:text-white">Credentials</Text>
         <SortButton setCards={setCards} />
       </View>
-      <View className="w-4/5 mx-auto my-2 flex flex-row items-center border border-gray-300 rounded dark:bg-white dark:border-dark-gray h-[40px]">
+      <View className="w-4/5 mx-auto my-2 flex flex-row items-center border border-gray-300 bg-search-light rounded dark:bg-white dark:border-dark-gray h-[40px]">
         <Image source={require('../assets/search.png')} className="ml-2.5 mr-1.5" />
         <TextInput
           className="flex-1 dark:text-black text-base pt-0 pb-0"

@@ -24,6 +24,12 @@ module.exports = {
           200: '#575959',
         },
         'settings-grey': '#414141',
+        'light-cream': '#f5efd3',
+        'text-black': '#050505',
+        'search-light': '#f5f3ed ',
+        'view-light': '#b5aa94',
+        'light-green': '#8da883',
+        'nav-light': '#96826f',
       },
     },
     minHeight: {
