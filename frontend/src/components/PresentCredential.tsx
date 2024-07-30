@@ -4,6 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import ExpiryStatusLabel from './ExpiryStatusLabel';
 import { Card, VerifiableCredential } from '../config/types';
 import ClaimCheckbox from './ClaimCheckbox';
+import { normaliseKey } from '../helper/normalise.ts';
 
 type Props = {
   credential: Card;
@@ -78,8 +79,8 @@ function PresentCredential({
           {Object.entries(credential.claims).map(([key, claim]) => (
             <View key={key} className="flex flex-row justify-between">
               <View className="w-[75%]">
-                <Text className="text-white text-lg font-medium">{key}</Text>
-                <Text>{claim}</Text>
+                <Text className="text-white text-lg font-medium">{normaliseKey(key)}</Text>
+                <Text className="text-white">{claim}</Text>
               </View>
               <ClaimCheckbox
                 claimsObject={claimsObject}
