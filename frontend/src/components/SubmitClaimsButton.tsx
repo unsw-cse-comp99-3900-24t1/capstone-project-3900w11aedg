@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { ClaimsRequest, VerifiableCredential } from '../config/types';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../config/types';
 import { useNavigation } from '@react-navigation/native';
@@ -23,12 +23,6 @@ function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.
   const navigation = useNavigation<NavProps>();
   const handleSubmission = async () => {
     try {
-      credentials = credentials.filter((credential) => {
-        if (!credential.identifier) {
-          return false;
-        }
-        return Object.keys(claims).includes(credential.identifier);
-      });
       const body: RequestBody = {
         credentials,
         serviceProviderUrl: claimsRequest.query.url,

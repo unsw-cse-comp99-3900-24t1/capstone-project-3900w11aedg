@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Pressable, Modal, Appearance } from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  Modal,
+  Appearance,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -58,90 +67,149 @@ const ViewScreen: React.FC = () => {
   return (
     <View className="w-[100%] flex-1 bg-white dark:bg-dark-green">
       <Header />
-      <View className="px-12 py-5">
-        <Pressable onPress={handleButtonPress} className="w-[27%] bg-theme-gold p-2 rounded-3xl ">
-          <Text className="font-medium text-black text-center text-base">Done</Text>
-        </Pressable>
-      </View>
-      <View className="h-[65%] flex items-center space-y-5">
-        <LinearGradient colors={usedGradient} className="rounded-2xl text-text-black dark:text-white">
-          <View className="h-40 w-[80%] rounded-md overflow-hidden p-4">
-            <View className="flex-row justify-between">
-              <Text className="text-xl  text-text-black dark:text-white text-white font-bold p-4">{card.name}</Text>
-            </View>
-            <View className="flex-1 p-4 justify-end">
-              <Text className=" text-text-black dark:text-white text-white font-bold text-base">{card.type}</Text>
-              <View className="flex-row justify-between items-center">
-                <Text className="text-text-black dark:text-white text-white text-base mr-4">
-                  Expiry: <Text className="text-text-black dark:text-grey font-bold">{formattedExpiryDate}</Text>
-                </Text>
-                <ExpiryStatusLabel isExpired={isExpired} />
-              </View>
-            </View>
-          </View>
-        </LinearGradient>
-
-        <View className="w-[90%] bg-card-view-grey rounded-2xl space-y-5 p-5">
-          <View className="p-3 bg-view-light dark:bg-popup-grey rounded-lg justify-around">
-              <PinButton
-                  card={card}
-                  additionalElements={
-                      <Text className="text-text-black dark:text-white font-bold ml-1">
-                          Pin to Wallet
-                      </Text>
-                  }
-              />
-          </View>
-          <View className="w-[100%] bg-popup-grey flex-row p-3 space-x-5 rounded-2xl">
-            <View>
-              <Text className="text-black text-text-black dark:text-white font-medium">Issued by</Text>
-              <Text className="text-black text-text-black dark:text-white font-medium">Issued at</Text>
-              <Text className="text-black text-text-black dark:text-white font-medium">Expiry</Text>
-            </View>
-            <View>
-              <Text className="text-white">{normaliseURL(card.credIssuedBy)}</Text>
-              <Text className="text-white">{formatDate(card.issuanceDate)}</Text>
-              <Text className="text-white">{formatDate(card.expiryDate)}</Text>
-            </View>
-          </View>
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => setModalVisible(false)}
+      <ScrollView className="mb-20">
+        <View className="px-12 py-5">
+          <Pressable onPress={handleButtonPress} className="w-[27%] bg-theme-gold p-2 rounded-3xl ">
+            <Text className="font-medium text-black text-center text-base">Done</Text>
+          </Pressable>
+        </View>
+        <View className="h-[65%] w-[80%] mx-auto flex space-y-5">
+          <LinearGradient
+            colors={usedGradient}
+            className="rounded-2xl text-text-black dark:text-white"
           >
-            <View className="flex-1 items-center justify-center bg-dark-green opacity-80">
-              <View className="bg-light-cream dark:bg-dark-grey p-5 flex align-center rounded-md space-y-5">
-                <Text className="text-black dark:text-white px-5">
-                  Do you wish to permanently remove this credential from your wallet?
+            <View className="h-60 w-80 rounded-md overflow-hidden p-4">
+              <Text className="text-2xl text-text-black dark:text-white font-bold p-4">
+                {card.name}
+              </Text>
+              {card.description && card.description.length > 0 && (
+                <Text className="text-base text-text-black dark:text-white px-4">
+                  {card.description}
                 </Text>
-                <View className="flex flex-row justify-around w-[100%]">
-                  <Pressable onPress={() => setModalVisible(false)}>
-                    <Text className="text-white font-medium bg-gray-500 p-2 rounded-md px-4">
-                      Cancel
+              )}
+              <View className="flex-1 p-4 justify-end">
+                <Text className="pb-1 text-text-black dark:text-white  font-bold text-xl">
+                  {card.type}
+                </Text>
+                <View className="flex-row justify-between items-center">
+                  <Text className="text-text-black dark:text-white  text-lg mr-4">
+                    Expiry:
+                    <Text className="text-text-black dark:text-grey text-base font-bold">
+                      {' ' + formattedExpiryDate}
                     </Text>
-                  </Pressable>
-                  <Pressable
-                    onPress={async () => {
-                      await handleRemoveConfirmation(card.originalName);
-                      setModalVisible(false);
-                    }}
-                  >
-                    <Text className="text-white font-medium bg-red-500 p-2 rounded-md px-4">
-                      Remove
-                    </Text>
-                  </Pressable>
+                  </Text>
+                  <ExpiryStatusLabel isExpired={isExpired} />
                 </View>
               </View>
             </View>
-          </Modal>
-          <Pressable onPress={() => setModalVisible(true)}>
+          </LinearGradient>
+
+          <View className="mx-auto bg-card-view-grey rounded-2xl space-y-5 w-[100%] p-5">
             <View className="p-3 bg-view-light dark:bg-popup-grey rounded-lg justify-around">
-              <Text className="text-red-500 font-bold">Remove Credential</Text>
+              <PinButton
+                card={card}
+                additionalElements={
+                  <Text className="text-text-black dark:text-white font-bold ml-1">
+                    Pin to Wallet
+                  </Text>
+                }
+              />
             </View>
-          </Pressable>
+            <View className="w-[100%] bg-popup-grey flex-row p-3 space-x-5 rounded-2xl">
+              <View>
+                <Text numberOfLines={1} className=" text-text-black dark:text-white font-medium">
+                  Issued by
+                </Text>
+                <Text numberOfLines={1} className=" text-text-black dark:text-white font-medium">
+                  Issued at
+                </Text>
+                <Text numberOfLines={1} className="text-black dark:text-white font-medium">
+                  Expiry
+                </Text>
+                {Object.keys(card.claims).map((key) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      Alert.alert(normaliseKey(key));
+                    }}
+                  >
+                    <Text key={key} numberOfLines={1} className="text-black dark:text-white">
+                      {normaliseKey(key)}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+              <View className="flex-1">
+                <TouchableOpacity
+                  onPress={() => {
+                    Alert.alert(card.credIssuedBy);
+                  }}
+                >
+                  <Text numberOfLines={1} className="text-white">
+                    {normaliseURL(card.credIssuedBy)}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => Alert.alert(card.issuanceDate)}>
+                  <Text numberOfLines={1} className="text-white">
+                    {formatDate(card.issuanceDate)}
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => Alert.alert(card.expiryDate)}>
+                  <Text numberOfLines={1} className="text-white">
+                    {formatDate(card.expiryDate)}
+                  </Text>
+                </TouchableOpacity>
+                {Object.values(card.claims).map((value) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      Alert.alert(value);
+                    }}
+                  >
+                    <Text key={value} numberOfLines={1} className="text-white">
+                      {value}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => setModalVisible(false)}
+            >
+              <View className="flex-1 items-center justify-center bg-dark-green opacity-80">
+                <View className="bg-light-cream dark:bg-dark-grey p-5 flex align-center rounded-md space-y-5">
+                  <Text className="text-black dark:text-white px-5">
+                    Do you wish to permanently remove this credential from your wallet?
+                  </Text>
+                  <View className="flex flex-row justify-around w-[100%]">
+                    <Pressable onPress={() => setModalVisible(false)}>
+                      <Text className="text-white font-medium bg-gray-500 p-2 rounded-md px-4">
+                        Cancel
+                      </Text>
+                    </Pressable>
+                    <Pressable
+                      onPress={async () => {
+                        await handleRemoveConfirmation(card.originalName);
+                        setModalVisible(false);
+                      }}
+                    >
+                      <Text className="text-white font-medium bg-red-500 p-2 rounded-md px-4">
+                        Remove
+                      </Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </View>
+            </Modal>
+            <Pressable onPress={() => setModalVisible(true)}>
+              <View className="p-3 bg-view-light dark:bg-popup-grey rounded-lg justify-around">
+                <Text className="text-red-500 font-bold">Remove Credential</Text>
+              </View>
+            </Pressable>
+          </View>
         </View>
-      </View>
+      </ScrollView>
       <Footer />
     </View>
   );

@@ -25,6 +25,7 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
   const offset = 10 * 60 * 60 * 1000;
   const isExpired = new Date(card.expiryDate) < new Date(new Date().getTime() + offset);
   const formattedExpiryDate = formatDate(card.expiryDate);
+  const formattedIssueDate = formatDate(card.issuanceDate);
   const darkGradientColour = isExpired ? ['#606665', '#C1CCCA'] : ['#1F2A29', '#527E78'];
   const lightGradientColour = isExpired ? ['#c2d6ba', '#8da883'] : ['#8da883', '#c2d6ba'];
 
@@ -49,10 +50,10 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
         <View className="w-80 min-h-[225px] rounded-md">
           <View className="flex-row justify-between">
             <Pressable onPress={handleCardPress} className="flex-1">
-              <Text className="text-2xl font-bold pt-4 px-4 text-text-black dark:text-white">
+              <Text className="text-2xl font-bold pt-4 px-4 pb-1 text-text-black dark:text-white">
                 {card.name}
               </Text>
-              <Text className="text-md px-4 pb-6 text-text-black dark:text-white">
+              <Text className="text-base px-4 pb-6 text-text-black dark:text-white">
                 {Object.keys(card.claims).length} claims
               </Text>
             </Pressable>
@@ -68,7 +69,7 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
           <Pressable onPress={handleCardPress} className="flex-1">
             <View className="flex-1 p-4 justify-end">
               <View className="flex-row justify-between items-center">
-                <Text className=" font-bold text-lg text-text-black dark:text-white">
+                <Text className=" font-bold text-xl text-text-black dark:text-white">
                   {card.type}
                 </Text>
                 <ExpiryStatusLabel isExpired={isExpired} />
@@ -97,7 +98,7 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
           </View>
           <Pressable className="mt-auto" onPress={handleCardPress}>
             <Text className="text-lg mx-2 px-4 text-text-black dark:text-white font-bold">
-              Issue Date: <Text className="font-normal">{formattedExpiryDate}</Text>
+              Issue Date: <Text className="font-normal">{formattedIssueDate}</Text>
             </Text>
             <Text className="text-lg mx-2 mt-auto font-bold text-text-black dark:text-white px-4">
               Expiry Date: <Text className="font-normal">{formattedExpiryDate}</Text>
