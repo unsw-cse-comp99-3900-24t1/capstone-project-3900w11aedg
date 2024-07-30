@@ -7,7 +7,7 @@ import ClaimCheckbox from './ClaimCheckbox';
 
 type Props = {
   credential: Card;
-  addClaims: (claim: string, isAdding: boolean) => void;
+  addClaims: (claim: string, isAdding: boolean, id: string) => void;
 };
 
 function PresentCredential({ credential, addClaims }: Props): JSX.Element {
@@ -50,7 +50,7 @@ function PresentCredential({ credential, addClaims }: Props): JSX.Element {
                   <Text className="text-white text-lg font-medium">{key}</Text>
                   <Text>{claim}</Text>
                 </View>
-                <ClaimCheckbox claim={key} addClaims={addClaims} />
+                <ClaimCheckbox index={credential.id} claim={key} addClaims={addClaims} />
               </View>
             ))}
           </View>

@@ -8,13 +8,18 @@ import { useNavigation } from '@react-navigation/native';
 
 type Props = {
   claimsRequest: ClaimsRequest;
-  claims: string[];
+  claims: ClaimsObject;
   credentials: VerifiableCredential[];
 };
+
+type ClaimsObject = {
+  [key: string]: string[];
+};
+
 type RequestBody = {
   credentials: VerifiableCredential[];
   serviceProviderUrl: string;
-  claimsToKeep?: string[];
+  claimsToKeep?: ClaimsObject;
 };
 type NavProps = NativeStackNavigationProp<RootStackParamList>;
 
@@ -26,9 +31,7 @@ function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.
         credentials,
         serviceProviderUrl: claimsRequest.query.url,
       };
-      if (claims) {
-        body.claimsToKeep = claims;
-      }
+      body.claimsToKeep = claims;
       const response = await axios.post('http://localhost:3000/presentation/create', body);
       navigation.navigate('Verified', { success: response.data.verified });
     } catch (error) {

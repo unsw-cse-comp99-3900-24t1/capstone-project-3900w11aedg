@@ -5,31 +5,55 @@ import { createDiscloseCryptosuite } from '@digitalbazaar/bbs-2023-cryptosuite';
 import documentLoader from '../document-loader.js';
 import { v4 as uuidv4 } from 'uuid';
 
-export const deriveAndCreatePresentation = async (credentials: VerifiableCredential[], claimsToKeep?: string[]): Promise<VerifiablePresentation> => {
-  if (claimsToKeep && claimsToKeep.some((claim) => credentials.every((vc: VerifiableCredential) => !Object.keys(vc.credentialSubject).includes(claim)))) {
-    throw new Error(`Some claims to keep are not present in any credential`);
-  }
+type ClaimsToKeep = {
+  [key: string]: string[];
+};
 
-  const promises = credentials.map(async (credential: VerifiableCredential) => await deriveCredential(credential as VerifiableCredential, claimsToKeep));
+export const deriveAndCreatePresentation = async (
+  credentials: (VerifiableCredential & { identifier?: string })[],
+  claimsToKeep: ClaimsToKeep
+): Promise<VerifiablePresentation> => {
+  const promises = credentials.map(
+    async (credential: VerifiableCredential & { identifier?: string }) =>
+      await deriveCredential(credential, claimsToKeep)
+  );
 
-  const derivedCredentials = (await Promise.all(promises)).filter((vc: object | null) => vc !== null);
-
+  const derivedCredentials = await Promise.all(promises);
   return vc.createPresentation({
     verifiableCredential: derivedCredentials,
     id: uuidv4(),
   }) as VerifiablePresentation;
 };
 
-export const deriveCredential = async (verifiableCredential: VerifiableCredential, claimsToKeep?: string[]): Promise<VerifiableCredential | null> => {
-  let selectivePointers: string[] = ['/credentialSubject'];
-  if (claimsToKeep) {
-    const relevantClaims = claimsToKeep.filter((claim) => Object.keys(verifiableCredential.credentialSubject).includes(claim));
-    if (relevantClaims.length === 0)
-      return null;
-    selectivePointers = relevantClaims.map((claim) => {
-      return `/credentialSubject/${claim}`;
-    });
+export const deriveCredential = async (
+  verifiableCredential: VerifiableCredential & { identifier?: string },
+  claimsToKeep: ClaimsToKeep
+): Promise<VerifiableCredential> => {
+  if (!verifiableCredential.identifier) {
+    throw new Error('Credential identifier not found');
   }
+  let selectivePointers: string[] = ['/credentialSubject'];
+  if (!Object.keys(claimsToKeep).includes(verifiableCredential.identifier)) {
+    throw new Error(`No claims to keep for credential ${verifiableCredential.identifier}`);
+  }
+  const keeping = claimsToKeep[verifiableCredential.identifier] as string[];
+  if (keeping.length > 0) {
+    selectivePointers = keeping
+      .filter((claim) => {
+        if (!Object.keys(verifiableCredential.credentialSubject).includes(claim)) {
+          throw new Error(
+            `Claim ${claim} not found in credential ${verifiableCredential.identifier}`
+          );
+        }
+        return true;
+      })
+      .map((claim) => {
+        return `/credentialSubject/${claim}`;
+      });
+  }
+
+  const vcWithoutIdentifier = { ...verifiableCredential };
+  delete vcWithoutIdentifier.identifier;
 
   const suite = new DataIntegrityProof({
     signer: null,
@@ -39,9 +63,9 @@ export const deriveCredential = async (verifiableCredential: VerifiableCredentia
       selectivePointers,
     }),
   });
-  return await vc.derive({
-    verifiableCredential,
+  return (await vc.derive({
+    verifiableCredential: vcWithoutIdentifier,
     suite,
     documentLoader,
-  }) as VerifiableCredential;
+  })) as VerifiableCredential;
 };
