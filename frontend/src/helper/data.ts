@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import Keychain from 'react-native-keychain';
 import { Card } from '../config/types.ts';
 import normaliseCredential from './normalise.ts';
@@ -14,8 +13,7 @@ export const formatDate = (dateString: string) => {
 };
 
 const fetchData = async (): Promise<Card[]> => {
-  const keysString = await AsyncStorage.getItem('keys');
-  const keys = JSON.parse(keysString ?? '[]');
+  const keys = await Keychain.getAllGenericPasswordServices();
   const dataPromises = keys.map(async (key: string, index: number) => {
     const credentials = await Keychain.getGenericPassword({ service: key });
     if (credentials) {

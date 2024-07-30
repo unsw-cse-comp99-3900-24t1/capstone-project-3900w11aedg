@@ -12,12 +12,6 @@ module.exports = {
         'popup-grey': '#444343',
         'text-grey': '#F2F2F2',
         'blurred-grey': '#9B9B9B',
-
-        'green-gradient': {
-          100: '#0A1B34',
-          200: '#0C372A',
-          300: '#369C7E',
-        },
         'card-green': '#52797E',
         'card-grey': '#6C7272',
         'card-view-grey': '#8F9595',
@@ -25,6 +19,10 @@ module.exports = {
         'card-dark-green': '#385450',
         'valid-green': '#3CC639',
         'invalid-red': '#FA3636',
+        'dropdown-grey': {
+          100: '#8F9594',
+          200: '#575959',
+        },
         'settings-grey': '#414141',
       },
     },

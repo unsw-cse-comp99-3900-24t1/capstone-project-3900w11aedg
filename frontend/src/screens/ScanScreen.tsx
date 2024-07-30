@@ -10,7 +10,7 @@ import ScanSwitch from '../components/ScanSwitch';
 import axios from 'axios';
 
 type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'Issue'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Scan'>;
 };
 
 function ScanScreen({ navigation }: Props): JSX.Element {
@@ -18,7 +18,15 @@ function ScanScreen({ navigation }: Props): JSX.Element {
   const onRead = async (route: string) => {
     try {
       if (route.match('request-claims')) {
-        navigation.navigate('Present', { requestData: 'response.data' });
+        const response = await axios.get(route);
+        if (response.data) {
+          navigation.navigate('Present', { requestData: response.data });
+        } else {
+          Alert.alert(
+            'Service Provider Error',
+            'This service provider failed to make a valid request'
+          );
+        }
       } else if (route.match('openid-credential-issuer')) {
         const response = await axios.post('http://localhost:3000/issuer/poll', {
           issuerUrl: route,

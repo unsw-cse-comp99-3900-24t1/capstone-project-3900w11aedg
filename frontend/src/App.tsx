@@ -11,6 +11,7 @@ import IssuanceScreen from './screens/IssuanceScreen';
 import ViewScreen from './screens/ViewScreen';
 import SettingsScreen from './screens/SettingsScreen.tsx';
 import HistoryScreen from './screens/HistoryScreen.tsx';
+import VerifiedScreen from './screens/VerifiedScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -25,6 +26,11 @@ function App(): JSX.Element {
           <Stack.Screen name="Present" component={PresentScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Issue" component={IssuanceScreen} options={{ headerShown: false }} />
           <Stack.Screen name="View" component={ViewScreen} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Verified"
+            component={VerifiedScreen}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="Settings"
             component={SettingsScreen}
