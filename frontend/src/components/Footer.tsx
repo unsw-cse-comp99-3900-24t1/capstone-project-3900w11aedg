@@ -14,7 +14,7 @@ function Footer(): JSX.Element {
 
   return (
     <View
-      className={`pt-${insets.bottom} pl-${insets.left} pr-${insets.right} absolute bottom-0 flex flex-row justify-evenly items-center h-[10%] w-[100%] bg-navbar-grey`}
+      className={`pt-${insets.bottom} pl-${insets.left} pr-${insets.right} absolute bottom-0 flex flex-row justify-evenly items-center h-[10%] w-[100%] bg-nav-light dark:bg-navbar-grey`}
     >
       <TouchableOpacity
         className="basis-[20%] flex items-center gap-1"

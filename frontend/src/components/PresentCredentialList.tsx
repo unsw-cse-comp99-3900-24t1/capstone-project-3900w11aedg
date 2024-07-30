@@ -8,19 +8,22 @@ import normaliseCredential from '../helper/normalise';
 
 type Props = {
   claimsRequest: ClaimsRequest;
-  setCredentialsRequest: (credentialsRequest: VerifiableCredential[]) => void;
+  chosenCredentials: VerifiableCredential[];
+  chooseCredential: (credentialsRequest: VerifiableCredential) => void;
   addClaims: (claim: string, isAdding: boolean, id: string) => void;
   claimsObject: { [key: string]: Set<string> };
 };
 
-// Different claim queries have different places to post to
+type CredentialTuple = [Card, VerifiableCredential];
+
 function PresentCredentialList({
   claimsRequest,
-  setCredentialsRequest,
+  chosenCredentials,
+  chooseCredential,
   addClaims,
   claimsObject,
 }: Props): JSX.Element {
-  const [credentials, setCredentials] = React.useState<Card[]>([]);
+  const [credentials, setCredentials] = React.useState<CredentialTuple[]>([]);
 
   React.useEffect(() => {
     const getCredentials = async () => {
@@ -42,6 +45,7 @@ function PresentCredentialList({
             const JSONCredential: VerifiableCredential & { identifier: string } = JSON.parse(
               credential.password
             );
+            delete JSONCredential.pinned;
             const isValidCredential = requiredFields.every((field) => {
               const results = JSONPath({ path: field.path[0]!, json: JSONCredential });
               if (!results.length) {
@@ -60,35 +64,19 @@ function PresentCredentialList({
             });
 
             if (isValidCredential) {
-              return {
-                verifiableCredential: JSONCredential,
-                cardCredential: normaliseCredential(key, credential.password),
-              };
+              return [normaliseCredential(key, credential.password), JSONCredential];
             }
           }
           return null;
         });
         const validCredentials = await Promise.all(credentialPromises);
-        const offset = 10 * 60 * 60 * 1000;
-        setCredentials(
-          validCredentials.map((cred) => cred?.cardCredential).filter(Boolean) as Card[]
-        );
-        setCredentialsRequest(
-          validCredentials
-            .filter(
-              (cred) =>
-                new Date(cred?.cardCredential.expiryDate as string) >
-                new Date(new Date().getTime() + offset)
-            )
-            .map((cred) => cred?.verifiableCredential)
-            .filter(Boolean) as VerifiableCredential[]
-        );
+        setCredentials(validCredentials.filter(Boolean) as CredentialTuple[]);
       } catch (error) {
         console.log(error);
       }
     };
     getCredentials();
-  }, [claimsRequest.query, setCredentialsRequest]);
+  }, [claimsRequest.query]);
 
   return (
     <View>
@@ -96,7 +84,10 @@ function PresentCredentialList({
         <PresentCredential
           claimsObject={claimsObject}
           key={index}
-          credential={credential}
+          credential={credential[0]}
+          verifiableCredential={credential[1]}
+          chosenCredentials={chosenCredentials}
+          chooseCredential={chooseCredential}
           addClaims={addClaims}
         />
       ))}

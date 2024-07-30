@@ -46,7 +46,7 @@ function ScanScreen({ navigation }: Props): JSX.Element {
   };
 
   return (
-    <View className="flex flex-col h-[100%] w-[100%] bg-white dark:bg-dark-green">
+    <View className="flex flex-col h-[100%] w-[100%] bg-light-cream dark:bg-dark-green">
       <Header />
       <ScanSwitch method={method} setMethod={setMethod} />
       {method === 'Scan' ? <ScanQR onRead={onRead} /> : <UploadQR onRead={onRead} />}

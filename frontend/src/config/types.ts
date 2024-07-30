@@ -117,6 +117,7 @@ export type Card = {
   issuanceDate: string;
   expiryDate: string;
   originalName: string;
+  pinned: number | null;
 };
 
 // ClaimsRequest

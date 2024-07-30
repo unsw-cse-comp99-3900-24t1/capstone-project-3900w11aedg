@@ -16,7 +16,7 @@ export default function PresentScreen({ route, navigation }: Props): JSX.Element
   const { requestData } = route.params ?? '';
 
   return (
-    <View className="flex flex-col h-[100%] w-[100%] bg-white dark:bg-dark-green">
+    <View className="flex flex-col h-[100%] w-[100%] bg-light-cream dark:bg-dark-green">
       <Header />
       <View className="px-[5%]">
         <TouchableOpacity
