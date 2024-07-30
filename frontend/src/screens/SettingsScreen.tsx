@@ -4,9 +4,16 @@ import Header from '../components/Header.tsx';
 import Footer from '../components/Footer.tsx';
 import SettingsButton from '../components/SettingsButton.tsx';
 import DeleteOverlay from '../components/DeleteOverlay.tsx';
+import { RootStackParamList } from '../config/types';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { useNavigation } from '@react-navigation/native';
+
+type SettingsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Settings'>;
 
 const SettingsScreen = () => {
+  const navigation = useNavigation<SettingsScreenNavigationProp>();
   const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <View className="flex flex-col h-[100%] w-[100%] bg-light-cream dark:bg-dark-green">
       <Header />
@@ -41,6 +48,7 @@ const SettingsScreen = () => {
           imageSource={require('../assets/clock.png')}
           text={'Presentation History'}
           secondImageSource={require('../assets/right-arrow.png')}
+          handlePress={() => navigation.navigate('History')}
         />
         <SettingsButton
           isFirst={false}
