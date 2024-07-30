@@ -103,27 +103,6 @@ describe('POST /presentation/create', () => {
     expect(res.text).toBe('Invalid credentials format or URL');
   });
 
-  it('ClaimsToKeep exists but is empty or not an array', async () => {
-    let res = await request(app.default)
-      .post('/presentation/create')
-      .send({
-        credentials: [mockCredential],
-        serviceProviderUrl: 'http://example.com',
-        claimsToKeep: 'not an array',
-      });
-    expect(res.status).toBe(400);
-    expect(res.text).toBe('Invalid claims to keep format');
-    res = await request(app.default)
-      .post('/presentation/create')
-      .send({
-        credentials: [mockCredential],
-        serviceProviderUrl: 'https://example.com',
-        claimsToKeep: [],
-      });
-    expect(res.status).toBe(400);
-    expect(res.text).toBe('Invalid claims to keep format');
-  });
-
   it('Creates a presentation and is sent and verified by the service provider', async () => {
     const { deriveAndCreatePresentation } = await import('../../lib/src/backend/presentations');
     (

@@ -49,7 +49,7 @@ function PresentDetails({ claimsRequest }: Props): JSX.Element {
         }
       });
     },
-    [chosenClaims]
+    []
   );
 
   return (

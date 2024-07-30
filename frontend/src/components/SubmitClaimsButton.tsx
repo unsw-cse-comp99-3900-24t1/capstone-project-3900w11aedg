@@ -31,9 +31,7 @@ function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.
         credentials,
         serviceProviderUrl: claimsRequest.query.url,
       };
-      if (claims) {
-        body.claimsToKeep = claims;
-      }
+      body.claimsToKeep = claims;
       const response = await axios.post('http://localhost:3000/presentation/create', body);
       navigation.navigate('Verified', { success: response.data.verified });
     } catch (error) {
