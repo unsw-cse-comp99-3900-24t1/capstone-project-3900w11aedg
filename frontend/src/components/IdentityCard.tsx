@@ -30,7 +30,7 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
   return (
     <FlipCard>
       <LinearGradient colors={gradientColour} className="rounded-xl">
-        <View className="w-80 min-h-[225px] rounded-md">
+        <View className="w-80 h-[225px] rounded-md">
           <View className="flex-row justify-between">
             <Pressable onPress={handleCardPress} className="flex-1">
               <Text className="text-2xl text-white font-bold pt-4 px-4">{card.name}</Text>
@@ -41,7 +41,14 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
                 <Text className="text-md w-fit text-white px-4">{card.description}</Text>
               )}
             </Pressable>
-            <View className="w-12 h-14 p-2 mr-4">
+            <View className="w-10 h-10 p-2 mt-3 mr-10 flex flex-row gap-x-1">
+              <Image
+                source={
+                  card.pinned ? require('../assets/pinned.png') : require('../assets/pin.png')
+                }
+                className="w-full h-full"
+                resizeMode="contain"
+              />
               <Image
                 source={require('../assets/fliparrow.png')}
                 className="w-full h-full"
@@ -64,20 +71,27 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
       </LinearGradient>
 
       <LinearGradient colors={gradientColour} className="rounded-xl">
-        <View className="min-h-[225px] w-80 pb-6 mx-auto rounded-md overflow-hidden">
+        <View className="h-[225px] w-80 pb-6 mx-auto rounded-md overflow-hidden">
           <View className="flex-row justify-between">
             <Pressable onPress={handleCardPress} className="flex-1">
               <Text className="text-2xl text-white font-bold px-4 pb-0 pt-4">{card.name}</Text>
             </Pressable>
-            <View className="w-12 h-14 p-2 mr-4">
+            <View className="w-10 h-10 p-2 mt-3 mr-10 flex flex-row gap-x-1">
+              <Image
+                source={
+                  card.pinned ? require('../assets/pinned.png') : require('../assets/pin.png')
+                }
+                className="w-full h-full"
+                resizeMode="contain"
+              />
               <Image
                 source={require('../assets/fliparrow.png')}
-                className="w-full h-full"
+                className="w-full h-full scale-x-[-1]"
                 resizeMode="contain"
               />
             </View>
           </View>
-          <Pressable onPress={handleCardPress} className="mx-4 pt-2">
+          <Pressable onPress={handleCardPress} className="mx-4 pt-2 max-h-[150px]">
             <View className="mb-2 flex flex-row">
               <Text className="font-bold text-base text-white">Issued by: </Text>
               <Text className="text-white text-base">{normaliseURL(card.credIssuedBy)}</Text>

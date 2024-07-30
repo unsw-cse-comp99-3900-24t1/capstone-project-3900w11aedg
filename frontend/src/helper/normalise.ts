@@ -25,12 +25,13 @@ const normaliseCredential = (index: number, name: string, credential: string): C
     issuanceDate: JSONCredential.issuanceDate,
     expiryDate: JSONCredential.expirationDate || '',
     originalName,
+    pinned: JSONCredential.pinned,
   } as Card;
 };
 
 export const normaliseKey = (key: string): string => {
   key = key.replace(/([A-Z])/g, ' $1');
-  if (key.includes(' ')) key = key.split(' ')[0] as string;
+  //if (key.includes(' ')) key = key.split(' ')[0] as string;
   return key.charAt(0).toUpperCase() + key.slice(1);
 };
 

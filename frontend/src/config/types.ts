@@ -87,6 +87,7 @@ export type VerifiableCredential = {
   credentialSubject: {
     [key: string]: object | string;
   };
+  pinned: boolean;
   proof: Proof;
 };
 
@@ -109,4 +110,5 @@ export type Card = {
   issuanceDate: string;
   expiryDate: string;
   originalName: string;
+  pinned: boolean;
 };

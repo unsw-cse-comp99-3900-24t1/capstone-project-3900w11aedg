@@ -72,7 +72,7 @@ function HomeScreen(): JSX.Element {
           onChangeText={setSearchQuery}
         />
       </View>
-      <ScrollView className="w-full">
+      <ScrollView className="w-full max-h-[67%]">
         <IdentityCardList cards={searchQuery ? filteredCards : cards} />
       </ScrollView>
       <Footer />
