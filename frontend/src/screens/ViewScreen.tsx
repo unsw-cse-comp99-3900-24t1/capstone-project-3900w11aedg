@@ -10,6 +10,7 @@ import { normaliseURL } from '../helper/normalise.ts';
 import { RootStackParamList } from '../config/types.ts';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Keychain from 'react-native-keychain';
+import PinButton from '../components/PinButton.tsx';
 
 type ViewScreenRouteProp = RouteProp<RootStackParamList, 'View'>;
 type ViewScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'View'>;
@@ -92,7 +93,14 @@ const ViewScreen: React.FC = () => {
 
         <View className="w-[90%] bg-light-green dark:bg-card-view-grey rounded-2xl space-y-5 p-5">
           <View className="p-3 bg-view-light dark:bg-popup-grey rounded-lg justify-around">
-            <Text className="text-text-black dark:text-white font-bold">Pin to Wallet</Text>
+            <PinButton
+              card={card}
+              additionalElements={
+                <Text className="text-text-black dark:text-white font-bold ml-1">
+                  Pin to Wallet
+                </Text>
+              }
+            />
           </View>
           <View className="w-[100%] bg-view-light dark:bg-popup-grey flex-row p-3 space-x-5 rounded-2xl">
             <View>

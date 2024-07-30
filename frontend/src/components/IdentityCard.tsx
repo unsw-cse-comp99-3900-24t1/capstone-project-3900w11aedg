@@ -9,6 +9,7 @@ import { formatDate } from '../helper/data.ts';
 import { normaliseKey, normaliseURL } from '../helper/normalise.ts';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../config/types';
+import PinButton from './PinButton.tsx';
 interface IProps {
   card: Card;
 }
@@ -61,7 +62,8 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
                 </Text>
               )}
             </Pressable>
-            <View className="w-12 h-14 p-2 mr-4">
+            <View className="w-10 h-10 p-2 mt-3 mr-10 flex flex-row gap-x-1">
+              <PinButton card={card} />
               <Image
                 source={require('../assets/fliparrow.png')}
                 className="w-full h-full"
@@ -94,15 +96,16 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
                 {card.name}
               </Text>
             </Pressable>
-            <View className="w-12 h-14 p-2 mr-4">
+            <View className="w-10 h-10 p-2 mt-3 mr-10 flex flex-row gap-x-1">
+              <PinButton card={card} />
               <Image
                 source={require('../assets/fliparrow.png')}
-                className="w-full h-full"
+                className="w-full h-full scale-x-[-1]"
                 resizeMode="contain"
               />
             </View>
           </View>
-          <Pressable onPress={handleCardPress} className="mx-4 pt-2">
+          <Pressable onPress={handleCardPress} className="mx-4 pt-2 max-h-[150px]">
             <View className="mb-2 flex flex-row">
               <Text className="font-bold text-base text-text-black dark:text-white">
                 Issued by:{' '}

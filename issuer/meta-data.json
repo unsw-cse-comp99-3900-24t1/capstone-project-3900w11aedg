@@ -72,6 +72,42 @@
           "description": "The holder of this credential has earned a master's degree from UNSW."
         }
       ]
+    },
+    "DoctoralDegree_LDP_VC": {
+      "format": "ldp-vc",
+      "cryptographic_binding_methods_supported": [
+        "did:web:example#key-3"
+      ],
+      "credential_signing_alg_values_supported": [
+        "BBS"
+      ],
+      "credential_definition": {
+        "@context": [
+          "https://www.w3.org/2018/credentials/v1",
+          "https://www.w3.org/2018/credentials/examples/v1"
+        ],
+        "type": [
+          "VerifiableCredential",
+          "DoctoralDegreeCredential"
+        ],
+        "credentialSubject": {
+          "alumniOf": {
+            "mandatory": true,
+            "display": {
+              "name": "Alumni of UNSW"
+            }
+          }
+        }
+      },
+      "display": [
+        {
+          "name": "Doctoral Degree Credential",
+          "logo": {
+            "uri": "https://universitiesaustralia.edu.au/wp-content/uploads/2019/05/UNSW-1-300x300.png"
+          },
+          "description": "The holder of this credential has earned a PhD from UNSW."
+        }
+      ]
     }
   },
   "display": {
