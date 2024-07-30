@@ -15,7 +15,7 @@ const PinButton = ({ card, additionalElements }: Props) => {
     <TouchableOpacity onPress={() => setModalVisible(true)} className="flex flex-row items-center">
       <Image
         source={card.pinned ? require('../assets/pinned.png') : require('../assets/pin.png')}
-        className="w-6 h-6"
+        className="w-5 h-5"
         resizeMode="contain"
       />
       <PinOverlay card={card} modalVisible={modalVisible} setModalVisible={setModalVisible} />
