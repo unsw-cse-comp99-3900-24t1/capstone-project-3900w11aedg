@@ -23,12 +23,6 @@ function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.
   const navigation = useNavigation<NavProps>();
   const handleSubmission = async () => {
     try {
-      credentials = credentials.filter((credential) => {
-        if (!credential.identifier) {
-          return false;
-        }
-        return Object.keys(claims).includes(credential.identifier);
-      });
       const body: RequestBody = {
         credentials,
         serviceProviderUrl: claimsRequest.query.url,
