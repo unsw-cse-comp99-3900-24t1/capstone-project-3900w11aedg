@@ -9,7 +9,7 @@ import normaliseCredential from '../helper/normalise';
 type Props = {
   claimsRequest: ClaimsRequest;
   setCredentialsRequest: (credentialsRequest: VerifiableCredential[]) => void;
-  addClaims: (claim: string, isAdding: boolean) => void;
+  addClaims: (claim: string, isAdding: boolean, id: string) => void;
 };
 
 // Different claim queries have different places to post to
@@ -34,10 +34,12 @@ function PresentCredentialList({
 
       try {
         const keys = await Keychain.getAllGenericPasswordServices();
-        const credentialPromises = keys.map(async (key, index) => {
+        const credentialPromises = keys.map(async (key) => {
           const credential = await Keychain.getGenericPassword({ service: key });
           if (credential) {
-            const JSONCredential: VerifiableCredential = JSON.parse(credential.password);
+            const JSONCredential: VerifiableCredential & { identifier: string } = JSON.parse(
+              credential.password
+            );
             const isValidCredential = requiredFields.every((field) => {
               const results = JSONPath({ path: field.path[0]!, json: JSONCredential });
               if (!results.length) {
@@ -56,9 +58,11 @@ function PresentCredentialList({
             });
 
             if (isValidCredential) {
+              const normalised = normaliseCredential(key, credential.password);
+              JSONCredential.identifier = normalised.id;
               return {
                 verifiableCredential: JSONCredential,
-                cardCredential: normaliseCredential(index, key, credential.password),
+                cardCredential: normalised,
               };
             }
           }
