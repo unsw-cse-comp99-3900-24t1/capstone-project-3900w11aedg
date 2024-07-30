@@ -5,7 +5,6 @@ import IssueCredential from './IssueCredential';
 import axios from 'axios';
 import AddedCredPopup from './AddedCredPopup';
 import * as Keychain from 'react-native-keychain';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type Props = {
   issuerMetadata: IssuerMetadata;
@@ -22,9 +21,6 @@ function IssueCredentialList({ issuerMetadata }: Props): JSX.Element {
         authorization_endpoint: issuerMetadata.authorization_endpoint,
         credential_endpoint: issuerMetadata.credential_endpoint,
       });
-      const keys = JSON.parse((await AsyncStorage.getItem('keys')) ?? '[]');
-      keys.push(selectedCredential);
-      await AsyncStorage.setItem('keys', JSON.stringify(keys));
       await Keychain.setGenericPassword(
         selectedCredential,
         JSON.stringify({ ...response.data, pinned: false }),
