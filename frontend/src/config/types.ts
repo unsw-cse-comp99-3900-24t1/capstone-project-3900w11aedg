@@ -110,7 +110,7 @@ export type Card = {
   issuanceDate: string;
   expiryDate: string;
   originalName: string;
-  pinned: boolean;
+  pinned: number | null;
 };
 
 // ClaimsRequest

@@ -9,6 +9,7 @@ import { formatDate } from '../helper/data.ts';
 import { normaliseKey, normaliseURL } from '../helper/normalise.ts';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../config/types';
+import PinButton from './PinButton.tsx';
 interface IProps {
   card: Card;
 }
@@ -30,7 +31,7 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
   return (
     <FlipCard>
       <LinearGradient colors={gradientColour} className="rounded-xl">
-        <View className="w-80 h-[225px] rounded-md">
+        <View className="w-80 min-h-[225px] rounded-md">
           <View className="flex-row justify-between">
             <Pressable onPress={handleCardPress} className="flex-1">
               <Text className="text-2xl text-white font-bold pt-4 px-4">{card.name}</Text>
@@ -42,13 +43,7 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
               )}
             </Pressable>
             <View className="w-10 h-10 p-2 mt-3 mr-10 flex flex-row gap-x-1">
-              <Image
-                source={
-                  card.pinned ? require('../assets/pinned.png') : require('../assets/pin.png')
-                }
-                className="w-full h-full"
-                resizeMode="contain"
-              />
+              <PinButton card={card} />
               <Image
                 source={require('../assets/fliparrow.png')}
                 className="w-full h-full"
@@ -71,19 +66,13 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
       </LinearGradient>
 
       <LinearGradient colors={gradientColour} className="rounded-xl">
-        <View className="h-[225px] w-80 pb-6 mx-auto rounded-md overflow-hidden">
+        <View className="min-h-[225px] w-80 pb-6 mx-auto rounded-md">
           <View className="flex-row justify-between">
             <Pressable onPress={handleCardPress} className="flex-1">
               <Text className="text-2xl text-white font-bold px-4 pb-0 pt-4">{card.name}</Text>
             </Pressable>
             <View className="w-10 h-10 p-2 mt-3 mr-10 flex flex-row gap-x-1">
-              <Image
-                source={
-                  card.pinned ? require('../assets/pinned.png') : require('../assets/pin.png')
-                }
-                className="w-full h-full"
-                resizeMode="contain"
-              />
+              <PinButton card={card} />
               <Image
                 source={require('../assets/fliparrow.png')}
                 className="w-full h-full scale-x-[-1]"

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Pressable, Modal, Image } from 'react-native';
+import { View, Text, Pressable, Modal } from 'react-native';
 import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -10,6 +10,7 @@ import { normaliseURL } from '../helper/normalise.ts';
 import { RootStackParamList } from '../config/types.ts';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Keychain from 'react-native-keychain';
+import PinButton from '../components/PinButton.tsx';
 
 type ViewScreenRouteProp = RouteProp<RootStackParamList, 'View'>;
 type ViewScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'View'>;
@@ -64,9 +65,13 @@ const ViewScreen: React.FC = () => {
         </LinearGradient>
 
         <View className="w-[90%] bg-card-view-grey rounded-2xl space-y-5 p-5">
-          <View className="pt-3 pb-3 bg-popup-grey rounded-lg flex flex-row justify-start">
-            <Image source={require('../assets/pin.png')} className="h-5 w-5 ml-2.5 mr-1.5" />
-            <Text className="text-white font-bold">Pin to Wallet</Text>
+          <View className="pt-3 pb-3 pl-2 bg-popup-grey rounded-lg flex flex-row">
+            <PinButton
+              card={card}
+              additionalElements={
+                <Text className="text-white font-bold ml-1 w-[350%]">Pin to Wallet</Text>
+              }
+            />
           </View>
           <View className="w-[100%] bg-popup-grey flex-row p-3 space-x-5 rounded-2xl">
             <View>

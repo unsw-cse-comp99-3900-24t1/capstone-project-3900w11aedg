@@ -9,6 +9,7 @@ import SortButton from '../components/SortButton.tsx';
 import { Card } from '../config/types.ts';
 import fetchData from '../helper/data.ts';
 import { useFocusEffect } from '@react-navigation/native';
+import sortFunction from '../helper/sorting.ts';
 
 function HomeScreen(): JSX.Element {
   const [cards, setCards] = useState<Card[]>([]);
@@ -39,6 +40,7 @@ function HomeScreen(): JSX.Element {
     React.useCallback(() => {
       fetchData()
         .then((data) => {
+          data = sortFunction(data, 'pinned' as keyof Card);
           setCards(data);
           setFilteredCards(data);
         })
