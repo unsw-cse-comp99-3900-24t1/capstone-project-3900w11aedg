@@ -9,8 +9,8 @@ type Props = {
 const IdentityCardList = ({ cards }: Props) => {
   return (
     <View className="flex flex-row flex-wrap mx-auto justify-center">
-      {cards.map((card) => (
-        <View key={card.id} className="m-2">
+      {cards.map((card, index) => (
+        <View key={index} className="m-2">
           <IdentityCard card={card} />
         </View>
       ))}

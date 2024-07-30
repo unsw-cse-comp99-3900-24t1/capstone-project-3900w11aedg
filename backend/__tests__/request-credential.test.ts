@@ -16,110 +16,92 @@ jest.unstable_mockModule('../../lib/src/data', () => ({
 }));
 
 const mockCredential = {
-  '@context': [
-    'https://www.context.org/sample',
-  ],
-  'type': [
-    'VerifiableCredential',
-  ],
-  'issuer': 'did:web:example.com',
-  'issuanceDate': '2024-07-23T10:01:42Z',
-  'credentialSubject': {
-    'alumniOf': 'University of New South Wales',
+  '@context': ['https://www.context.org/sample'],
+  type: ['VerifiableCredential'],
+  issuer: 'did:web:example.com',
+  issuanceDate: '2024-07-23T10:01:42Z',
+  credentialSubject: {
+    alumniOf: 'University of New South Wales',
   },
-  'proof': {
-    'type': 'DataIntegrityProof',
-    'verificationMethod': 'did:web:example.com#key',
-    'cryptosuite': 'bbs-2023',
-    'proofPurpose': 'assertionMethod',
-    'proofValue': 'eyJhbGciOi',
+  proof: {
+    type: 'DataIntegrityProof',
+    verificationMethod: 'did:web:example.com#key',
+    cryptosuite: 'bbs-2023',
+    proofPurpose: 'assertionMethod',
+    proofValue: 'eyJhbGciOi',
   },
 };
 
 const mockMetadata = {
-  'credential_issuer': 'http://localhost:3210',
-  'credential_configurations_supported': {
-    'UniversityDegree_LDP_VC': {
-      'format': 'ldp-vc',
-      'cryptographic_binding_methods_supported': [
-        'did:web:example#key-1',
-      ],
-      'credential_signing_alg_values_supported': [
-        'BBS',
-      ],
-      'credential_definition': {
+  credential_issuer: 'http://localhost:3210',
+  credential_configurations_supported: {
+    UniversityDegree_LDP_VC: {
+      format: 'ldp-vc',
+      cryptographic_binding_methods_supported: ['did:web:example#key-1'],
+      credential_signing_alg_values_supported: ['BBS'],
+      credential_definition: {
         '@context': [
           'https://www.w3.org/2018/credentials/v1',
           'https://www.w3.org/2018/credentials/examples/v1',
         ],
-        'type': [
-          'VerifiableCredential',
-          'UniversityDegreeCredential',
-        ],
-        'credentialSubject': {
-          'alumniOf': {
-            'mandatory': true,
-            'display': {
-              'name': 'Alumni of UNSW',
+        type: ['VerifiableCredential', 'UniversityDegreeCredential'],
+        credentialSubject: {
+          alumniOf: {
+            mandatory: true,
+            display: {
+              name: 'Alumni of UNSW',
             },
           },
         },
       },
-      'display': [
+      display: [
         {
-          'name': 'University Graduate Credential',
-          'logo': {
-            'uri': 'https://universitiesaustralia.edu.au/wp-content/uploads/2019/05/UNSW-1-300x300.png',
+          name: 'University Graduate Credential',
+          logo: {
+            uri: 'https://universitiesaustralia.edu.au/wp-content/uploads/2019/05/UNSW-1-300x300.png',
           },
-          'description': 'The holder of this credential is a graduate of UNSW.',
+          description: 'The holder of this credential is a graduate of UNSW.',
         },
       ],
     },
-    'MastersDegree_LDP_VC': {
-      'format': 'ldp-vc',
-      'cryptographic_binding_methods_supported': [
-        'did:web:example#key-2',
-      ],
-      'credential_signing_alg_values_supported': [
-        'BBS',
-      ],
-      'credential_definition': {
+    MastersDegree_LDP_VC: {
+      format: 'ldp-vc',
+      cryptographic_binding_methods_supported: ['did:web:example#key-2'],
+      credential_signing_alg_values_supported: ['BBS'],
+      credential_definition: {
         '@context': [
           'https://www.w3.org/2018/credentials/v1',
           'https://www.w3.org/2018/credentials/examples/v1',
         ],
-        'type': [
-          'VerifiableCredential',
-          'MastersDegreeCredential',
-        ],
-        'credentialSubject': {
-          'alumniOf': {
-            'mandatory': true,
-            'display': {
-              'name': 'Alumni of UNSW',
+        type: ['VerifiableCredential', 'MastersDegreeCredential'],
+        credentialSubject: {
+          alumniOf: {
+            mandatory: true,
+            display: {
+              name: 'Alumni of UNSW',
             },
           },
         },
       },
-      'display': [
+      display: [
         {
-          'name': 'Masters Degree Credential',
-          'logo': {
-            'uri': 'https://universitiesaustralia.edu.au/wp-content/uploads/2019/05/UNSW-1-300x300.png',
+          name: 'Masters Degree Credential',
+          logo: {
+            uri: 'https://universitiesaustralia.edu.au/wp-content/uploads/2019/05/UNSW-1-300x300.png',
           },
-          'description': 'The holder of this credential has earned a master\'s degree from UNSW.',
+          description: "The holder of this credential has earned a master's degree from UNSW.",
         },
       ],
     },
   },
-  'display': {
-    'name': 'University of New South Wales',
-    'logo': {
-      'uri': 'https://scienceandtechnologyaustralia.org.au/wp-content/uploads/2023/01/Untitled-design-55.png',
+  display: {
+    name: 'University of New South Wales',
+    logo: {
+      uri: 'https://scienceandtechnologyaustralia.org.au/wp-content/uploads/2023/01/Untitled-design-55.png',
     },
   },
-  'authorization_endpoint': 'http://localhost:3210/authorise',
-  'credential_endpoint': 'http://localhost:3210/credential/offer',
+  authorization_endpoint: 'http://localhost:3210/authorise',
+  credential_endpoint: 'http://localhost:3210/credential/offer',
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -151,14 +133,16 @@ describe('POST /issuer/poll', () => {
   it('No issuer URL passed in', async () => {
     const res = await request(app.default).post('/issuer/poll');
     expect(res.status).toBe(400);
-    expect(res.text).toBe('Must provide target Issuer\'s URL');
+    expect(res.text).toBe("Must provide target Issuer's URL");
   });
 
   it('Returns issuer metadata', async () => {
     const axios = (await import('axios')).default;
     const { get } = axios;
     (get as jest.MockedFunction<typeof get>).mockResolvedValueOnce({ data: mockMetadata });
-    const res = await request(app.default).post('/issuer/poll').send({ issuerUrl: 'http://localhost:3210/.well-known/openid-credential-issuer' });
+    const res = await request(app.default)
+      .post('/issuer/poll')
+      .send({ issuerUrl: 'http://localhost:3210/.well-known/openid-credential-issuer' });
     expect(res.status).toBe(200);
     expect(res.body).toStrictEqual(mockMetadata);
   });
@@ -180,19 +164,31 @@ describe('POST /credential/request', () => {
   it('Missing parameters', async () => {
     let res = await request(app.default).post('/credential/request');
     expect(res.status).toBe(400);
-    expect(res.text).toBe('Missing credential identifier, authorization endpoint, or credential endpoint');
-    res = await request(app.default).post('/credential/request').send({ credential_identifier: 'UniversityDegree_LDP_VC' });
+    expect(res.text).toBe(
+      'Missing credential identifier, authorization endpoint, or credential endpoint'
+    );
+    res = await request(app.default)
+      .post('/credential/request')
+      .send({ credential_identifier: 'UniversityDegree_LDP_VC' });
     expect(res.status).toBe(400);
-    expect(res.text).toBe('Missing credential identifier, authorization endpoint, or credential endpoint');
-    res = await request(app.default).post('/credential/request').send({ authorization_endpoint: 'http://localhost:3210/authorise' });
+    expect(res.text).toBe(
+      'Missing credential identifier, authorization endpoint, or credential endpoint'
+    );
+    res = await request(app.default)
+      .post('/credential/request')
+      .send({ authorization_endpoint: 'http://localhost:3210/authorise' });
     expect(res.status).toBe(400);
-    expect(res.text).toBe('Missing credential identifier, authorization endpoint, or credential endpoint');
+    expect(res.text).toBe(
+      'Missing credential identifier, authorization endpoint, or credential endpoint'
+    );
     res = await request(app.default).post('/credential/request').send({
       credential_identifier: 'UniversityDegree_LDP_VC',
       credential_endpoint: 'http://localhost:3210/credential/offer',
     });
     expect(res.status).toBe(400);
-    expect(res.text).toBe('Missing credential identifier, authorization endpoint, or credential endpoint');
+    expect(res.text).toBe(
+      'Missing credential identifier, authorization endpoint, or credential endpoint'
+    );
   });
 
   it('Returns a credential', async () => {
@@ -203,12 +199,13 @@ describe('POST /credential/request', () => {
     });
     const axios = (await import('axios')).default;
     const { post } = axios;
-    (post as jest.MockedFunction<typeof post>).mockResolvedValueOnce({
-      data: {
-        code: '12345',
-      },
-    }).mockResolvedValueOnce(
-      {
+    (post as jest.MockedFunction<typeof post>)
+      .mockResolvedValueOnce({
+        data: {
+          code: '12345',
+        },
+      })
+      .mockResolvedValueOnce({
         data: {
           credential: mockCredential,
         },
@@ -220,6 +217,8 @@ describe('POST /credential/request', () => {
       authorization_endpoint: 'http://localhost:3210/authorise',
     });
     expect(res.status).toBe(200);
-    expect(res.body).toStrictEqual(mockCredential);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const credential = res.body.credential;
+    expect(credential).toStrictEqual(mockCredential);
   });
 });

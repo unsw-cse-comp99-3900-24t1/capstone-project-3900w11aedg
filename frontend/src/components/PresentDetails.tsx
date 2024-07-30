@@ -11,14 +11,10 @@ type Props = {
   claimsRequest: ClaimsRequest;
 };
 
-type ClaimsObject = {
-  [key: string]: string[];
-};
-
 type NavProps = NativeStackNavigationProp<RootStackParamList>;
 
 function PresentDetails({ claimsRequest }: Props): JSX.Element {
-  const [chosenClaims, setChosenClaims] = React.useState<ClaimsObject>({} as ClaimsObject);
+  const [chosenClaims, setChosenClaims] = React.useState<{ [key: string]: Set<string> }>({});
   const [validCredentials, setValidCredentials] = React.useState<VerifiableCredential[]>([]);
   const navigation = useNavigation<NavProps>();
 
@@ -26,26 +22,16 @@ function PresentDetails({ claimsRequest }: Props): JSX.Element {
     (newClaim: string, addingClaim: boolean, id: string) => {
       setChosenClaims((prevClaims) => {
         if (!Object.keys(prevClaims).includes(id)) {
-          prevClaims[id] = [];
+          prevClaims[id] = new Set<string>();
         }
         if (addingClaim) {
           const copyClaims = { ...prevClaims };
-          if (!Object.keys(copyClaims).includes(id)) {
-            copyClaims[id] = [newClaim];
-            return copyClaims;
-          }
-          (copyClaims[id] as string[]).push(newClaim);
+          (copyClaims[id] as Set<string>).add(newClaim);
           return copyClaims;
         } else {
           const copyClaims = { ...prevClaims };
-          const claimsAtId = copyClaims[id] as string[];
-          const claimIndex = claimsAtId.indexOf(newClaim);
-          if (claimIndex > -1) {
-            claimsAtId.splice(claimIndex, 1);
-            copyClaims[id] = claimsAtId;
-            return copyClaims;
-          }
-          return prevClaims;
+          (copyClaims[id] as Set<string>).delete(newClaim);
+          return copyClaims;
         }
       });
     },
@@ -68,6 +54,7 @@ function PresentDetails({ claimsRequest }: Props): JSX.Element {
         ))}
         <PresentCredentialList
           claimsRequest={claimsRequest}
+          claimsObject={chosenClaims}
           setCredentialsRequest={setValidCredentials}
           addClaims={updateChosenClaims}
         />
