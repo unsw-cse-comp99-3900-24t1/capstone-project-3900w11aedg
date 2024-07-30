@@ -33,10 +33,7 @@ export const deriveCredential = async (
     throw new Error('Credential identifier not found');
   }
   let selectivePointers: string[] = ['/credentialSubject'];
-  if (!Object.keys(claimsToKeep).includes(verifiableCredential.identifier)) {
-    throw new Error(`No claims to keep for credential ${verifiableCredential.identifier}`);
-  }
-  const keeping = claimsToKeep[verifiableCredential.identifier] as string[];
+  const keeping = claimsToKeep[verifiableCredential.identifier] || [];
   if (keeping.length > 0) {
     selectivePointers = keeping
       .filter((claim) => {

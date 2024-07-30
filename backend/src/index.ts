@@ -14,6 +14,7 @@ import { getProjectRoot } from '../../lib/src/find.js';
 import base64url from 'base64-url';
 import { areValidCredentials, isValidUrl } from '../../lib/src/validation-helper.js';
 import { DIDDocument } from 'did-resolver';
+import { v4 as uuidv4 } from 'uuid';
 
 const app = express();
 const port = 3000;
@@ -165,7 +166,7 @@ app.post('/credential/request', cors(internalUse), async (req: Request, res: Res
   try {
     const response = await axios.post(credentialEndpoint, credentialRequest);
     const signedCredential = response.data.credential;
-    res.status(200).json(signedCredential);
+    res.status(200).json({ credential: signedCredential, identifier: uuidv4() });
   } catch (error) {
     res.status(500).send(`Error receiving credential request at ${credentialEndpoint}`);
   }
