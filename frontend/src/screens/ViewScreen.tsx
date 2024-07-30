@@ -96,7 +96,9 @@ const ViewScreen: React.FC = () => {
             <PinButton
               card={card}
               additionalElements={
-                <Text className="text-text-black dark:text-white font-bold">Pin to Wallet</Text>
+                <Text className="text-text-black dark:text-white font-bold ml-1">
+                  Pin to Wallet
+                </Text>
               }
             />
           </View>
