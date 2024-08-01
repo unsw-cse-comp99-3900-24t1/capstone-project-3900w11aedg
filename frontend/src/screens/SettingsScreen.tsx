@@ -32,12 +32,6 @@ const SettingsScreen = () => {
             <DeleteOverlay modalVisible={modalVisible} setModalVisible={setModalVisible} />
           }
         />
-        <SettingsButton
-          isFirst={false}
-          imageSource={require('../assets/lock.png')}
-          text={'Two-factor Authentication'}
-          secondImageSource={require('../assets/right-arrow.png')}
-        />
       </View>
       <Text className="ml-10 mt-6 text-2xl text-text-black dark:text-white">
         Preferences and History
@@ -49,24 +43,6 @@ const SettingsScreen = () => {
           text={'Presentation History'}
           secondImageSource={require('../assets/right-arrow.png')}
           handlePress={() => navigation.navigate('History')}
-        />
-        <SettingsButton
-          isFirst={false}
-          imageSource={require('../assets/dark_mode.png')}
-          text={'Toggle Dark Mode'}
-          secondImageSource={require('../assets/right-arrow.png')}
-        />
-        <SettingsButton
-          isFirst={false}
-          imageSource={require('../assets/language.png')}
-          text={'Language'}
-          secondImageSource={require('../assets/right-arrow.png')}
-        />
-        <SettingsButton
-          isFirst={false}
-          imageSource={require('../assets/notifications.png')}
-          text={'Notifications'}
-          secondImageSource={require('../assets/right-arrow.png')}
         />
       </View>
       <Footer />
