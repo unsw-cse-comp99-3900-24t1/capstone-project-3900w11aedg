@@ -50,7 +50,7 @@ function PresentDetails({ claimsRequest }: Props): JSX.Element {
   return (
     <View className="flex w-80 flex-col mx-auto space-y-5">
       <Text className="text-black dark:text-white text-lg">
-        The Service Provider is requesting to verify your:
+        {claimsRequest.query.claims.id} is requesting to verify your:
       </Text>
       {claimsRequest.query.claims.input_descriptors.map((inputDescriptor) => (
         <Text className="text-black dark:text-white ml-[5px] text-lg" key={`${inputDescriptor.id}`}>
