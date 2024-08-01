@@ -160,5 +160,5 @@ export type Field = {
 export type SuccessfulPresentation = {
   serviceProvider: string;
   date: string;
-  claims: [string: string][];
+  claims: [string, string][];
 };
