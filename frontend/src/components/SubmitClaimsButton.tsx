@@ -21,7 +21,7 @@ type RequestBody = {
 };
 type NavProps = NativeStackNavigationProp<RootStackParamList>;
 
-const saveSuccessfulPresentations = async (domain: string, claims: string[]) => {
+const saveSuccessfulPresentations = async (domain: string, claims: [string, string][]) => {
   const existingPresentations = await AsyncStorage.getItem('successfulPresentations');
   const presentations = existingPresentations ? JSON.parse(existingPresentations) : [];
 
@@ -39,18 +39,21 @@ const saveSuccessfulPresentations = async (domain: string, claims: string[]) => 
 };
 
 const mapClaimValues = (
-  identifier: string,
-  claims: string[],
-  credentials: VerifiableCredential & { identifier: string }
-) => {
-  const credentialSubject = Object.entries(
-    credentials.filter((credential) => credential.identifier === identifier)[0].credentialSubject
-  );
-
-  return claims.reduce((acc, claim) => {
-    acc.push([claim, credentialSubject.find((subject) => subject[0] === claim)[1]]);
-    return acc;
-  }, []);
+  identifier: string | undefined,
+  credentialSubject: { [key: string]: object | string },
+  claims: { [key: string]: Set<string> }
+): [string, string][] => {
+  if (!identifier) {
+    return [];
+  }
+  let claimsToMap = Object.entries(credentialSubject);
+  if (identifier in claims) {
+    claimsToMap = Object.entries(credentialSubject).filter(([key]) => claims[identifier].has(key));
+  }
+  return claimsToMap.map(([key, value]) => [
+    key,
+    typeof value === 'string' ? value : JSON.stringify(value),
+  ]);
 };
 
 function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.Element {
@@ -69,15 +72,19 @@ function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.
       const response = await axios.post('http://localhost:3000/presentation/create', body);
       navigation.navigate('Verified', { success: response.data.verified });
 
-      let claimsList = [];
-      claimsList = claimsList
-        .concat(
-          Object.entries(claims).map(([identifier, claim]) =>
-            mapClaimValues(identifier, Array.from(claim), credentials)
-          )
+      let claimsList: [string, string][] = [];
+      claimsList = claimsList.concat(
+        credentials.flatMap((credential) =>
+          mapClaimValues(credential.identifier, credential.credentialSubject, claims)
         )
-        .flat();
-      await saveSuccessfulPresentations(claimsRequest.query.claims.id, claimsList);
+      );
+
+      const claimsSet: Set<string> = new Set(claimsList.map((claim) => JSON.stringify(claim)));
+      const uniqueClaimsList: [string, string][] = Array.from(claimsSet).map(
+        (str) => JSON.parse(str) as [string, string]
+      );
+
+      await saveSuccessfulPresentations(claimsRequest.query.claims.id, uniqueClaimsList);
     } catch (error) {
       navigation.navigate('Verified', { success: false });
     }
