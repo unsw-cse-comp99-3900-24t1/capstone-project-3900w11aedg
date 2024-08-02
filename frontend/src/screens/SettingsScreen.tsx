@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text } from 'react-native';
 import Header from '../components/Header.tsx';
 import Footer from '../components/Footer.tsx';
 import SettingsButton from '../components/SettingsButton.tsx';
-import DeleteOverlay from '../components/DeleteOverlay.tsx';
 import { RootStackParamList } from '../config/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 
 type SettingsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Settings'>;
 
-const SettingsScreen = () => {
+const SettingsScreen = (): JSX.Element => {
   const navigation = useNavigation<SettingsScreenNavigationProp>();
-  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View className="flex flex-col h-[100%] w-[100%] bg-light-cream dark:bg-dark-green">
@@ -27,10 +25,7 @@ const SettingsScreen = () => {
           imageSource={require('../assets/bin.png')}
           text={'Delete Account'}
           secondImageSource={require('../assets/right-arrow.png')}
-          handlePress={() => setModalVisible(true)}
-          additionalElements={
-            <DeleteOverlay modalVisible={modalVisible} setModalVisible={setModalVisible} />
-          }
+          handlePress={() => navigation.navigate('Delete')}
         />
       </View>
       <Text className="ml-10 mt-6 text-2xl text-text-black dark:text-white">

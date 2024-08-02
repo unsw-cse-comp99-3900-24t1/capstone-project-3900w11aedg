@@ -8,6 +8,7 @@ export type RootStackParamList = {
   Issue: { issuerMetadata?: keyof { [key: string]: IssuerMetadata } };
   View: { card: Card };
   Verified: { success: boolean };
+  Delete: undefined;
 };
 
 export type IssuerMetadata = {
