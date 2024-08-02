@@ -5,6 +5,7 @@ import jpeg from 'jpeg-js';
 import { PNG } from 'pngjs/browser';
 import { Buffer } from 'buffer';
 import React from 'react';
+import LoadingModal from './LoadingModal';
 
 interface ScanQRProps {
   onRead: (route: string) => Promise<void>;
@@ -19,6 +20,7 @@ type ImageAsset = {
 
 function UploadQR({ onRead }: ScanQRProps): JSX.Element {
   const [image, setImage] = React.useState<ImageAsset>(null);
+  const [loading, setLoading] = React.useState(false);
 
   const getImage = async () => {
     const res = await launchImageLibrary({
@@ -42,6 +44,14 @@ function UploadQR({ onRead }: ScanQRProps): JSX.Element {
       };
       setImage(imageData);
     }
+  };
+
+  const handleUpload = async () => {
+    setLoading(true);
+    setTimeout(async () => {
+      await upload();
+      setLoading(false);
+    }, 0);
   };
 
   const upload = async () => {
@@ -114,11 +124,12 @@ function UploadQR({ onRead }: ScanQRProps): JSX.Element {
         </TouchableOpacity>
         <TouchableOpacity
           className="bg-theme-gold py-[3px] px-[30px] rounded-[5px]"
-          onPress={upload}
+          onPress={handleUpload}
         >
           <Text className="text-black text-lg font-medium">Upload</Text>
         </TouchableOpacity>
       </View>
+      {loading && <LoadingModal />}
     </View>
   );
 }
