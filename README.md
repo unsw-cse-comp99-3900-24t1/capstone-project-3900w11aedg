@@ -1,5 +1,16 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-718a45dd9cf7e7f842a935f5ebbe5719a5e09af4491e668f4dbf3b35d5cca122.svg)](https://classroom.github.com/online_ide?assignment_repo_id=15169870&assignment_repo_type=AssignmentRepo)
 
+# Application Preview
+<img src="images/login-screen.png" width="200" height="auto" alt="Login Screen">
+<img src="images/home-screen.png" width="200" height="auto" alt="Home Screen">
+<img src="images/flip-view.png" width="200" height="auto" alt="Flip Screen">
+<img src="images/credential-detailed-view.png" width="200" height="auto" alt="Credentials in detail">
+<img src="images/issuance-screen.png" width="200" height="auto" alt="Issuance Screen">
+<img src="images/presentation-screen.png" width="200" height="auto" alt="Presentation Screen">
+<img src="images/verified.png" width="200" height="auto" alt="Verified Screen">
+<img src="images/presentation-history.png" width="200" height="auto" alt="Presentation History">
+<img src="images/settings-page.png" width="200" height="auto" alt="Settings Page">
+
 # Project Structure
 
 - backend: Identity Owner Backend (per user)
