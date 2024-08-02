@@ -46,7 +46,7 @@ function LoginButton(): JSX.Element {
           setTimeout(() => {
             clearTimeout(backgroundTimer);
             setBackgroundTimer(null);
-          }, 500);
+          }, 0);
         }
       }
     };
