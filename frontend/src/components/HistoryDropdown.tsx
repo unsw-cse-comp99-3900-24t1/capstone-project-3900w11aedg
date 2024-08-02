@@ -3,7 +3,7 @@ import { Text, View } from 'react-native';
 import { normaliseKey } from '../helper/normalise';
 
 interface HistoryDropdownProps {
-  claims: [string: string][];
+  claims: [string, string][];
 }
 
 const HistoryDropdown: React.FC<HistoryDropdownProps> = ({ claims }) => {
