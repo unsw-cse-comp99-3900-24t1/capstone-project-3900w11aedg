@@ -57,7 +57,7 @@ const DeleteOverlay = ({ modalVisible, setModalVisible }: Props) => {
       modalVisible={modalVisible}
       handleClose={handleClose}
       title="Do you wish to permanently delete your account?"
-      description="All identifiers and credentials you own will be invalidated and removed."
+      description="All identifiers and credentials you own will be invalidated and removed. This action is irreversible!"
       leftOption="Cancel"
       handleDelete={handleDelete}
       rightOption="Delete Account"

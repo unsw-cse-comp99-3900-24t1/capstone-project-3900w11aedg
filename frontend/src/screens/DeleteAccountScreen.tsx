@@ -28,7 +28,7 @@ function DeleteAccountScreen({ navigation }: Props): JSX.Element {
           <Text className="text-black dark:text-white text-3xl text-center font-bold">
             Delete Account
           </Text>
-          <Text className="text-black dark:text-text-grey text-md text-center pt-[5px]">
+          <Text className="text-black dark:text-text-grey text-lg text-center pt-[5px]">
             All identifiers and credentials you own will be invalidated and removed.
           </Text>
           <View className="w-full shadow-inner-md bg-card-dark-green flex items-center mt-[30px] py-[20px] rounded-[10px]">
@@ -45,7 +45,7 @@ function DeleteAccountScreen({ navigation }: Props): JSX.Element {
               disabled={text !== 'Delete my account'}
               onPress={() => setModalVisible(true)}
             >
-              <Text className="text-white text-lg">Delete Account</Text>
+              <Text className="text-white text-lg font-medium">Delete Account</Text>
             </TouchableOpacity>
           </View>
         </View>
