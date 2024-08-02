@@ -127,13 +127,14 @@ const ViewScreen: React.FC = () => {
                 <Text numberOfLines={1} className="text-black dark:text-white font-medium">
                   Expiry
                 </Text>
-                {Object.keys(card.claims).map((key) => (
+                {Object.keys(card.claims).map((key, index) => (
                   <TouchableOpacity
+                    key={index}
                     onPress={() => {
                       Alert.alert(normaliseKey(key));
                     }}
                   >
-                    <Text key={key} numberOfLines={1} className="text-black dark:text-white">
+                    <Text key={index} numberOfLines={1} className="text-black dark:text-white">
                       {normaliseKey(key)}
                     </Text>
                   </TouchableOpacity>
@@ -159,13 +160,14 @@ const ViewScreen: React.FC = () => {
                     {formatDate(card.expiryDate)}
                   </Text>
                 </TouchableOpacity>
-                {Object.values(card.claims).map((value) => (
+                {Object.values(card.claims).map((value, index) => (
                   <TouchableOpacity
+                    key={index}
                     onPress={() => {
                       Alert.alert(value);
                     }}
                   >
-                    <Text key={value} numberOfLines={1} className="text-white">
+                    <Text key={index} numberOfLines={1} className="text-white">
                       {value}
                     </Text>
                   </TouchableOpacity>

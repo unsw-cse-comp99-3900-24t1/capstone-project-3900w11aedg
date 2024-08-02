@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../config/types.ts';
 import pinCard from '../helper/pinning.ts';
-import Card from '../config/types.ts';
+import { Card } from '../config/types.ts';
 
 type Props = {
   card: Card;

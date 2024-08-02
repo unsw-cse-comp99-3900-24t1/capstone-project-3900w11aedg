@@ -2,7 +2,7 @@ import Keychain from 'react-native-keychain';
 import { Card } from '../config/types.ts';
 import normaliseCredential from './normalise.ts';
 
-export const formatDate = (dateString: string) => {
+export const formatDate = (dateString: string | Date) => {
   const date = new Date(dateString);
   const options = {
     year: 'numeric',

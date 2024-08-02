@@ -12,6 +12,7 @@ import ViewScreen from './screens/ViewScreen';
 import SettingsScreen from './screens/SettingsScreen.tsx';
 import HistoryScreen from './screens/HistoryScreen.tsx';
 import VerifiedScreen from './screens/VerifiedScreen';
+import DeleteAccountScreen from './screens/DeleteAccountScreen.tsx';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -37,6 +38,11 @@ function App(): JSX.Element {
             options={{ headerShown: false }}
           />
           <Stack.Screen name="History" component={HistoryScreen} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Delete"
+            component={DeleteAccountScreen}
+            options={{ headerShown: false }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
