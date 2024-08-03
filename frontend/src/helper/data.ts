@@ -2,7 +2,8 @@ import Keychain from 'react-native-keychain';
 import { Card } from '../config/types.ts';
 import normaliseCredential from './normalise.ts';
 
-export const formatDate = (dateString: string | Date) => {
+// Formats a date string to DDD MMM DD YYYY
+export const formatDate = (dateString: string | Date): string => {
   const date = new Date(dateString);
   const options = {
     year: 'numeric',
@@ -12,11 +13,13 @@ export const formatDate = (dateString: string | Date) => {
   return date.toLocaleDateString('en-US', options as never);
 };
 
-export const formatTime = (dateString: string | Date) => {
+// Formats a date string to time string dependent on locale and timezone e.g. HH:MM:SS
+export const formatTime = (dateString: string | Date): string => {
   const date = new Date(dateString);
   return date.toLocaleTimeString();
 };
 
+// Gets all verifiable credentials from secure storage as Card
 const fetchData = async (): Promise<Card[]> => {
   const keys = await Keychain.getAllGenericPasswordServices();
   const dataPromises = keys.map(async (key: string) => {
