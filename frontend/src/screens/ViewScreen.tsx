@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { useRoute, RouteProp, useNavigation } from '@react-navigation/native';
+import { RouteProp } from '@react-navigation/native';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import LinearGradient from 'react-native-linear-gradient';
@@ -21,13 +21,13 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import Keychain from 'react-native-keychain';
 import PinButton from '../components/PinButton.tsx';
 
-type ViewScreenRouteProp = RouteProp<RootStackParamList, 'View'>;
-type ViewScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'View'>;
+type Props = {
+  route: RouteProp<RootStackParamList, 'View'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'View'>;
+};
 
-const ViewScreen: React.FC = () => {
-  const route = useRoute<ViewScreenRouteProp>();
+const ViewScreen = ({ route, navigation }: Props): JSX.Element => {
   const { card } = route.params;
-  const navigation = useNavigation<ViewScreenNavigationProp>();
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleButtonPress = () => {

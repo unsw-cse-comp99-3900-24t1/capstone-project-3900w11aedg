@@ -7,7 +7,11 @@ type Props = {
   handleDelete: () => void;
 };
 
-const ClearHistoryOverlay = ({ modalVisible, setModalVisible, handleDelete }: Props) => {
+const ClearHistoryOverlay = ({
+  modalVisible,
+  setModalVisible,
+  handleDelete,
+}: Props): JSX.Element => {
   const handleClose = () => {
     setModalVisible(false);
   };

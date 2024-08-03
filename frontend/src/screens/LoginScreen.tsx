@@ -3,7 +3,7 @@ import Header from '../components/Header';
 import { View, Image } from 'react-native';
 import LoginButton from '../components/LoginButton';
 
-function LoginScreen(): JSX.Element {
+const LoginScreen = (): JSX.Element => {
   return (
     <View className="flex items-center bg-light-cream dark:bg-dark-green h-[100%]">
       <Header />
@@ -15,6 +15,6 @@ function LoginScreen(): JSX.Element {
       <LoginButton />
     </View>
   );
-}
+};
 
 export default LoginScreen;

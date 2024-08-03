@@ -12,7 +12,7 @@ export const formatDate = (dateString: string | Date) => {
   return date.toLocaleDateString('en-US', options as never);
 };
 
-export const formatTime = (dateString: string) => {
+export const formatTime = (dateString: string | Date) => {
   const date = new Date(dateString);
   return date.toLocaleTimeString();
 };

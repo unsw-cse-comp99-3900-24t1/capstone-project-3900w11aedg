@@ -17,7 +17,7 @@ const SettingsButton = ({
   secondImageSource,
   handlePress,
   additionalElements,
-}: Props) => {
+}: Props): JSX.Element => {
   return (
     <View>
       <TouchableOpacity onPress={handlePress}>

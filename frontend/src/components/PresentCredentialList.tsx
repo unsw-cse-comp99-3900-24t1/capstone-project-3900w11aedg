@@ -16,13 +16,13 @@ type Props = {
 
 type CredentialTuple = [Card, VerifiableCredential];
 
-function PresentCredentialList({
+const PresentCredentialList = ({
   claimsRequest,
   chosenCredentials,
   chooseCredential,
   addClaims,
   claimsObject,
-}: Props): JSX.Element {
+}: Props): JSX.Element => {
   const [credentials, setCredentials] = React.useState<CredentialTuple[]>([]);
 
   React.useEffect(() => {
@@ -93,6 +93,6 @@ function PresentCredentialList({
       ))}
     </View>
   );
-}
+};
 
 export default PresentCredentialList;

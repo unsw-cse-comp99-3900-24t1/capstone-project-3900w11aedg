@@ -11,7 +11,7 @@ import fetchData from '../helper/data.ts';
 import { useFocusEffect } from '@react-navigation/native';
 import sortFunction from '../helper/sorting.ts';
 
-function HomeScreen(): JSX.Element {
+const HomeScreen = (): JSX.Element => {
   const [cards, setCards] = useState<Card[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredCards, setFilteredCards] = useState<Card[]>([]);
@@ -86,6 +86,6 @@ function HomeScreen(): JSX.Element {
       <Footer />
     </View>
   );
-}
+};
 
 export default HomeScreen;

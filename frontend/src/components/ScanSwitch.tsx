@@ -1,12 +1,12 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 
-interface Props {
+type Props = {
   method: string;
   setMethod: React.Dispatch<React.SetStateAction<'Scan' | 'Upload'>>;
-}
+};
 
-function ScanSwitch({ method, setMethod }: Props): JSX.Element {
+const ScanSwitch = ({ method, setMethod }: Props): JSX.Element => {
   return (
     <View className="w-[80%] flex flex-row justify-center self-center">
       <TouchableOpacity
@@ -25,7 +25,7 @@ function ScanSwitch({ method, setMethod }: Props): JSX.Element {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 const switchText = 'text-xl text-text-black dark:text-blurred-grey';
 const switchButton = 'border-b-[1px] border-text-black dark:border-blurred-grey p-[5px]';

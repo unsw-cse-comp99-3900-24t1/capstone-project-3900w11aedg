@@ -11,7 +11,12 @@ type Props = {
   setSortText: (text: string) => void;
 };
 
-const SortOverlay = ({ setCards, modalVisible, setModalVisible, setSortText }: Props) => {
+const SortOverlay = ({
+  setCards,
+  modalVisible,
+  setModalVisible,
+  setSortText,
+}: Props): JSX.Element => {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [reverse, setReverse] = useState(false);
 
