@@ -27,7 +27,7 @@ const IdentityCard: React.FC<IProps> = ({ card }) => {
   const formattedExpiryDate = formatDate(card.expiryDate);
   const formattedIssueDate = formatDate(card.issuanceDate);
   const darkGradientColour = isExpired ? ['#606665', '#C1CCCA'] : ['#1F2A29', '#527E78'];
-  const lightGradientColour = isExpired ? ['#c2d6ba', '#8da883'] : ['#8da883', '#c2d6ba'];
+  const lightGradientColour = isExpired ? ['#606665', '#C1CCCA'] : ['#8da883', '#c2d6ba'];
 
   const [currColorScheme, setColorScheme] = useState(Appearance.getColorScheme());
   const getGradientColors = () => {

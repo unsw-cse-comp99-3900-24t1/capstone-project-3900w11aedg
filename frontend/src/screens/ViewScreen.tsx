@@ -47,7 +47,7 @@ const ViewScreen: React.FC = () => {
   const isExpired = new Date(card.expiryDate) < new Date(new Date().getTime() + offset);
   const formattedExpiryDate = new Date(card.expiryDate).toDateString().toString();
   const darkGradientColour = isExpired ? ['#606665', '#C1CCCA'] : ['#1F2A29', '#527E78'];
-  const lightGradientColour = isExpired ? ['#c2d6ba', '#8da883'] : ['#8da883', '#c2d6ba'];
+  const lightGradientColour = isExpired ? ['#606665', '#C1CCCA'] : ['#8da883', '#c2d6ba'];
 
   const [currColorScheme, setColorScheme] = useState(Appearance.getColorScheme());
   const getGradientColors = () => {
@@ -65,7 +65,7 @@ const ViewScreen: React.FC = () => {
   const usedGradient = getGradientColors();
 
   return (
-    <View className="w-[100%] flex-1 bg-white dark:bg-dark-green">
+    <View className="w-[100%] flex-1 bg-light-cream dark:bg-dark-green">
       <Header />
       <ScrollView className="mb-20">
         <View className="px-12 py-5">
@@ -104,7 +104,7 @@ const ViewScreen: React.FC = () => {
             </View>
           </LinearGradient>
 
-          <View className="mx-auto bg-card-view-grey rounded-2xl space-y-5 w-[100%] p-5">
+          <View className="mx-auto bg-light-green dark:bg-card-view-grey rounded-2xl space-y-5 w-[100%] p-5">
             <View className="p-3 bg-view-light dark:bg-popup-grey rounded-lg justify-around">
               <PinButton
                 card={card}
@@ -116,7 +116,7 @@ const ViewScreen: React.FC = () => {
                 }
               />
             </View>
-            <View className="w-[100%] bg-popup-grey flex-row p-3 space-x-5 rounded-2xl">
+            <View className="w-[100%] bg-view-light dark:bg-popup-grey flex-row p-3 space-x-5 rounded-2xl">
               <View>
                 <Text numberOfLines={1} className=" text-text-black dark:text-white font-medium">
                   Issued by

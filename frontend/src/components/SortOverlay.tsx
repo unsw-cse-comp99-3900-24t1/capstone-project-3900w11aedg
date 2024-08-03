@@ -66,7 +66,7 @@ const SortOverlay = ({ setCards, modalVisible, setModalVisible, setSortText }: P
         <View className="absolute bottom-0 w-full">
           <View className="bg-view-light dark:bg-navbar-grey flex flex-col justify-between pt-4 px-4 rounded-t-2xl">
             <Text className="text-lg text-white font-bold mb-3">Sort by</Text>
-            <View // eslint-disable-next-line react-native/no-inline-styles
+            <View
               style={{ borderBottomColor: 'white', borderBottomWidth: StyleSheet.hairlineWidth }}
               className="w-full mt-1 mb-2 mx-0 px-0"
             />
@@ -142,7 +142,7 @@ const SortOverlay = ({ setCards, modalVisible, setModalVisible, setSortText }: P
                 setReverse(false);
               }}
             />
-            <View // eslint-disable-next-line react-native/no-inline-styles
+            <View
               style={{
                 borderBottomColor: 'white',
                 borderBottomWidth: StyleSheet.hairlineWidth,

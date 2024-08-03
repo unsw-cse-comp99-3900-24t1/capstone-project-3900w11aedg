@@ -31,7 +31,7 @@ function DeleteAccountScreen({ navigation }: Props): JSX.Element {
           <Text className="text-black dark:text-text-grey text-lg text-center pt-[5px]">
             All identifiers and credentials you own will be invalidated and removed.
           </Text>
-          <View className="w-full shadow-inner-md bg-card-dark-green flex items-center mt-[30px] py-[20px] rounded-[10px]">
+          <View className="w-full shadow-inner-md bg-view-light dark:bg-card-dark-green flex items-center mt-[30px] py-[20px] rounded-[10px]">
             <Text className="text-white text-lg">Type "Delete my account" to confirm.</Text>
             <TextInput
               className="bg-white w-[90%] rounded-[10px] text-black my-[20px] text-center"

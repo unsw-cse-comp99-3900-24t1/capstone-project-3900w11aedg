@@ -24,7 +24,7 @@ function VerifiedScreen({ route, navigation }: Props): JSX.Element {
   };
 
   return (
-    <View className="flex flex-col h-full w-full bg-white dark:bg-dark-green">
+    <View className="flex flex-col h-full w-full bg-light-cream dark:bg-dark-green">
       <Header />
       <View className="px-[5%]">
         <TouchableOpacity
