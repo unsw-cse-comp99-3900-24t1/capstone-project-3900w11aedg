@@ -9,7 +9,7 @@ type Props = {
   isExpired: boolean;
 };
 
-const PinButton = ({ card, additionalElements, isExpired }: Props) => {
+const PinButton = ({ card, additionalElements, isExpired }: Props): JSX.Element => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (

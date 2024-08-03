@@ -7,7 +7,7 @@ import { Buffer } from 'buffer';
 import React from 'react';
 import LoadingModal from './LoadingModal';
 
-interface ScanQRProps {
+interface Props {
   onRead: (route: string) => Promise<void>;
 }
 
@@ -18,7 +18,7 @@ type ImageAsset = {
   width: number;
 } | null;
 
-function UploadQR({ onRead }: ScanQRProps): JSX.Element {
+const UploadQR = ({ onRead }: Props): JSX.Element => {
   const [image, setImage] = React.useState<ImageAsset>(null);
   const [loading, setLoading] = React.useState(false);
 
@@ -132,6 +132,6 @@ function UploadQR({ onRead }: ScanQRProps): JSX.Element {
       {loading && <LoadingModal />}
     </View>
   );
-}
+};
 
 export default UploadQR;

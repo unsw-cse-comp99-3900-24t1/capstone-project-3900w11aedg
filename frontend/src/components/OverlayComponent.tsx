@@ -11,7 +11,7 @@ type Props = {
   rightOption: string;
 };
 
-export const OverlayComponent = ({
+const OverlayComponent = ({
   modalVisible,
   handleClose,
   title,
@@ -19,7 +19,7 @@ export const OverlayComponent = ({
   leftOption,
   handleDelete,
   rightOption,
-}: Props) => {
+}: Props): JSX.Element => {
   return (
     <Modal transparent={true} visible={modalVisible} onRequestClose={handleClose}>
       <Pressable

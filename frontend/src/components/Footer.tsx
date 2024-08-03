@@ -7,7 +7,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 type Props = NativeStackNavigationProp<RootStackParamList>;
 
-function Footer(): JSX.Element {
+const Footer = (): JSX.Element => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<Props>();
   const route = useRoute();
@@ -54,6 +54,6 @@ function Footer(): JSX.Element {
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 export default Footer;

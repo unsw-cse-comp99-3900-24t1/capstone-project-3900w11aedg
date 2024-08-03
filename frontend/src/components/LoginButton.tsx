@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 
 type Props = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
-function LoginButton(): JSX.Element {
+const LoginButton = (): JSX.Element => {
   const navigation = useNavigation<Props>();
   const [backgroundTimer, setBackgroundTimer] = React.useState<NodeJS.Timeout | null>(null);
 
@@ -58,6 +58,6 @@ function LoginButton(): JSX.Element {
   });
 
   return <Button title="Log in" color="grey" onPress={handleBiometricAuth} />;
-}
+};
 
 export default LoginButton;

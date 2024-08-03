@@ -3,11 +3,11 @@ import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { SuccessfulPresentation } from '../config/types';
 import HistoryDropdown from './HistoryDropdown';
 
-interface PresentationHistoryProps {
+type Props = {
   presentation: SuccessfulPresentation;
-}
+};
 
-const PresentationHistory: React.FC<PresentationHistoryProps> = ({ presentation }) => {
+const PresentationHistory = ({ presentation }: Props): JSX.Element => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const source = dropdownVisible
     ? require('../assets/upwards_arrow.png')

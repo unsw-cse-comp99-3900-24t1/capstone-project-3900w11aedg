@@ -15,14 +15,14 @@ type Props = {
   verifiableCredential: VerifiableCredential;
 };
 
-function PresentCredential({
+const PresentCredential = ({
   credential,
   addClaims,
   claimsObject,
   chosenCredentials,
   chooseCredential,
   verifiableCredential,
-}: Props): JSX.Element {
+}: Props): JSX.Element => {
   const [isSelected, setIsSelected] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const icon = open
@@ -95,6 +95,6 @@ function PresentCredential({
       </View>
     </View>
   );
-}
+};
 
 export default PresentCredential;

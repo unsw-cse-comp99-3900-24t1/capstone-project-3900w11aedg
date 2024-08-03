@@ -10,7 +10,7 @@ type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Delete'>;
 };
 
-function DeleteAccountScreen({ navigation }: Props): JSX.Element {
+const DeleteAccountScreen = ({ navigation }: Props): JSX.Element => {
   const [text, setText] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
 
@@ -54,6 +54,6 @@ function DeleteAccountScreen({ navigation }: Props): JSX.Element {
       <Footer />
     </View>
   );
-}
+};
 
 export default DeleteAccountScreen;

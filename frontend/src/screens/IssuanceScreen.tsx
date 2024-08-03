@@ -12,7 +12,7 @@ type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Issue'>;
 };
 
-export default function IssuanceScreen({ route, navigation }: Props): JSX.Element {
+const IssuanceScreen = ({ route, navigation }: Props): JSX.Element => {
   const { issuerMetadata } = route.params ?? {};
 
   return (
@@ -37,4 +37,6 @@ export default function IssuanceScreen({ route, navigation }: Props): JSX.Elemen
       <Footer />
     </View>
   );
-}
+};
+
+export default IssuanceScreen;

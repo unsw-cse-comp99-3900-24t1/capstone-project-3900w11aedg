@@ -11,7 +11,7 @@ import ClearHistoryOverlay from '../components/ClearHistoryOverlay';
 
 type HistoryScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'History'>;
 
-const HistoryScreen: React.FC = () => {
+const HistoryScreen = (): JSX.Element => {
   const navigation = useNavigation<HistoryScreenNavigationProp>();
   const [successfulPresentations, setSuccessfulPresentations] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);

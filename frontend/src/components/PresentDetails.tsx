@@ -13,7 +13,7 @@ type Props = {
 
 type NavProps = NativeStackNavigationProp<RootStackParamList>;
 
-function PresentDetails({ claimsRequest }: Props): JSX.Element {
+const PresentDetails = ({ claimsRequest }: Props): JSX.Element => {
   const [chosenClaims, setChosenClaims] = React.useState<{ [key: string]: Set<string> }>({});
   const [chosenCredentials, setChosenCredentials] = React.useState<VerifiableCredential[]>([]);
   const navigation = useNavigation<NavProps>();
@@ -81,6 +81,6 @@ function PresentDetails({ claimsRequest }: Props): JSX.Element {
       </View>
     </View>
   );
-}
+};
 
 export default PresentDetails;

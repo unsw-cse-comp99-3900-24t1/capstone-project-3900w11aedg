@@ -12,7 +12,7 @@ type Props = {
   setModalVisible: (visible: boolean) => void;
 };
 
-const PinOverlay = ({ card, modalVisible, setModalVisible }: Props) => {
+const PinOverlay = ({ card, modalVisible, setModalVisible }: Props): JSX.Element => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const handleClose = () => {
     setModalVisible(false);
