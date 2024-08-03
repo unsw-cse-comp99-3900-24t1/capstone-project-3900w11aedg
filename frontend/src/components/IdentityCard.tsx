@@ -9,13 +9,14 @@ import { formatDate } from '../helper/data.ts';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../config/types';
 import PinButton from './PinButton.tsx';
-interface IProps {
+
+type Props = {
   card: Card;
-}
+};
 
 type ViewScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'View'>;
 
-const IdentityCard: React.FC<IProps> = ({ card }) => {
+const IdentityCard = ({ card }: Props): JSX.Element => {
   const navigation = useNavigation<ViewScreenNavigationProp>();
 
   const handleCardPress = () => {

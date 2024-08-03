@@ -16,7 +16,7 @@ import DeleteAccountScreen from './screens/DeleteAccountScreen.tsx';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-function App(): JSX.Element {
+const App = (): JSX.Element => {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
@@ -47,6 +47,6 @@ function App(): JSX.Element {
       </NavigationContainer>
     </SafeAreaProvider>
   );
-}
+};
 
 export default App;

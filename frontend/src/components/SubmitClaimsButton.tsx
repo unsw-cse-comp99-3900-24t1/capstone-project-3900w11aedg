@@ -48,7 +48,7 @@ const mapClaimValues = (
   }
   let claimsToMap = Object.entries(credentialSubject);
   if (identifier in claims) {
-    claimsToMap = Object.entries(credentialSubject).filter(([key]) => claims[identifier].has(key));
+    claimsToMap = Object.entries(credentialSubject).filter(([key]) => claims[identifier]!.has(key));
   }
   return claimsToMap.map(([key, value]) => [
     key,
@@ -56,8 +56,9 @@ const mapClaimValues = (
   ]);
 };
 
-function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.Element {
+const SubmitClaimsButton = ({ claimsRequest, claims, credentials }: Props): JSX.Element => {
   const navigation = useNavigation<NavProps>();
+
   const handleSubmission = async () => {
     try {
       const body: RequestBody = {
@@ -89,6 +90,7 @@ function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.
       navigation.navigate('Verified', { success: false });
     }
   };
+
   return (
     <TouchableOpacity
       className="bg-theme-gold w-[35%] p-[5px] rounded-[5px]"
@@ -97,6 +99,6 @@ function SubmitClaimsButton({ claimsRequest, claims, credentials }: Props): JSX.
       <Text className="text-black text-lg font-medium text-center">Share</Text>
     </TouchableOpacity>
   );
-}
+};
 
 export default SubmitClaimsButton;

@@ -13,12 +13,12 @@ type Props = {
   onSelect: () => void;
 };
 
-function IssueCredential({
+const IssueCredential = ({
   credentialOffer,
   backupName,
   isSelected,
   onSelect,
-}: Props): JSX.Element {
+}: Props): JSX.Element => {
   const [disabled, setDisabled] = React.useState(false);
   const [icon, setIcon] = React.useState(addIcon);
 
@@ -59,6 +59,6 @@ function IssueCredential({
       </View>
     </TouchableHighlight>
   );
-}
+};
 
 export default IssueCredential;

@@ -10,7 +10,7 @@ type Props = {
   issuerMetadata: IssuerMetadata;
 };
 
-function IssueCredentialList({ issuerMetadata }: Props): JSX.Element {
+const IssueCredentialList = ({ issuerMetadata }: Props): JSX.Element => {
   const [selectedCredential, setSelectedCredential] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
 
@@ -77,6 +77,6 @@ function IssueCredentialList({ issuerMetadata }: Props): JSX.Element {
       <AddedCredPopup modalVisible={modalVisible} setModalVisible={setModalVisible} />
     </View>
   );
-}
+};
 
 export default IssueCredentialList;
