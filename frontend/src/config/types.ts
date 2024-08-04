@@ -12,7 +12,7 @@ export type RootStackParamList = {
 };
 
 export type IssuerMetadata = {
-  authorization_endpoint: string; // Move into authorization servers?
+  authorization_endpoint: string;
   credential_issuer: string;
   authorization_servers?: string[];
   credential_endpoint: string;
@@ -49,7 +49,6 @@ export type CredentialConfig = {
       proof_signing_alg_values_supported: string[];
     };
   };
-  // An array to account for multiple languages
   display?: {
     name: string;
     locale?: string;
@@ -121,7 +120,6 @@ export type Card = {
   pinned: number | null;
 };
 
-// ClaimsRequest
 export type ClaimsRequest = {
   query: ClaimsQuery;
 };

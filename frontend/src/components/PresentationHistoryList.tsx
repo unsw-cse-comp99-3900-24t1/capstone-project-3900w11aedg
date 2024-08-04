@@ -3,11 +3,11 @@ import { ScrollView, View } from 'react-native';
 import { SuccessfulPresentation } from '../config/types';
 import PresentationHistory from './PresentationHistory';
 
-type HistoryListProps = {
+type Props = {
   presentations: SuccessfulPresentation[];
 };
 
-const PresentationHistoryList = ({ presentations }: HistoryListProps) => {
+const PresentationHistoryList = ({ presentations }: Props): JSX.Element => {
   return (
     <View className="flex flex-col h-[60%]">
       <ScrollView>

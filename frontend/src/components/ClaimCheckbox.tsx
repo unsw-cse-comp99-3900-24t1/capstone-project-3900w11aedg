@@ -9,13 +9,13 @@ type Props = {
   handleSelectionByClaim: (addingClaims: boolean) => void;
 };
 
-function ClaimCheckbox({
+const ClaimCheckbox = ({
   claim,
   addClaims,
   id,
   claimsObject,
   handleSelectionByClaim,
-}: Props): JSX.Element {
+}: Props): JSX.Element => {
   const [selected, setSelected] = React.useState(claimsObject[id] && claimsObject[id].has(claim));
 
   const checkbox = selected
@@ -32,11 +32,11 @@ function ClaimCheckbox({
     <TouchableOpacity
       onPress={handleCheck}
       className="w-[20%] flex flex-row justify-center"
-      testID="test"
+      testID="claim-checkbox"
     >
       <Image source={checkbox} resizeMode="contain" className="w-[45%]" />
     </TouchableOpacity>
   );
-}
+};
 
 export default ClaimCheckbox;

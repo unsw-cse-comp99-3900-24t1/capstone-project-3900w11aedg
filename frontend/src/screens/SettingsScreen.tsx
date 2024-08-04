@@ -5,13 +5,12 @@ import Footer from '../components/Footer.tsx';
 import SettingsButton from '../components/SettingsButton.tsx';
 import { RootStackParamList } from '../config/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useNavigation } from '@react-navigation/native';
 
-type SettingsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Settings'>;
+type Props = {
+  navigation: NativeStackNavigationProp<RootStackParamList, 'Scan'>;
+};
 
-const SettingsScreen = (): JSX.Element => {
-  const navigation = useNavigation<SettingsScreenNavigationProp>();
-
+const SettingsScreen = ({ navigation }: Props): JSX.Element => {
   return (
     <View className="flex flex-col h-[100%] w-[100%] bg-light-cream dark:bg-dark-green">
       <Header />

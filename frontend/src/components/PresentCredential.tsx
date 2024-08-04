@@ -15,14 +15,14 @@ type Props = {
   verifiableCredential: VerifiableCredential;
 };
 
-function PresentCredential({
+const PresentCredential = ({
   credential,
   addClaims,
   claimsObject,
   chosenCredentials,
   chooseCredential,
   verifiableCredential,
-}: Props): JSX.Element {
+}: Props): JSX.Element => {
   const [isSelected, setIsSelected] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const icon = open
@@ -45,7 +45,7 @@ function PresentCredential({
   };
 
   return (
-    <View className="flex items-center">
+    <View className="flex items-center" testID="present-credential-card">
       <LinearGradient
         colors={gradientColour}
         className={`rounded-xl mt-[10px] w-full ${
@@ -63,6 +63,7 @@ function PresentCredential({
             onPress={() => setOpen(!open)}
             disabled={isExpired}
             className="ml-auto mt-auto items-end"
+            testID="present-credentials-dropdown-icon"
           >
             <Image
               source={isExpired ? require('../assets/disabled_dropdown.png') : icon}
@@ -95,6 +96,6 @@ function PresentCredential({
       </View>
     </View>
   );
-}
+};
 
 export default PresentCredential;
