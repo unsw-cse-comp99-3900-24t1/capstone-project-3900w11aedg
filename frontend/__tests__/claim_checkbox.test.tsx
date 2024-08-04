@@ -20,7 +20,7 @@ describe('ClaimCheckbox', () => {
 
   it('renders correctly with selected state', () => {
     const { getByTestId } = render(<ClaimCheckbox {...defaultProps} />);
-    const checkbox = getByTestId('test');
+    const checkbox = getByTestId('claim-checkbox');
     expect(checkbox).toBeTruthy();
     expect(
       checkbox.findByProps({ source: require('../src/assets/selected_checkbox.png') })
@@ -33,7 +33,7 @@ describe('ClaimCheckbox', () => {
       claimsObject: { testId: new Set<string>() },
     };
     const { getByTestId } = render(<ClaimCheckbox {...props} />);
-    const checkbox = getByTestId('test');
+    const checkbox = getByTestId('claim-checkbox');
     expect(checkbox).toBeTruthy();
     expect(
       checkbox.findByProps({ source: require('../src/assets/empty_checkbox.png') })
@@ -42,7 +42,7 @@ describe('ClaimCheckbox', () => {
 
   it('handles checkbox press correctly', () => {
     const { getByTestId } = render(<ClaimCheckbox {...defaultProps} />);
-    const checkbox = getByTestId('test');
+    const checkbox = getByTestId('claim-checkbox');
 
     fireEvent.press(checkbox);
 
@@ -59,7 +59,7 @@ describe('ClaimCheckbox', () => {
       claimsObject: { testId: new Set<string>() },
     };
     const { getByTestId } = render(<ClaimCheckbox {...props} />);
-    const checkbox = getByTestId('test');
+    const checkbox = getByTestId('claim-checkbox');
 
     fireEvent.press(checkbox);
 

@@ -38,6 +38,7 @@
     "@digitalbazaar/data-integrity": "^2.1.0",
     "@digitalbazaar/did-method-key": "^5.2.0",
     "@digitalbazaar/vc": "^6.3.0",
+    "@nestjs/core": "^10.3.10",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
