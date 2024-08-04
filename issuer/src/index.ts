@@ -36,10 +36,6 @@ app.use(morgan(format));
 dotenv.config();
 app.use(cors());
 
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Hello, world!');
-});
-
 // Returns the Issuer's metadata
 app.get('/.well-known/openid-credential-issuer', async (_req: Request, res: Response) => {
   res.json({ credential_offer: issuerMetadata });

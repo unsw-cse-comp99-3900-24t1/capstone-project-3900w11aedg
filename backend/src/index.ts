@@ -43,10 +43,6 @@ const internalUse = {
 
 app.use(cors());
 
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Hello, world!');
-});
-
 app.post('/generate/did', cors(internalUse), async (_req: Request, res: Response) => {
   try {
     const { keyPair, did, didDocument } = await generateKeyPair();
