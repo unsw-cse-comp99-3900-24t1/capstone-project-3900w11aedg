@@ -45,7 +45,7 @@ const PresentCredential = ({
   };
 
   return (
-    <View className="flex items-center">
+    <View className="flex items-center" testID="present-credential-card">
       <LinearGradient
         colors={gradientColour}
         className={`rounded-xl mt-[10px] w-full ${
@@ -63,6 +63,7 @@ const PresentCredential = ({
             onPress={() => setOpen(!open)}
             disabled={isExpired}
             className="ml-auto mt-auto items-end"
+            testID="present-credentials-dropdown-icon"
           >
             <Image
               source={isExpired ? require('../assets/disabled_dropdown.png') : icon}

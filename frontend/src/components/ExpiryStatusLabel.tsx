@@ -15,6 +15,7 @@ const ExpiryStatusLabel = ({ isExpired }: Props): React.ReactElement => {
       className={`px-2 py-0.5 rounded-xl flex-row items-center w-auto ${
         isExpired ? 'bg-invalid-red' : 'bg-valid-green'
       }`}
+      testID="expiry-status-label"
     >
       <Image source={source} resizeMode="contain" className="h-[13px] w-[13px] mr-1" />
       <Text className="text-white text-base">{isExpired ? 'Expired' : 'Valid'}</Text>

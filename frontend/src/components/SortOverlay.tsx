@@ -10,6 +10,7 @@ type Props = {
   modalVisible: boolean;
   setModalVisible: (visible: boolean) => void;
   setSortText: (text: string) => void;
+  testID?: string;
 };
 
 const SortOverlay = ({
@@ -17,7 +18,9 @@ const SortOverlay = ({
   modalVisible,
   setModalVisible,
   setSortText,
+  testID,
 }: Props): React.ReactElement => {
+  testID,
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [reverse, setReverse] = useState(false);
 
@@ -64,7 +67,7 @@ const SortOverlay = ({
   };
 
   return (
-    <Modal transparent={true} visible={modalVisible} onRequestClose={handleClose}>
+    <Modal transparent={true} visible={modalVisible} onRequestClose={handleClose} testID={testID}>
       <Pressable
         className="flex-1 justify-center items-center bg-dark-green opacity-80"
         onPress={handleClose}

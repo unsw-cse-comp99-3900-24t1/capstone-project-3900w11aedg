@@ -14,7 +14,7 @@ const PresentationHistory = ({ presentation }: Props): React.ReactElement => {
     : require('../assets/downwards_arrow.png');
 
   return (
-    <View className="relative justify-end">
+    <View className="relative justify-end" testID="presentation-history-entry">
       <View className="p-1">
         <TouchableOpacity onPress={() => setDropdownVisible(!dropdownVisible)}>
           <View className="flex-row justify-between items-center mb-1">
@@ -27,6 +27,7 @@ const PresentationHistory = ({ presentation }: Props): React.ReactElement => {
               resizeMode="contain"
               className="h-[13px] w-[13px]"
               tintColor="grey"
+              testID="presentation-history-dropdown-arrow"
             />
           </View>
         </TouchableOpacity>
