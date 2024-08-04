@@ -97,35 +97,4 @@ describe('UploadQR Component', () => {
 
     await waitFor(() => expect(mockOnRead).toHaveBeenCalledWith(fakeQRCodeData));
   });
-
-  // it('shows an alert if the image does not contain a QR code', async () => {
-  //   const fakeImage = {
-  //     base64: 'fakeBase64',
-  //     height: 400,
-  //     type: 'image/jpeg',
-  //     width: 300,
-  //   };
-
-  //   (launchImageLibrary as jest.Mock).mockImplementationOnce(() => ({
-  //     assets: [fakeImage],
-  //   }));
-
-  //   (jpeg.decode as jest.Mock).mockImplementationOnce(() => ({
-  //     data: new Uint8Array(400 * 300 * 4),
-  //   }));
-
-  //   (Buffer.from as jest.Mock).mockImplementationOnce(() => new Uint8Array());
-  //   (jsQR as jest.Mock).mockImplementationOnce(() => null);
-
-  //   const { getByText, getByRole } = render(<UploadQR onRead={mockOnRead} />);
-  //   const browseButton = getByText('Browse');
-
-  //   fireEvent.press(browseButton);
-  //   const uploadButton = await waitFor(() => getByText('Upload'));
-  //   fireEvent.press(uploadButton);
-
-  //   await waitFor(() =>
-  //     expect(getByRole('alert')).toThrow('Image does not have a visible QR code.')
-  //   );
-  // });
 });

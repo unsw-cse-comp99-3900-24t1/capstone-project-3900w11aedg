@@ -29,10 +29,6 @@ app.use(morgan(format));
 
 app.use(cors());
 
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Hello, world!');
-});
-
 app.get('/request-claims/:filename', async (req, res) => {
   const { filename } = req.params;
   try {

@@ -1,4 +1,4 @@
-import { View, TouchableHighlight, Text, Image } from 'react-native';
+import { View, TouchableHighlight, Text, Image, Alert } from 'react-native';
 import React from 'react';
 import * as Keychain from 'react-native-keychain';
 import { CredentialConfig } from '../config/types';
@@ -18,7 +18,7 @@ const IssueCredential = ({
   backupName,
   isSelected,
   onSelect,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [disabled, setDisabled] = React.useState(false);
   const [icon, setIcon] = React.useState(addIcon);
 
@@ -34,7 +34,7 @@ const IssueCredential = ({
     try {
       checkCredentialAdded();
     } catch (error) {
-      console.log(error);
+      Alert.alert('Error', 'Failed to check if credential is added');
     }
   });
 

@@ -8,7 +8,7 @@ type Props = {
   onSelect: (value: string) => void;
 };
 
-const RadioButton = ({ label, value, selected, onSelect }: Props): JSX.Element => {
+const RadioButton = ({ label, value, selected, onSelect }: Props): React.ReactElement => {
   return (
     <TouchableOpacity className="flex-row items-center mb-2" onPress={() => onSelect(value)}>
       {selected ? (

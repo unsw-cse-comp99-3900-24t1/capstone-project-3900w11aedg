@@ -12,7 +12,7 @@ type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Issue'>;
 };
 
-const IssuanceScreen = ({ route, navigation }: Props): JSX.Element => {
+const IssuanceScreen = ({ route, navigation }: Props): React.ReactElement => {
   const { issuerMetadata } = route.params ?? {};
 
   return (

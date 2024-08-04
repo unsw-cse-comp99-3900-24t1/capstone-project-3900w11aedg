@@ -7,7 +7,7 @@ type Props = {
   presentation: SuccessfulPresentation;
 };
 
-const PresentationHistory = ({ presentation }: Props): JSX.Element => {
+const PresentationHistory = ({ presentation }: Props): React.ReactElement => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const source = dropdownVisible
     ? require('../assets/upwards_arrow.png')

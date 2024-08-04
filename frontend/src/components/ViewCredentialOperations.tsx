@@ -11,7 +11,11 @@ type Props = {
   setModalVisible: (visible: boolean) => void;
 };
 
-const ViewCredentialOperations = ({ card, isExpired, setModalVisible }: Props): JSX.Element => {
+const ViewCredentialOperations = ({
+  card,
+  isExpired,
+  setModalVisible,
+}: Props): React.ReactElement => {
   return (
     <View className="mx-auto bg-card-view-grey rounded-2xl space-y-5 w-[100%] p-5 mt-5">
       <View className="p-3 bg-view-light dark:bg-popup-grey rounded-lg justify-around">

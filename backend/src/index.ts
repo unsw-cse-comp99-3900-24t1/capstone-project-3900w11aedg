@@ -43,10 +43,6 @@ const internalUse = {
 
 app.use(cors());
 
-app.get('/', (_req: Request, res: Response) => {
-  res.send('Hello, world!');
-});
-
 app.post('/generate/did', cors(internalUse), async (_req: Request, res: Response) => {
   try {
     const { keyPair, did, didDocument } = await generateKeyPair();
@@ -99,7 +95,6 @@ app.post('/presentation/create', cors(internalUse), async (req: Request, res: Re
       res.status(500).send('Error sending presentation to service provider');
     }
   } catch (err) {
-    console.log(err);
     res.status(500).send('Error deriving and creating presentation: ' + err);
   }
 });

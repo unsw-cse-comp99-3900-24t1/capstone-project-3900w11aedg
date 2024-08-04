@@ -10,7 +10,7 @@ type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Scan'>;
 };
 
-const SettingsScreen = ({ navigation }: Props): JSX.Element => {
+const SettingsScreen = ({ navigation }: Props): React.ReactElement => {
   return (
     <View className="flex flex-col h-[100%] w-[100%] bg-light-cream dark:bg-dark-green">
       <Header />

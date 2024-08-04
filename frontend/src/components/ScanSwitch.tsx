@@ -6,7 +6,7 @@ type Props = {
   setMethod: React.Dispatch<React.SetStateAction<'Scan' | 'Upload'>>;
 };
 
-const ScanSwitch = ({ method, setMethod }: Props): JSX.Element => {
+const ScanSwitch = ({ method, setMethod }: Props): React.ReactElement => {
   return (
     <View className="w-[80%] flex flex-row justify-center self-center">
       <TouchableOpacity

@@ -9,7 +9,7 @@ type Props = {
   isExpired: boolean;
 };
 
-const ViewCredentialDetails = ({ card, isExpired }: Props): JSX.Element => {
+const ViewCredentialDetails = ({ card, isExpired }: Props): React.ReactElement => {
   // Format gradient background based on expiry date of credential
   const formattedExpiryDate = new Date(card.expiryDate).toDateString().toString();
   const darkGradientColour = isExpired ? ['#606665', '#C1CCCA'] : ['#1F2A29', '#527E78'];

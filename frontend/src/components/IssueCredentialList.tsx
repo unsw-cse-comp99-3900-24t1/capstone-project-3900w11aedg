@@ -10,7 +10,7 @@ type Props = {
   issuerMetadata: IssuerMetadata;
 };
 
-const IssueCredentialList = ({ issuerMetadata }: Props): JSX.Element => {
+const IssueCredentialList = ({ issuerMetadata }: Props): React.ReactElement => {
   const [selectedCredential, setSelectedCredential] = React.useState('');
   const [modalVisible, setModalVisible] = React.useState(false);
 
@@ -34,7 +34,6 @@ const IssueCredentialList = ({ issuerMetadata }: Props): JSX.Element => {
       setModalVisible(true);
     } catch (error) {
       Alert.alert('Sorry!', "We're having trouble processing this right now.");
-      console.log(error);
     }
   };
 

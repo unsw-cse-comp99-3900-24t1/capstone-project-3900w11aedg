@@ -13,7 +13,7 @@ type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Scan'>;
 };
 
-const ScanScreen = ({ navigation }: Props): JSX.Element => {
+const ScanScreen = ({ navigation }: Props): React.ReactElement => {
   const [method, setMethod] = React.useState<'Scan' | 'Upload'>('Scan');
   const onRead = async (route: string) => {
     try {
@@ -41,7 +41,7 @@ const ScanScreen = ({ navigation }: Props): JSX.Element => {
         throw new Error('Invalid QR code');
       }
     } catch (error) {
-      console.log(error);
+      Alert.alert('Error', 'Unable to scan QR code.');
     }
   };
 

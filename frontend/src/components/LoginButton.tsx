@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, AppState } from 'react-native';
+import { Button, AppState, Alert } from 'react-native';
 import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../config/types';
@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 
 type Props = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
-const LoginButton = (): JSX.Element => {
+const LoginButton = (): React.ReactElement => {
   const navigation = useNavigation<Props>();
   const [backgroundTimer, setBackgroundTimer] = React.useState<NodeJS.Timeout | null>(null);
 
@@ -24,7 +24,7 @@ const LoginButton = (): JSX.Element => {
           navigation.navigate('Home');
         }
       } catch (error) {
-        console.log(error);
+        Alert.alert('Error', 'Biometric authentication failed');
       }
     } else {
       // If user has no security feature set
@@ -35,7 +35,7 @@ const LoginButton = (): JSX.Element => {
   React.useEffect(() => {
     const handleAppState = async (nextAppState: string) => {
       if (nextAppState === 'background') {
-        // Set a 2 minute timer before logging user out of app
+        // Set a 2-minute timer before logging user out of app
         const timer = setTimeout(() => {
           navigation.navigate('Login');
           handleBiometricAuth();

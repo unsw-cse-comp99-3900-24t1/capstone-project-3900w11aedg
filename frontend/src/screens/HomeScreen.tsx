@@ -24,7 +24,7 @@ const fetchDID = async () => {
   }
 };
 
-const HomeScreen = (): JSX.Element => {
+const HomeScreen = (): React.ReactElement => {
   const [cards, setCards] = useState<Card[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredCards, setFilteredCards] = useState<Card[]>([]);

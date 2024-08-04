@@ -18,7 +18,7 @@ type ImageAsset = {
   width: number;
 } | null;
 
-const UploadQR = ({ onRead }: Props): JSX.Element => {
+const UploadQR = ({ onRead }: Props): React.ReactElement => {
   const [image, setImage] = React.useState<ImageAsset>(null);
   const [loading, setLoading] = React.useState(false);
 
@@ -82,10 +82,7 @@ const UploadQR = ({ onRead }: Props): JSX.Element => {
         onRead(qrCode.data);
       }
     } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert('Error', error.message);
-      }
-      console.log(error);
+      Alert.alert('We could not read the QR code');
     }
   };
 

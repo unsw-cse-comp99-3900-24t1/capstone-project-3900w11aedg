@@ -7,7 +7,7 @@ type Props = {
   setCards: (cards: Card[]) => void;
 };
 
-const SortButton = ({ setCards }: Props): JSX.Element => {
+const SortButton = ({ setCards }: Props): React.ReactElement => {
   const [modalVisible, setModalVisible] = useState(false);
   const [sortText, setSortText] = useState('Sort');
   return (

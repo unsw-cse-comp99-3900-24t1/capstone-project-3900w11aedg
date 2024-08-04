@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import React from 'react';
 import * as Keychain from 'react-native-keychain';
 import { JSONPath } from 'jsonpath-plus';
@@ -22,7 +22,7 @@ const PresentCredentialList = ({
   chooseCredential,
   addClaims,
   claimsObject,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [credentials, setCredentials] = React.useState<CredentialTuple[]>([]);
 
   React.useEffect(() => {
@@ -42,9 +42,9 @@ const PresentCredentialList = ({
         const credentialPromises = keys.map(async (key) => {
           const credential = await Keychain.getGenericPassword({ service: key });
           if (credential) {
-            const JSONCredential: VerifiableCredential & { identifier: string } = JSON.parse(
-              credential.password
-            );
+            const JSONCredential: VerifiableCredential & { identifier: string } & {
+              pinned?: number;
+            } = JSON.parse(credential.password);
             delete JSONCredential.pinned;
             const isValidCredential = requiredFields.every((field) => {
               const results = JSONPath({ path: field.path[0]!, json: JSONCredential });
@@ -72,7 +72,7 @@ const PresentCredentialList = ({
         const validCredentials = await Promise.all(credentialPromises);
         setCredentials(validCredentials.filter(Boolean) as CredentialTuple[]);
       } catch (error) {
-        console.log(error);
+        Alert.alert('Error', 'Failed to get credentials');
       }
     };
     getCredentials();

@@ -15,7 +15,7 @@ const ClaimCheckbox = ({
   id,
   claimsObject,
   handleSelectionByClaim,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [selected, setSelected] = React.useState(claimsObject[id] && claimsObject[id].has(claim));
 
   const checkbox = selected

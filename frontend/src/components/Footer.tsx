@@ -7,7 +7,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 type Props = NativeStackNavigationProp<RootStackParamList>;
 
-const Footer = (): JSX.Element => {
+const Footer = (): React.ReactElement => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<Props>();
   const route = useRoute();

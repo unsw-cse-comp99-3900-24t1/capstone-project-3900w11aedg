@@ -15,7 +15,7 @@ type Props = {
 
 type DeleteNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Settings'>;
 
-const DeleteOverlay = ({ modalVisible, setModalVisible }: Props): JSX.Element => {
+const DeleteOverlay = ({ modalVisible, setModalVisible }: Props): React.ReactElement => {
   const navigation = useNavigation<DeleteNavigationProp>();
   const handleClose = () => {
     setModalVisible(false);

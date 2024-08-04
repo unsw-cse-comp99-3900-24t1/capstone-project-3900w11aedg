@@ -7,7 +7,7 @@ type Props = {
   text: string;
   secondImageSource: number;
   handlePress?: () => void;
-  additionalElements?: JSX.Element;
+  additionalElements?: React.ReactElement;
 };
 
 const SettingsButton = ({
@@ -17,7 +17,7 @@ const SettingsButton = ({
   secondImageSource,
   handlePress,
   additionalElements,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <View>
       <TouchableOpacity onPress={handlePress}>

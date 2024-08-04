@@ -16,7 +16,7 @@ type Props = {
 
 type ViewScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'View'>;
 
-const IdentityCard = ({ card }: Props): JSX.Element => {
+const IdentityCard = ({ card }: Props): React.ReactElement => {
   const navigation = useNavigation<ViewScreenNavigationProp>();
 
   const handleCardPress = () => {

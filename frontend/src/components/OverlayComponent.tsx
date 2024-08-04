@@ -19,7 +19,7 @@ const OverlayComponent = ({
   leftOption,
   handleDelete,
   rightOption,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   return (
     <Modal transparent={true} visible={modalVisible} onRequestClose={handleClose}>
       <Pressable
