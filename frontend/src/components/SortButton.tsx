@@ -7,7 +7,7 @@ type Props = {
   setCards: (cards: Card[]) => void;
 };
 
-const SortButton = ({ setCards }: Props) => {
+const SortButton = ({ setCards }: Props): JSX.Element => {
   const [modalVisible, setModalVisible] = useState(false);
   const [sortText, setSortText] = useState('Sort');
   return (
@@ -22,12 +22,14 @@ const SortButton = ({ setCards }: Props) => {
             source={require('../assets/sort.png')}
             resizeMode="contain"
             className="mt-1 h-[13px] w-[13px] mr-1"
+            testID="sort-icon-black"
           />
         ) : (
           <Image
             source={require('../assets/sort_white.png')}
             resizeMode="contain"
             className="mt-1 h-[13px] w-[13px] mr-1"
+            testID="sort-icon-white"
           />
         )}
         <Text className={`text-center  ${sortText !== 'Sort' ? 'text-black' : 'text-white'}`}>
@@ -52,6 +54,7 @@ const SortButton = ({ setCards }: Props) => {
         modalVisible={modalVisible}
         setModalVisible={setModalVisible}
         setSortText={setSortText}
+        testID="sort-overlay"
       />
     </View>
   );

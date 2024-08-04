@@ -3,18 +3,18 @@ import { Text, View, Image, TouchableOpacity } from 'react-native';
 import { SuccessfulPresentation } from '../config/types';
 import HistoryDropdown from './HistoryDropdown';
 
-interface PresentationHistoryProps {
+type Props = {
   presentation: SuccessfulPresentation;
-}
+};
 
-const PresentationHistory: React.FC<PresentationHistoryProps> = ({ presentation }) => {
+const PresentationHistory = ({ presentation }: Props): JSX.Element => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const source = dropdownVisible
     ? require('../assets/upwards_arrow.png')
     : require('../assets/downwards_arrow.png');
 
   return (
-    <View className="relative justify-end">
+    <View className="relative justify-end" testID="presentation-history-entry">
       <View className="p-1">
         <TouchableOpacity onPress={() => setDropdownVisible(!dropdownVisible)}>
           <View className="flex-row justify-between items-center mb-1">
@@ -27,6 +27,7 @@ const PresentationHistory: React.FC<PresentationHistoryProps> = ({ presentation 
               resizeMode="contain"
               className="h-[13px] w-[13px]"
               tintColor="grey"
+              testID="presentation-history-dropdown-arrow"
             />
           </View>
         </TouchableOpacity>

@@ -17,7 +17,7 @@ const SettingsButton = ({
   secondImageSource,
   handlePress,
   additionalElements,
-}: Props) => {
+}: Props): JSX.Element => {
   return (
     <View>
       <TouchableOpacity onPress={handlePress}>
@@ -26,12 +26,14 @@ const SettingsButton = ({
             source={imageSource}
             resizeMode="contain"
             className="h-[15px] w-[15px] my-3.5 ml-4"
+            testID="settings-button-icon-left"
           />
           <Text className="ml-3 text-white mt-2.5 text-base">{text}</Text>
           <Image
             source={secondImageSource}
             resizeMode="contain"
             className="h-[15px] w-[15px] my-3.5 ml-auto mr-4"
+            testID="settings-button-icon-right"
           />
         </View>
       </TouchableOpacity>

@@ -11,23 +11,23 @@ import fetchData from '../helper/data.ts';
 import { useFocusEffect } from '@react-navigation/native';
 import sortFunction from '../helper/sorting.ts';
 
-function HomeScreen(): JSX.Element {
+const fetchDID = async () => {
+  const did = await AsyncStorage.getItem('did');
+  if (!did) {
+    try {
+      const response = await axios.post('http://localhost:3000/generate/did', {});
+      const newDid = response.data.did;
+      await AsyncStorage.setItem('did', newDid);
+    } catch (error) {
+      Alert.alert('Error creating or finding DID');
+    }
+  }
+};
+
+const HomeScreen = (): JSX.Element => {
   const [cards, setCards] = useState<Card[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredCards, setFilteredCards] = useState<Card[]>([]);
-  const fetchDID = async () => {
-    const did = await AsyncStorage.getItem('did');
-    if (!did) {
-      try {
-        const response = await axios.post('http://localhost:3000/generate/did', {});
-        const newDid = response.data.did;
-        await AsyncStorage.setItem('did', newDid);
-      } catch (error) {
-        Alert.alert('No DID found');
-      }
-    }
-  };
-
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
 
   useEffect(() => {
@@ -42,6 +42,7 @@ function HomeScreen(): JSX.Element {
     }
   }, []);
 
+  // Set order of credentials according to sort and pin
   useFocusEffect(
     React.useCallback(() => {
       fetchData()
@@ -86,6 +87,6 @@ function HomeScreen(): JSX.Element {
       <Footer />
     </View>
   );
-}
+};
 
 export default HomeScreen;

@@ -10,7 +10,7 @@ type Props = {
 };
 type NavProps = NativeStackNavigationProp<RootStackParamList>;
 
-function AddedCredPopup({ modalVisible, setModalVisible }: Props): JSX.Element {
+const AddedCredPopup = ({ modalVisible, setModalVisible }: Props): JSX.Element => {
   const navigation = useNavigation<NavProps>();
 
   const handleClose = () => {
@@ -35,6 +35,6 @@ function AddedCredPopup({ modalVisible, setModalVisible }: Props): JSX.Element {
       </Pressable>
     </Modal>
   );
-}
+};
 
 export default AddedCredPopup;

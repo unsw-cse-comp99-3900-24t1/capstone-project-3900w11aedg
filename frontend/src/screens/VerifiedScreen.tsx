@@ -11,7 +11,7 @@ type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Verified'>;
 };
 
-function VerifiedScreen({ route, navigation }: Props): JSX.Element {
+const VerifiedScreen = ({ route, navigation }: Props): JSX.Element => {
   const { success } = route.params ?? false;
   const icon = success ? require('../assets/verified.png') : require('../assets/verify_fail.png');
 
@@ -54,6 +54,6 @@ function VerifiedScreen({ route, navigation }: Props): JSX.Element {
       <Footer />
     </View>
   );
-}
+};
 
 export default VerifiedScreen;

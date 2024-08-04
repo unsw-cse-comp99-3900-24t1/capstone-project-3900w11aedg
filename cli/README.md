@@ -39,10 +39,10 @@ The DID document can be found in `/did/.well-known/${did}/did.json`.
 
 ```bash
 # For issuer
-npm run start-issuer create-qr-code # or npm run start-issuer-dev create-qr-code
+npm run start-issuer qr-code # or npm run start-issuer-dev qr-code
 
 # Example output
-# QR code created at: /issuer/src/qr-code.png
+# QR code created at: /issuer/qr-code.png
 ```
 
 **Creating a QR code for service provider credential presentation requests**
@@ -53,10 +53,10 @@ The claims must also
 follow [OpenID4VCP](https://openid.github.io/OpenID4VP/openid-4-verifiable-presentations-wg-draft.html) standards.
 
 ```bash
-npm run start-service-provider create-qr-code # or npm run start-service-provider-dev create-qr-code
+npm run start-service-provider qr-code # or npm run start-service-provider-dev qr-code
 
 # Example output
-# QR code created at: /service-provider/src/qr-code.png
+# QR code created at: /service-provider/qr-code.png
 ```
 
 All other commands in the CLI are purely for demonstrative and testing purposes and are not necessary for the workflow

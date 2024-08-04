@@ -12,7 +12,7 @@ type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Present'>;
 };
 
-export default function PresentScreen({ route, navigation }: Props): JSX.Element {
+const PresentScreen = ({ route, navigation }: Props): JSX.Element => {
   const { requestData } = route.params ?? '';
 
   return (
@@ -37,4 +37,6 @@ export default function PresentScreen({ route, navigation }: Props): JSX.Element
       <Footer />
     </View>
   );
-}
+};
+
+export default PresentScreen;

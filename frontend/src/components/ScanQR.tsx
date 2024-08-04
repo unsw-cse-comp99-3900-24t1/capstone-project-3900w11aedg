@@ -2,11 +2,11 @@ import { Image, View } from 'react-native';
 import React from 'react';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
-interface ScanQRProps {
+type Props = {
   onRead: (route: string) => Promise<void>;
-}
+};
 
-function ScanQR({ onRead }: ScanQRProps): JSX.Element {
+const ScanQR = ({ onRead }: Props): JSX.Element => {
   return (
     <View className="mt-[100px] relative">
       <QRCodeScanner
@@ -26,6 +26,6 @@ function ScanQR({ onRead }: ScanQRProps): JSX.Element {
       />
     </View>
   );
-}
+};
 
 export default ScanQR;

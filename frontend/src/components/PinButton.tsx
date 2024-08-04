@@ -9,7 +9,7 @@ type Props = {
   isExpired: boolean;
 };
 
-const PinButton = ({ card, additionalElements, isExpired }: Props) => {
+const PinButton = ({ card, additionalElements, isExpired }: Props): JSX.Element => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -19,6 +19,7 @@ const PinButton = ({ card, additionalElements, isExpired }: Props) => {
         className="w-5 h-5"
         resizeMode="contain"
         tintColor={isExpired ? 'black' : 'white'}
+        testID="pin-button-icon"
       />
       <PinOverlay card={card} modalVisible={modalVisible} setModalVisible={setModalVisible} />
       <View>{additionalElements}</View>
