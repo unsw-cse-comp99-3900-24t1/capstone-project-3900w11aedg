@@ -5,11 +5,11 @@ import PinOverlay from './PinOverlay.tsx';
 
 type Props = {
   card: Card;
-  additionalElements?: JSX.Element;
+  additionalElements?: React.ReactElement;
   isExpired: boolean;
 };
 
-const PinButton = ({ card, additionalElements, isExpired }: Props): JSX.Element => {
+const PinButton = ({ card, additionalElements, isExpired }: Props): React.ReactElement => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (

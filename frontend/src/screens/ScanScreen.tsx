@@ -13,7 +13,7 @@ type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Scan'>;
 };
 
-const ScanScreen = ({ navigation }: Props): JSX.Element => {
+const ScanScreen = ({ navigation }: Props): React.ReactElement => {
   const [method, setMethod] = React.useState<'Scan' | 'Upload'>('Scan');
   const onRead = async (route: string) => {
     try {

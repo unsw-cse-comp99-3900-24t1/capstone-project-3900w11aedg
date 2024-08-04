@@ -15,7 +15,7 @@ type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'View'>;
 };
 
-const ViewScreen = ({ route, navigation }: Props): JSX.Element => {
+const ViewScreen = ({ route, navigation }: Props): React.ReactElement => {
   const { card } = route.params;
   const [modalVisible, setModalVisible] = useState(false);
 

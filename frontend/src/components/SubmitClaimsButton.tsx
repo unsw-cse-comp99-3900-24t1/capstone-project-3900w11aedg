@@ -56,7 +56,7 @@ const mapClaimValues = (
   ]);
 };
 
-const SubmitClaimsButton = ({ claimsRequest, claims, credentials }: Props): JSX.Element => {
+const SubmitClaimsButton = ({ claimsRequest, claims, credentials }: Props): React.ReactElement => {
   const navigation = useNavigation<NavProps>();
 
   const handleSubmission = async () => {

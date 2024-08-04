@@ -5,7 +5,7 @@ type Props = {
   isExpired: boolean;
 };
 
-const ExpiryStatusLabel = ({ isExpired }: Props): JSX.Element => {
+const ExpiryStatusLabel = ({ isExpired }: Props): React.ReactElement => {
   const source = isExpired
     ? require('../assets/white_cross.png')
     : require('../assets/white_tick.png');

@@ -13,7 +13,7 @@ type Props = {
 
 type NavProps = NativeStackNavigationProp<RootStackParamList>;
 
-const PresentDetails = ({ claimsRequest }: Props): JSX.Element => {
+const PresentDetails = ({ claimsRequest }: Props): React.ReactElement => {
   const [chosenClaims, setChosenClaims] = React.useState<{ [key: string]: Set<string> }>({});
   const [chosenCredentials, setChosenCredentials] = React.useState<VerifiableCredential[]>([]);
   const navigation = useNavigation<NavProps>();

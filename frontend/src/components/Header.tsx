@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const Header = (): JSX.Element => {
+const Header = (): React.ReactElement => {
   const insets = useSafeAreaInsets();
 
   return (

@@ -11,7 +11,7 @@ const ClearHistoryOverlay = ({
   modalVisible,
   setModalVisible,
   handleDelete,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const handleClose = () => {
     setModalVisible(false);
   };

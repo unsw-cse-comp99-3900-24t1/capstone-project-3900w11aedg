@@ -8,7 +8,11 @@ type Props = {
   setReverse: (reverse: boolean) => void;
 };
 
-const RadioButtonList = ({ selectedValue, setSelectedValue, setReverse }: Props): JSX.Element => {
+const RadioButtonList = ({
+  selectedValue,
+  setSelectedValue,
+  setReverse,
+}: Props): React.ReactElement => {
   return (
     <View>
       <RadioButton

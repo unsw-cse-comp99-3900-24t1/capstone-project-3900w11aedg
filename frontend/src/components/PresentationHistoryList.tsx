@@ -7,7 +7,7 @@ type Props = {
   presentations: SuccessfulPresentation[];
 };
 
-const PresentationHistoryList = ({ presentations }: Props): JSX.Element => {
+const PresentationHistoryList = ({ presentations }: Props): React.ReactElement => {
   return (
     <View className="flex flex-col h-[60%]">
       <ScrollView>

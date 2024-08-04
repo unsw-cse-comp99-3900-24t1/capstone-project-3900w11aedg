@@ -10,7 +10,7 @@ type Props = {
 };
 type NavProps = NativeStackNavigationProp<RootStackParamList>;
 
-const AddedCredPopup = ({ modalVisible, setModalVisible }: Props): JSX.Element => {
+const AddedCredPopup = ({ modalVisible, setModalVisible }: Props): React.ReactElement => {
   const navigation = useNavigation<NavProps>();
 
   const handleClose = () => {

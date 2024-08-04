@@ -17,7 +17,7 @@ const SortOverlay = ({
   modalVisible,
   setModalVisible,
   setSortText,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [reverse, setReverse] = useState(false);
 

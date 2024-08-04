@@ -18,7 +18,7 @@ const IssueCredential = ({
   backupName,
   isSelected,
   onSelect,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [disabled, setDisabled] = React.useState(false);
   const [icon, setIcon] = React.useState(addIcon);
 

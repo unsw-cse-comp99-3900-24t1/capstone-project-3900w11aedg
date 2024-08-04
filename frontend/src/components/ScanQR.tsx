@@ -6,7 +6,7 @@ type Props = {
   onRead: (route: string) => Promise<void>;
 };
 
-const ScanQR = ({ onRead }: Props): JSX.Element => {
+const ScanQR = ({ onRead }: Props): React.ReactElement => {
   return (
     <View className="mt-[100px] relative">
       <QRCodeScanner

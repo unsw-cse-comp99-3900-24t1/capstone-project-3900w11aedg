@@ -112,7 +112,6 @@ export type Card = {
   description: string;
   type: string;
   credIssuedBy: string;
-  credNumber: string;
   claims: { [key: string]: string };
   issuanceDate: string;
   expiryDate: string;

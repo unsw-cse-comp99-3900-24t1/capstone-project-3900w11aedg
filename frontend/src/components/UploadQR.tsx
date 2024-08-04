@@ -18,7 +18,7 @@ type ImageAsset = {
   width: number;
 } | null;
 
-const UploadQR = ({ onRead }: Props): JSX.Element => {
+const UploadQR = ({ onRead }: Props): React.ReactElement => {
   const [image, setImage] = React.useState<ImageAsset>(null);
   const [loading, setLoading] = React.useState(false);
 

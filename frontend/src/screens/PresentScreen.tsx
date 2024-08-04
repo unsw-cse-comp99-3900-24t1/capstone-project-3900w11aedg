@@ -12,7 +12,7 @@ type Props = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Present'>;
 };
 
-const PresentScreen = ({ route, navigation }: Props): JSX.Element => {
+const PresentScreen = ({ route, navigation }: Props): React.ReactElement => {
   const { requestData } = route.params ?? '';
 
   return (

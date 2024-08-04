@@ -6,7 +6,7 @@ interface HistoryDropdownProps {
   claims: [string, string][];
 }
 
-const HistoryDropdown = ({ claims }: HistoryDropdownProps): JSX.Element => {
+const HistoryDropdown = ({ claims }: HistoryDropdownProps): React.ReactElement => {
   return (
     <View className="relative flex-col p-3 justify-end bg-gray-800 rounded-lg">
       <Text className="text-white text-lg">Claims presented:</Text>

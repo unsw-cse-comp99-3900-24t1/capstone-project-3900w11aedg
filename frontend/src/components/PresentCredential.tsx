@@ -22,7 +22,7 @@ const PresentCredential = ({
   chosenCredentials,
   chooseCredential,
   verifiableCredential,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [isSelected, setIsSelected] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const icon = open

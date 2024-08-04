@@ -1,7 +1,7 @@
 import { Text, Modal, ActivityIndicator, View } from 'react-native';
 import React from 'react';
 
-const LoadingModal = (): JSX.Element => {
+const LoadingModal = (): React.ReactElement => {
   return (
     <Modal transparent={true}>
       <View className="flex-1 justify-center items-center bg-dark-green opacity-90">

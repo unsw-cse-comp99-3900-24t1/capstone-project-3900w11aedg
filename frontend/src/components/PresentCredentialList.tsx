@@ -22,7 +22,7 @@ const PresentCredentialList = ({
   chooseCredential,
   addClaims,
   claimsObject,
-}: Props): JSX.Element => {
+}: Props): React.ReactElement => {
   const [credentials, setCredentials] = React.useState<CredentialTuple[]>([]);
 
   React.useEffect(() => {
@@ -42,9 +42,9 @@ const PresentCredentialList = ({
         const credentialPromises = keys.map(async (key) => {
           const credential = await Keychain.getGenericPassword({ service: key });
           if (credential) {
-            const JSONCredential: VerifiableCredential & { identifier: string } = JSON.parse(
-              credential.password
-            );
+            const JSONCredential: VerifiableCredential & { identifier: string } & {
+              pinned?: number;
+            } = JSON.parse(credential.password);
             delete JSONCredential.pinned;
             const isValidCredential = requiredFields.every((field) => {
               const results = JSONPath({ path: field.path[0]!, json: JSONCredential });
