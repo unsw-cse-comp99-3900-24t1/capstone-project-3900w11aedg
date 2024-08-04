@@ -6,8 +6,13 @@ const pinCard = async (card: Card) => {
     const credential = (await Keychain.getGenericPassword({
       service: card.originalName,
     })) as UserCredentials;
+    const credential = await Keychain.getGenericPassword({ service: card.originalName });
+    if (!credential) {
+      console.log(`No data found for card ${card.originalName}`);
+      return;
+    }
     const JSONCredential = JSON.parse(credential.password) as VerifiableCredential & {
-      pinned?: number | null;
+      pinned: number | null;
     };
     const date = Date.now();
     JSONCredential.pinned = JSONCredential.pinned ? null : date;

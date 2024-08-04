@@ -11,6 +11,7 @@ const Header = (): React.ReactElement => {
         className="h-[40px] w-[40px]"
         source={require('../assets/smol_logo.png')}
         resizeMode="contain"
+        testID="test"
       />
     </View>
   );

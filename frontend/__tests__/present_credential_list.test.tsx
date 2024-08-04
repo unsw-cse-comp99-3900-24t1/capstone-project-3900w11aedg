@@ -5,7 +5,7 @@ import { mockClaimsRequest, mockClaims } from '../__mocks__/claims_mock';
 import { mockCredential, mockStoredCredentials } from '../__mocks__/credentials_mock';
 import { mockCard } from '../__mocks__/card_mock';
 import * as Keychain from 'react-native-keychain';
-import * as normaliseModule from '../src/helper/normalise';
+import normaliseCredential from '../src/helper/normalise.ts';
 
 jest.mock('react-native-linear-gradient', () => 'LinearGradient');
 
@@ -26,7 +26,7 @@ describe('PresentCredentialList', () => {
     (Keychain.getGenericPassword as jest.Mock).mockImplementation(async ({ service }) =>
       mockStoredCredentials.find((credential) => credential.key === service)
     );
-    const mockFetchData = normaliseModule.normaliseCredential as jest.Mock;
+    const mockFetchData = normaliseCredential as jest.Mock;
     mockFetchData
       .mockReturnValueOnce(mockCard)
       .mockReturnValueOnce({ ...mockCard, name: 'Master Degree' })

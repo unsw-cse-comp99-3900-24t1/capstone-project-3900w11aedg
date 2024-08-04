@@ -1,8 +1,9 @@
 import { Card, VerifiableCredential } from '../config/types.ts';
 
 const normaliseCredential = (name: string, credential: string): Card => {
-  const JSONCredential = JSON.parse(credential) as VerifiableCredential & { identifier: string } & {
-    pinned?: number;
+  const JSONCredential = JSON.parse(credential) as VerifiableCredential & {
+    identifier: string;
+    pinned: number | null;
   };
   const types = JSONCredential.type;
   const originalName = name;
