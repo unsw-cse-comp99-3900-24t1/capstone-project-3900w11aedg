@@ -24,7 +24,12 @@ const PinOverlay = ({ card, modalVisible, setModalVisible }: Props): JSX.Element
   };
 
   return (
-    <Modal transparent={true} visible={modalVisible} onRequestClose={handleClose}>
+    <Modal
+      transparent={true}
+      visible={modalVisible}
+      onRequestClose={handleClose}
+      testID="pin-overlay"
+    >
       <Pressable
         className="flex-1 justify-center items-center bg-dark-green opacity-90"
         onPress={handleClose}

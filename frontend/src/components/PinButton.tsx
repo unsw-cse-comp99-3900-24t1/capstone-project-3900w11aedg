@@ -19,6 +19,7 @@ const PinButton = ({ card, additionalElements, isExpired }: Props): JSX.Element 
         className="w-5 h-5"
         resizeMode="contain"
         tintColor={isExpired ? 'black' : 'white'}
+        testID="pin-button-icon"
       />
       <PinOverlay card={card} modalVisible={modalVisible} setModalVisible={setModalVisible} />
       <View>{additionalElements}</View>
