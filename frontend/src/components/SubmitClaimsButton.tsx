@@ -13,41 +13,6 @@ export type SubmitClaimsButtonProps = {
 
 type NavProps = NativeStackNavigationProp<RootStackParamList>;
 
-const saveSuccessfulPresentations = async (domain: string, claims: [string, string][]) => {
-  const existingPresentations = await AsyncStorage.getItem('successfulPresentations');
-  const presentations = existingPresentations ? JSON.parse(existingPresentations) : [];
-
-  const date = new Date();
-  const formattedDate = formatDate(date) + ' ' + formatTime(date);
-
-  const newPresentation = {
-    serviceProvider: domain,
-    date: formattedDate,
-    claims: claims,
-  };
-  presentations.unshift(newPresentation);
-
-  await AsyncStorage.setItem('successfulPresentations', JSON.stringify(presentations));
-};
-
-const mapClaimValues = (
-  identifier: string | undefined,
-  credentialSubject: { [key: string]: object | string },
-  claims: { [key: string]: Set<string> }
-): [string, string][] => {
-  if (!identifier) {
-    return [];
-  }
-  let claimsToMap = Object.entries(credentialSubject);
-  if (identifier in claims) {
-    claimsToMap = Object.entries(credentialSubject).filter(([key]) => claims[identifier]!.has(key));
-  }
-  return claimsToMap.map(([key, value]) => [
-    key,
-    typeof value === 'string' ? value : JSON.stringify(value),
-  ]);
-};
-
 export const SubmitClaimsButton: React.FC<SubmitClaimsButtonProps> = ({
   claimsRequest,
   claims,
