@@ -82,10 +82,7 @@ const UploadQR = ({ onRead }: Props): React.ReactElement => {
         onRead(qrCode.data);
       }
     } catch (error) {
-      if (error instanceof Error) {
-        Alert.alert('Error', error.message);
-      }
-      console.log(error);
+      Alert.alert('We could not read the QR code');
     }
   };
 

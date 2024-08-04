@@ -99,7 +99,6 @@ app.post('/presentation/create', cors(internalUse), async (req: Request, res: Re
       res.status(500).send('Error sending presentation to service provider');
     }
   } catch (err) {
-    console.log(err);
     res.status(500).send('Error deriving and creating presentation: ' + err);
   }
 });

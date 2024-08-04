@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Pressable, ScrollView } from 'react-native';
+import { View, Text, Pressable, ScrollView, Alert } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -23,7 +23,7 @@ const ViewScreen = ({ route, navigation }: Props): React.ReactElement => {
     try {
       await Keychain.resetGenericPassword({ service: key });
     } catch (error) {
-      console.log('Failed to remove credentials:');
+      Alert.alert('Failed to remove credentials', 'Please try again later');
     }
     setModalVisible(false);
     navigation.navigate('Home');

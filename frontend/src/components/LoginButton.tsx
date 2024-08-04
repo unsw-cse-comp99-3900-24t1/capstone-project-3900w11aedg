@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, AppState } from 'react-native';
+import { Button, AppState, Alert } from 'react-native';
 import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../config/types';
@@ -24,7 +24,7 @@ const LoginButton = (): React.ReactElement => {
           navigation.navigate('Home');
         }
       } catch (error) {
-        console.log(error);
+        Alert.alert('Error', 'Biometric authentication failed');
       }
     } else {
       // If user has no security feature set

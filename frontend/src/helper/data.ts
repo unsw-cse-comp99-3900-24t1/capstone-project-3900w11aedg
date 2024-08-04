@@ -27,7 +27,6 @@ const fetchData = async (): Promise<Card[]> => {
     if (credentials) {
       return normaliseCredential(key, credentials.password);
     } else {
-      console.log(`No data found for key ${key}`);
       return null;
     }
   });

@@ -1,4 +1,4 @@
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 import React from 'react';
 import * as Keychain from 'react-native-keychain';
 import { JSONPath } from 'jsonpath-plus';
@@ -72,7 +72,7 @@ const PresentCredentialList = ({
         const validCredentials = await Promise.all(credentialPromises);
         setCredentials(validCredentials.filter(Boolean) as CredentialTuple[]);
       } catch (error) {
-        console.log(error);
+        Alert.alert('Error', 'Failed to get credentials');
       }
     };
     getCredentials();

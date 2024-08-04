@@ -41,7 +41,7 @@ const ScanScreen = ({ navigation }: Props): React.ReactElement => {
         throw new Error('Invalid QR code');
       }
     } catch (error) {
-      console.log(error);
+      Alert.alert('Error', 'Unable to scan QR code.');
     }
   };
 

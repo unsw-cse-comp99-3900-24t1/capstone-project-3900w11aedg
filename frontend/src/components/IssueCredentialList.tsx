@@ -34,7 +34,6 @@ const IssueCredentialList = ({ issuerMetadata }: Props): React.ReactElement => {
       setModalVisible(true);
     } catch (error) {
       Alert.alert('Sorry!', "We're having trouble processing this right now.");
-      console.log(error);
     }
   };
 
