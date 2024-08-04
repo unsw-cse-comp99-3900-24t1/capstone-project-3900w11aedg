@@ -3,9 +3,6 @@ import Keychain, { UserCredentials } from 'react-native-keychain';
 
 const pinCard = async (card: Card) => {
   try {
-    const credential = (await Keychain.getGenericPassword({
-      service: card.originalName,
-    })) as UserCredentials;
     const credential = await Keychain.getGenericPassword({ service: card.originalName });
     if (!credential) {
       console.log(`No data found for card ${card.originalName}`);
