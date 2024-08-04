@@ -41,7 +41,6 @@
     "react-native-screens": "^3.32.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.7",
     "@jest/globals": "^29.7.0",
     "@react-native/babel-preset": "0.74.84",
     "@react-native/eslint-config": "0.74.84",

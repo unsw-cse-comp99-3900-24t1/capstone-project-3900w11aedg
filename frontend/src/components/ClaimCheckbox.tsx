@@ -29,7 +29,11 @@ function ClaimCheckbox({
   };
 
   return (
-    <TouchableOpacity onPress={handleCheck} className="w-[20%] flex flex-row justify-center">
+    <TouchableOpacity
+      onPress={handleCheck}
+      className="w-[20%] flex flex-row justify-center"
+      testID="test"
+    >
       <Image source={checkbox} resizeMode="contain" className="w-[45%]" />
     </TouchableOpacity>
   );
