@@ -20,7 +20,6 @@ const SortOverlay = ({
   setSortText,
   testID,
 }: Props): React.ReactElement => {
-  testID,
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [reverse, setReverse] = useState(false);
 
