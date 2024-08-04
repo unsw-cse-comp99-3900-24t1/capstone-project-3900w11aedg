@@ -1,5 +1,5 @@
 import { Card, VerifiableCredential } from '../config/types.ts';
-import Keychain, { UserCredentials } from 'react-native-keychain';
+import Keychain from 'react-native-keychain';
 
 const pinCard = async (card: Card) => {
   try {
