@@ -20,7 +20,7 @@ export const formatTime = (dateString: string | Date): string => {
 };
 
 // Gets all verifiable credentials from secure storage as Card
-const fetchData = async (): Promise<Card[]> => {
+export const fetchData = async (): Promise<Card[]> => {
   const keys = await Keychain.getAllGenericPasswordServices();
   const dataPromises = keys.map(async (key: string) => {
     const credentials = await Keychain.getGenericPassword({ service: key });
